@@ -10,23 +10,6 @@ import 'lib/components/Toggle';
 //https://tur-nr.github.io/polymer-redux/docs
 
 export default class Application extends ActionsMixin(PolymerElement, saga) {
-    _handleClick(e) {
-        this.dispatch(Application.actions.requestSearch());
-    }
-
-    //The array itself is shallow generated dynamically while keeping the object references for diff checking
-    _toArray(items) {
-        return (items || fromJS([])).toArray();
-    }
-
-    _handleActiveChange(e) {
-        const setResults = Application.actions.setResults,
-            active = e.detail.active,
-            results = this.results.setIn([e.model.index, 'active'], active);
-
-        this.dispatch(setResults(results));
-    }
-
     static get properties() {
         return {
             'results': {
@@ -56,6 +39,18 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
             </template>
             </div>
         `;
+    }
+
+    _handleClick(e) {
+        this.dispatch(Application.actions.requestSearch());
+    }
+
+    _handleActiveChange(e) {
+        const setResults = Application.actions.setResults,
+            active = e.detail.active,
+            results = this.results.setIn([e.model.index, 'active'], active);
+
+        this.dispatch(setResults(results));
     }
 }
 
