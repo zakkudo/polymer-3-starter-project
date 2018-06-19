@@ -1,0 +1,12 @@
+body {
+    margin : 10px;
+    border: 1em solid black;
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    --primary-fg: blue;
+    --primary-bg: white;
+
+    --default-fg: black;
+    --default-bg: light-gray;
+}
