@@ -24,8 +24,11 @@
 
 ## Commands
 
+Bootstrap with
+`yarn install`
+
 Start with 
-./node_modules/.bin/webpack-dev-server --open
+`./node_modules/.bin/webpack-dev-server --open`
 
 Test with
-./node_modules/.bin/karma start
+`./node_modules/.bin/karma start`
