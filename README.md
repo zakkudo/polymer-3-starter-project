@@ -1,6 +1,8 @@
-Leverages:
+# Polymer 3 Redux Starter Project
 
--Polymer-Redux
+## Leverages
+
+- Polymer-Redux
 - Redux
 - Webpack
 - Polymer
@@ -9,7 +11,7 @@ Leverages:
 - redux-saga
 - karma
 
-Demonstates:
+## Demonstates:
 
 - Raising states
 - Leveraging redux with polymer
@@ -19,6 +21,8 @@ Demonstates:
 - shadow dom
 - css variables
 - Testing with karma
+
+## Commands
 
 Start with 
 ./node_modules/.bin/webpack-dev-server --open
