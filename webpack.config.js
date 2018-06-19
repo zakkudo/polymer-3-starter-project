@@ -7,6 +7,8 @@ const path = require('path'),
     program = path.basename(process.argv[1]),
     mode = program == 'webpack' ? 'production' : 'development';
 
+console.log('Webpack mode: ', mode);
+
 module.exports = {
     devtool: 'source-map',
     mode: mode,

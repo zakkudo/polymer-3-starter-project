@@ -7,8 +7,6 @@ import ActionsMixin from './ActionsMixin';
 import saga from './saga';
 import 'lib/components/Toggle';
 
-//https://tur-nr.github.io/polymer-redux/docs
-
 export default class Application extends ActionsMixin(PolymerElement, saga) {
     static get properties() {
         return {

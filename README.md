@@ -1,15 +1,13 @@
 # Polymer 3 Redux Starter Project
 
-## Leverages
-
-- Polymer-Redux
-- Redux
-- Webpack
-- Polymer
-- ImmutableJS
-- yarn
-- redux-saga
-- karma
+- Polymer-Redux <https://tur-nr.github.io/polymer-redux/docs>
+- Redux <https://redux.js.org>
+- Webpack <https://webpack.js.org>
+- Polymer <https://www.polymer-project.org>
+- ImmutableJS <https://facebook.github.io/immutable-js/>
+- Yarn <https://yarnpkg.com>
+- Redux-Saga <https://redux-saga.js.org>
+- Karma <https://karma-runner.github.io/2.0/index.html>
 
 ## Demonstates:
 
@@ -20,7 +18,6 @@
 - Side effects with redux-saga
 - shadow dom
 - css variables
-- Testing with karma
 
 ## Commands
 
@@ -28,7 +25,10 @@ Bootstrap with
 `yarn install`
 
 Start with 
-`./node_modules/.bin/webpack-dev-server --open`
+`yarn start`
+
+Build with 
+`yarn build`
 
 Test with
-`./node_modules/.bin/karma start`
+`yarn test`

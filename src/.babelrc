@@ -1,0 +1,14 @@
+{
+    "presets": [
+        ["@babel/env", {
+            "targets": {
+                "browsers": ["last 2 versions", "> 5%", "not ie > 0", "not android > 0"]
+            },
+            "debug": true
+        }]
+    ],
+    "plugins": [
+        "@babel/transform-runtime",
+        "webpack-alias"
+    ]
+}
