@@ -26,5 +26,8 @@ export default (Parent) => {
         _toObjectFromImmutable(instance) {
             return instance.toObject();
         }
+        _toJSFromImmutable(instance) {
+            return instance.toJS();
+        }
     }
 }

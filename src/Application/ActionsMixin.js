@@ -2,7 +2,6 @@ import ReduxMixin from './ReduxMixin';
 import actions from './actions';
 
 export default (Parent, saga, ...leftover) => {
-    debugger;
     return class ActionsMixin extends ReduxMixin(Parent, saga, ...leftover) {
         static get actions() {
             return {

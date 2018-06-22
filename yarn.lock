@@ -535,11 +535,15 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
-"@polymer/polymer@^3.0.2":
+"@polymer/polymer@^3.0.0", "@polymer/polymer@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@polymer/polymer/-/polymer-3.0.2.tgz#626e6f9fae9716b0962ce0211e21df242153eab2"
   dependencies:
     "@webcomponents/shadycss" "^1.2.0"
+
+"@uirouter/core@^5.0.19":
+  version "5.0.19"
+  resolved "https://registry.yarnpkg.com/@uirouter/core/-/core-5.0.19.tgz#fe2888190393a8c92584c354e65ab8322c1b0db4"
 
 "@webassemblyjs/ast@1.5.12":
   version "1.5.12"
@@ -1001,6 +1005,10 @@ balanced-match@^0.4.2:
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
+
+base-href-webpack-plugin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/base-href-webpack-plugin/-/base-href-webpack-plugin-2.0.0.tgz#4ef8e916756437daed61d55e3aeddf6c5766a577"
 
 base64-arraybuffer@0.1.5:
   version "0.1.5"
@@ -4614,6 +4622,13 @@ polymer-redux@^1.0.5:
   resolved "https://registry.yarnpkg.com/polymer-redux/-/polymer-redux-1.0.5.tgz#ee65ac272d6bd344d0034533732265d0e267a55f"
   dependencies:
     global "^4.3.1"
+
+polymer-ui-router@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/polymer-ui-router/-/polymer-ui-router-3.0.1.tgz#a618059cf6940df2a6f67015933efd28ec68f9a8"
+  dependencies:
+    "@polymer/polymer" "^3.0.0"
+    "@uirouter/core" "^5.0.19"
 
 portfinder@^1.0.9:
   version "1.0.13"

@@ -4,6 +4,7 @@ const path = require('path'),
     WriteFileWebpackPlugin = require('write-file-webpack-plugin'),
     MiniCssExtractPlugin = require('mini-css-extract-plugin'),
     UglifyJSWebpackPlugin = require('uglifyjs-webpack-plugin'),
+    {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin'),
     program = path.basename(process.argv[1]),
     mode = program == 'webpack' ? 'production' : 'development';
 
@@ -17,7 +18,8 @@ module.exports = {
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'build')
+        path: path.resolve(__dirname, 'build'),
+        publicPath: '/'
     },
     module: {
         rules:[
@@ -49,6 +51,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Polymer with webpack'
         }),
+        new BaseHrefWebpackPlugin({baseHref: '/'}),
         new WriteFileWebpackPlugin({
         }),
         new MiniCssExtractPlugin({
@@ -72,7 +75,10 @@ module.exports = {
                 'count': 2
             }]
         })
-    ]
+    ],
+    devServer: {
+        historyApiFallback: true
+    }
 };
 
 

@@ -1,5 +1,5 @@
 import {createStore, applyMiddleware} from 'redux';
-import ImmutableMixin from './ImmutableMixin';
+import ImmutableMixin from 'lib/ImmutableMixin';
 import PolymerRedux from 'polymer-redux';
 import reducer from './reducer';
 import createSagaMiddleware from 'redux-saga';

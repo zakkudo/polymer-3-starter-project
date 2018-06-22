@@ -1,5 +1,5 @@
 {
-  "license" : "BSD-3-Clause",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.51",
     "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
@@ -7,6 +7,7 @@
     "@babel/register": "^7.0.0-beta.51",
     "babel-loader": "^8.0.0-beta",
     "babel-plugin-webpack-alias": "^2.1.2",
+    "base-href-webpack-plugin": "^2.0.0",
     "css-loader": "^0.28.11",
     "generate-json-webpack-plugin": "^0.3.1",
     "html-webpack-plugin": "^3.2.0",
@@ -29,12 +30,13 @@
     "@polymer/polymer": "^3.0.2",
     "immutable": "^3.8.2",
     "polymer-redux": "^1.0.5",
+    "polymer-ui-router": "^3.0.1",
     "redux": "^4.0.0",
     "redux-saga": "^0.16.0"
   },
   "scripts": {
-      "start": "./node_modules/.bin/webpack-dev-server --open",
-      "build": "./node_modules/.bin/webpack",
-      "test": "./node_modules/.bin/karma start"
+    "start": "./node_modules/.bin/webpack-dev-server --open",
+    "build": "./node_modules/.bin/webpack",
+    "test": "./node_modules/.bin/karma start"
   }
 }
