@@ -43,8 +43,8 @@ module.exports = {
     },
     resolve: {
         alias: {
-            lib: path.resolve(__dirname, 'src', 'lib'),
-            '@polymer': path.resolve(__dirname, 'node_modules', '@polymer')
+            Application: path.resolve(__dirname, 'src', 'Application'),
+            lib: path.resolve(__dirname, 'src', 'lib')
         }
     },
     plugins: [

@@ -32,3 +32,9 @@ Build with
 
 Test with
 `yarn test`
+
+## Todo
+
+eslint-plugin-polymer
+add webpack-eslint
+add jsdoc building
