@@ -8,6 +8,7 @@
 - Yarn <https://yarnpkg.com>
 - Redux-Saga <https://redux-saga.js.org>
 - Karma <https://karma-runner.github.io/2.0/index.html>
+- Eslint <https://eslint.org>
 
 ## Demonstates:
 
@@ -24,17 +25,14 @@
 Bootstrap with
 `yarn install`
 
-Start with 
+Start with
 `yarn start`
 
-Build with 
+Build with
 `yarn build`
 
 Test with
 `yarn test`
 
-## Todo
-
-eslint-plugin-polymer
-add webpack-eslint
-add jsdoc building
+Document with
+`yarn documentation`

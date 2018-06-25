@@ -8,7 +8,8 @@
     "redux",
     "redux-Saga",
     "polymer",
-    "immutable"
+    "immutable",
+    "eslint"
   ],
   "license": "BSD-3-Clause",
   "devDependencies": {
