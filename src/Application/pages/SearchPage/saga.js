@@ -1,19 +1,21 @@
 import {takeEvery, call, put} from 'redux-saga/effects'
 import actions from './actions';
 import {fromJS} from 'immutable';
-import Application from '.';
+import Page from '.';
 
 function* search(query) {
     const {
-        searchRequestSucceeded, 
-        searchRequestFailed, 
-        setResults
-    } = Application.actions;
+        searchRequestSucceeded,
+        searchRequestFailed,
+        setResults,
+    } = Page.actions;
 
     try {
-        const response = yield call(fetch, './search.json');
+        debugger;
+        const response = yield call(fetch, '/search.json');
         const body = fromJS(yield call([response, 'json']));
 
+        debugger;
         yield put(searchRequestSucceeded(body));
         yield put(setResults(body.get('hits')));
 

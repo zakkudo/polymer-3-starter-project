@@ -8,28 +8,28 @@ export default (Parent, saga, ...leftover) => {
                 requestSearch(query) {
                     return {
                         type: actions.REQUEST_SEARCH,
-                        query
+                        query,
                     };
                 },
                 searchRequestSucceeded(response) {
                     return {
                         type: actions.SEARCH_REQUEST_SUCCEEDED,
-                        response
+                        response,
                     };
                 },
                 searchRequestFailed(reason) {
                     return {
                         type: actions.SEARCH_REQUEST_FAILED,
-                        reason
+                        reason,
                     };
                 },
                 setResults(results) {
                     return {
                         type: actions.SET_RESULTS,
-                        results
+                        results,
                     };
-                }
+                },
             };
         }
-    }
-}
+    };
+};

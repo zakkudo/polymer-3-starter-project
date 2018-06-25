@@ -1,7 +1,10 @@
 module.exports = {
     "extends": [
-        "google",
+        "plugin:polymer/polymer-2",
         "plugin:import/errors"
+    ],
+    "plugins": [
+        "polymer"
     ],
     "parserOptions": {
         "ecmaVersion": 6,
