@@ -65,7 +65,7 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
 
             <ul>
             <li><a href="/">Go to home</a></li>
-            <li><a href="/foo">Go to foo</a></li>
+            <li><a href="/about">Go to about</a></li>
             </ul>
             <z-router
                 routes="[[routes]]"

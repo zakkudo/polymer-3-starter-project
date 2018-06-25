@@ -1,6 +1,7 @@
 import './pages/SearchPage';
+import './pages/AboutPage';
 
 export default [
     {name: 'home', url: '/', component: 'z-search-page'},
-    {name: 'foo', url: '/foo', component: 'z-toggle'},
+    {name: 'about', url: '/about', component: 'z-about-page'},
 ];

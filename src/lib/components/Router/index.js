@@ -86,6 +86,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     }
 
     _getResolveInformation(component) {
+        debugger;
         const resolve = component.resolve || {};
         const data = resolve.data || {};
         const message = resolve.message;
