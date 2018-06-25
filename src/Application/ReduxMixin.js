@@ -1,13 +1,14 @@
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import ImmutableMixin from 'lib/ImmutableMixin';
 import PolymerRedux from 'polymer-redux';
 import reducer from './reducer';
 import createSagaMiddleware from 'redux-saga';
 
-const sagaMiddleware = createSagaMiddleware(),
-    store = createStore(reducer, applyMiddleware(sagaMiddleware)),
-    ReduxMixin = PolymerRedux(store),
-    instances = new Map();
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
+const ReduxMixin = PolymerRedux(store);
+const instances = new Map();
 
 function cancel(key) {
     if (instances.has(key)) {
