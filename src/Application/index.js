@@ -62,6 +62,11 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
             }
             </style>
             <h1>Polymer with Webpack example</h1>
+
+            <ul>
+            <li><a href="/">Go to home</a></li>
+            <li><a href="/foo">Go to foo</a></li>
+            </ul>
             <z-router
                 routes="[[routes]]"
                 page-resolve="[[pageResolve]]"

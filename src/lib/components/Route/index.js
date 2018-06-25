@@ -19,7 +19,7 @@ class Route extends PolymerElement {
     }
 
     static get template() {
-        return html`<div>TEST ROUTE</div>`;
+        return html``;
     }
 
     static get properties() {

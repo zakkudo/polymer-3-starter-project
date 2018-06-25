@@ -88,10 +88,12 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
         return html`
           <style>
           :host {
-              background-color: blue;
-              border: 1m solid green;
+          display: block;
+              background-color: #eee;
+              border: 1em solid green;
           }
           </style>
+          <h2>Welcome to home!</h2>
 
           <a href="#" on-click="_handleClick">Search!</a>
           <div>
