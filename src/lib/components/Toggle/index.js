@@ -1,13 +1,25 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 
-// Define the element's API using an ES2015 class
+/**
+ * A toggle button which customizable label
+ * @module lib/components/Toggle
+ * @customElement
+ * @polymer
+ *
+ */
 export default class Toggle extends PolymerElement {
+    /**
+     * @private
+     */
     constructor() {
         super();
         this.addEventListener('click', this._handleClick, true);
     }
 
-    // Define optional shadow DOM template
+    /**
+     * @property {DocumentFragment} template - Template used for
+     * rendering the contents of the component.
+     */
     static get template() {
         return html`
           <style>
@@ -35,7 +47,10 @@ export default class Toggle extends PolymerElement {
       `;
     }
 
-    // Declare properties for the element's public API
+    /**
+     * @property {Object} properties - Public Properties.
+     * @property {Boolean} properties.active - The active state of the toggle button.
+     */
     static get properties() {
         return {
             active: {
@@ -45,10 +60,17 @@ export default class Toggle extends PolymerElement {
         };
     }
 
+    /**
+     * @property {String} is - The HTML tag representing the component.
+     */
     static get is() {
         return 'z-toggle';
     }
 
+    /**
+     * @private
+     * @param {CustomEvent} e - Dispatched event when the component is clicked.
+     */
     _handleClick(e) {
         const active = !this.active;
 
@@ -61,5 +83,4 @@ export default class Toggle extends PolymerElement {
     }
 }
 
-// Register the x-custom element with the browser
 customElements.define(Toggle.is, Toggle);

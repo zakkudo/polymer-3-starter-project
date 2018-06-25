@@ -9,14 +9,17 @@ import {pushStateLocationPlugin} from '@uirouter/core';
 
 
 /**
- * description
+ * Defines sets of components to display for a specific url pattern.
+ * This component is mean to be used with `z-view`.
+ * @module lib/components/Router
  * @customElement
  * @polymer
  *
  */
 export default class Router extends ImmutableMixin(PolymerElement) {
     /**
-     * description
+     * @property {DocumentFragment} template - Template used for
+     * rendering the contents of the component.
      */
     static get template() {
         return html`
@@ -32,14 +35,17 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     }
 
     /**
-     * description
+     * @property {String} is - The HTML tag representing the component.
      */
     static get is() {
         return 'z-router';
     }
 
     /**
-     * description
+     * @property {Object} properties - Public Properties.
+     * @property {Immutable.Map} properties.pageResolve - The resolve configuration to pass ot the page.
+     * @property {Immutable.List} properties.routes - The routes configuration to match up components to urls.
+     * @property {Immutable.List} properties.locationPlugin - Control if hash tags or html5 urls are used.
      */
     static get properties() {
         return {
@@ -57,6 +63,9 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         };
     }
 
+    /**
+     * @private
+     */
     static get observers() {
         return [
             '_routesChanged(routes)',
@@ -64,12 +73,18 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         ];
     }
 
+    /**
+     * @private
+     */
     _pageResolveChanged(pageResolve) {
         if (this.transition) {
             this.transition.to().resolve = pageResolve.get('response');
         }
     }
 
+    /**
+     * @private
+     */
     _routesChanged(routes) {
         this._routes = routes.map((r) => {
             return r.merge({
@@ -79,12 +94,18 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         });
     }
 
+    /**
+     * @private
+     */
     _getComponentFromTransition(transition) {
         const to = transition.to();
 
         return customElements.get(to.contents);
     }
 
+    /**
+     * @private
+     */
     _getResolveInformation(component) {
         debugger;
         const resolve = component.resolve || {};
@@ -94,6 +115,9 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         return {data, message};
     }
 
+    /**
+     * @private
+     */
     _generateRequestFromTransition(transition) {
         let _resolve;
         let _reject;
@@ -137,7 +161,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     }
 
     /**
-     * description
+     * @private
      */
     _handleStart(e) {
         const transition = e.detail.transition;
@@ -160,7 +184,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     }
 
     /**
-     * description
+     * @private
      */
     _handleFinish(e) {
         const transition = e.detail.transition;

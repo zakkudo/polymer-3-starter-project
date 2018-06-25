@@ -1,44 +1,59 @@
 import 'polymer-ui-router/uirouter-router';
 import Immutable from 'immutable';
-import {fromJS} from 'immutable';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-
+import {fromJS} from 'immutable';
 
 /**
- * description
+ * Used by the `z-router` internally to control what properties are sent
+ * to individual page components.
+ * @module lib/components/Route
  * @customElement
  * @polymer
- *
  */
 class Route extends PolymerElement {
     /**
-     * description
+     * @property {String} is - The HTML tag representing the component.
      */
     static get is() {
         return 'z-route';
     }
 
+    /**
+     * @property {DocumentFragment} template - Template used for
+     * rendering the contents of the component.
+     */
     static get template() {
         return html``;
     }
 
+    /**
+     * @property {Object} properties - Public Properties.
+     * @property {String} properties.component - The component to render.
+     * @property {Immutable.Map} properties.resolve - Data to pass as properties to the component.
+     */
     static get properties() {
         return {
             component: {
                 type: String,
             },
             resolve: {
-                type: Immutable.map,
+                type: Immutable.Map,
             },
         };
     }
 
+    /**
+     * @private
+     */
     static get observers() {
         return [
             '_transitioned(uiRouterTransition)',
         ];
     }
 
+    /**
+     * @private
+     */
     _transitioned(transition) {
         const to = transition.to();
         const component = to.contents;

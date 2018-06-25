@@ -1,0 +1,11 @@
+{
+	"source": {
+		"includePattern": "src/.+\\.js?$",
+        "include": "src"
+	},
+    "opts": {
+        "destination": "./documentation",
+        "recurse": true,
+        "encoding": "utf8"
+    }
+}
