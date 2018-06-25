@@ -59,17 +59,13 @@ class Route extends PolymerElement {
         const component = to.contents;
         const resolve = to.resolve || fromJS({});
 
-        debugger;
-
         if (component !== this._component) {
             const element = document.createElement(component);
             this._component = component;
             this.innerHTML = '';
             this.shadowRoot.appendChild(element);
 
-            debugger;
             resolve.keySeq().forEach((k) => {
-                debugger;
                 element.set(k, resolve.get(k));
             });
         }

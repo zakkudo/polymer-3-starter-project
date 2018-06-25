@@ -5,14 +5,12 @@ const defaultState = {
 };
 
 export default function reducer(state = defaultState, action) {
-    debugger;
     const copy = Object.assign({}, state);
 
     switch (action.type) {
         case actions.SET_PAGE_RESOLVE:
             return Object.assign(copy, {pageResolve: action.resolve});
         case actions.SET_PAGE_REDUCER:
-            debugger;
             return Object.assign(copy, {pageReducer: action.reducer});
     }
 
