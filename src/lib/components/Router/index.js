@@ -1,10 +1,10 @@
-import 'polymer-ui-router/uirouter-router';
 import '@polymer/polymer/lib/elements/dom-if.js';
 import 'lib/components/Route';
+import 'polymer-ui-router/uirouter-router';
 import Immutable from 'immutable';
-import {fromJS} from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {fromJS} from 'immutable';
 import {pushStateLocationPlugin} from '@uirouter/core';
 
 
@@ -43,7 +43,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     static get properties() {
         return {
-            resolve: {
+            pageResolve: {
                 type: Immutable.Map,
             },
             routes: {
@@ -60,13 +60,13 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     static get observers() {
         return [
             '_routesChanged(routes)',
-            '_resolveChanged(resolve)',
+            '_pageResolveChanged(pageResolve)',
         ];
     }
 
-    _resolveChanged(resolve) {
+    _pageResolveChanged(pageResolve) {
         if (this.transition) {
-            this.transition.to().resolve = resolve.get('response');
+            this.transition.to().resolve = pageResolve.get('response');
         }
     }
 
@@ -140,6 +140,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     _handleStart(e) {
         const transition = e.detail.transition;
+        const component = this._getComponentFromTransition(transition);
         const {
             resolve,
             promise,
@@ -152,7 +153,8 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             resolveFn: () => promise,
         });
 
-        this.dispatchEvent(new CustomEvent('request-resolve', {detail: {resolve, message}}));
+        this.dispatchEvent(new CustomEvent('page-reducer-change', {detail: {reducer: component.reducer}}));
+        this.dispatchEvent(new CustomEvent('request-page-resolve', {detail: {resolve, message}}));
         this.transition = transition;
     }
 

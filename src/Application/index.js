@@ -18,25 +18,37 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
                 type: Immutable.List,
                 value: fromJS(routes),
             },
-            'resolve': {
+            'pageReducer': {
+                type: Function,
+                statePath: (state) => {
+                    return state.pageReducer;
+                },
+            },
+            'pageResolve': {
                 type: Immutable.Map,
                 statePath: (state) => {
-                    return state.resolve;
+                    return state.pageResolve;
                 },
             },
         };
     }
 
-    _handleRequestResolve(e) {
-        const {requestResolve} = Application.actions;
+    _handleRequestPageResolve(e) {
+        const {requestPageResolve} = Application.actions;
         const request = e.detail.resolve;
         const message = e.detail.message;
 
-        this.dispatch(requestResolve(request, message));
+        this.dispatch(requestPageResolve(request, message));
     }
 
     static get is() {
         return 'z-application';
+    }
+
+    _handlePageReducerChange(e) {
+        const {setPageReducer} = Application.actions;
+
+        this.dispatch(setPageReducer(e.detail.reducer));
     }
 
     static get template() {
@@ -44,8 +56,9 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
             <h1>Polymer with Webpack example</h1>
             <z-router
                 routes="[[routes]]"
-                resolve="[[resolve]]"
-                on-request-resolve="_handleRequestResolve"></z-router>
+                page-resolve="[[pageResolve]]"
+                on-page-reducer-change="_handlePageReducerChange"
+                on-request-page-resolve="_handleRequestPageResolve"></z-router>
 
             <z-view></z-view>
         `;

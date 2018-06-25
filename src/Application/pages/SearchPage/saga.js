@@ -17,9 +17,11 @@ function* search(query) {
 
         debugger;
         yield put(searchRequestSucceeded(body));
+        debugger;
         yield put(setResults(body.get('hits')));
 
     } catch (reason) {
+        debugger;
         yield put(searchRequestFailed(fromJS(reason)));
     }
 }

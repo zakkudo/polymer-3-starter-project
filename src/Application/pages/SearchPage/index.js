@@ -11,11 +11,6 @@ import saga from './saga';
    *
    */
 export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
-    connectedCallback() {
-        super.connectedCallback();
-        debugger;
-    }
-
     /**
      * description
      */
@@ -23,7 +18,9 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
         return {
             'results': {
                 statePath: (state) => {
-                    return state.results || fromJS([]);
+                    const page = state.page || {};
+
+                    return page.results || fromJS([]);
                 },
             },
         };
@@ -73,9 +70,9 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
     }
 
     _handleActiveChange(e) {
-        const setResults = Application.actions.setResults,
-            active = e.detail.active,
-            results = this.results.setIn([e.model.index, 'active'], active);
+        const setResults = SearchPage.actions.setResults;
+        const active = e.detail.active;
+        const results = this.results.setIn([e.model.index, 'active'], active);
 
         e.preventDefault();
         e.stopPropagation();

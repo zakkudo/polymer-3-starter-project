@@ -5,29 +5,35 @@ export default (Parent, saga, ...leftover) => {
     return class ActionsMixin extends ReduxMixin(Parent, saga, ...leftover) {
         static get actions() {
             return {
-                requestResolve(request, message='loading...') {
+                requestPageResolve(request, message='loading...') {
                     return {
-                        type: actions.REQUEST_RESOLVE,
+                        type: actions.REQUEST_PAGE_RESOLVE,
                         request,
                         message,
                     };
                 },
-                resolveRequestSucceeded(response) {
+                pageResolveRequestSucceeded(response) {
                     return {
-                        type: actions.RESOLVE_REQUEST_SUCCEEDED,
+                        type: actions.PAGE_RESOLVE_REQUEST_SUCCEEDED,
                         response,
                     };
                 },
-                resolveRequestFailed(reason) {
+                pageResolveRequestFailed(reason) {
                     return {
-                        type: actions.RESOLVE_REQUEST_FAILED,
+                        type: actions.PAGE_RESOLVE_REQUEST_FAILED,
                         reason,
                     };
                 },
-                setResolve(resolve) {
+                setPageResolve(resolve) {
                     return {
-                        type: actions.SET_RESOLVE,
+                        type: actions.SET_PAGE_RESOLVE,
                         resolve,
+                    };
+                },
+                setPageReducer(reducer) {
+                    return {
+                        type: actions.SET_PAGE_REDUCER,
+                        reducer,
                     };
                 },
             };

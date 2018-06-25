@@ -6,27 +6,27 @@ import Application from '.';
 function* resolve(action) {
     const {
         request,
-        message
+        message,
     } = action;
     const {
-        setResolve,
-        resolveRequestSucceeded,
-        resolveRequestFailed,
+        setPageResolve,
+        pageResolveRequestSucceeded,
+        pageResolveRequestFailed,
     } = Application.actions;
-    const hasResolve = Boolean(resolve);
+    const hasPageResolve = Boolean(request);
 
-    yield put(setResolve(fromJS({
-        loading: hasResolve,
+    yield put(setPageResolve(fromJS({
+        loading: hasPageResolve,
         message,
     })));
 
-    if (hasResolve) {
+    if (hasPageResolve) {
         try {
             const response = yield call(request);
             const body = fromJS(response);
 
-            yield put(resolveRequestSucceeded(body));
-            yield put(setResolve(fromJS({
+            yield put(pageResolveRequestSucceeded(body));
+            yield put(setPageResolve(fromJS({
                 loading: false,
                 message,
                 response: body,
@@ -34,8 +34,8 @@ function* resolve(action) {
         } catch (error) {
             const reason = fromJS(error);
 
-            yield put(resolveRequestFailed(reason));
-            yield put(setResolve(fromJS({
+            yield put(pageResolveRequestFailed(reason));
+            yield put(setPageResolve(fromJS({
                 loading: false,
                 message,
                 reason,
@@ -45,5 +45,5 @@ function* resolve(action) {
 }
 
 export default function* rootSaga() {
-    yield takeEvery(actions.REQUEST_RESOLVE, resolve);
+    yield takeEvery(actions.REQUEST_PAGE_RESOLVE, resolve);
 }

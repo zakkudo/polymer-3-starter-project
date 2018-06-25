@@ -24,6 +24,7 @@ export default (Parent, saga, ...leftover) => {
                     };
                 },
                 setResults(results) {
+                    debugger;
                     return {
                         type: actions.SET_RESULTS,
                         results,
