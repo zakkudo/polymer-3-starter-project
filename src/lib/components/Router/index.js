@@ -154,11 +154,29 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     _generateRequestFromTransition(transition) {
         const deferred = defer();
+        const options = transition.options();
+        const reload = options.reload;
+        const from = transition.from();
+        const to = transition.to();
 
         const resolve = () => {
+            if (reload === false && from === to && to.resolve && to.contentsClass) {
+                setTimeout(() => {
+                    deferred.resolve(to.resolve);
+                });
+
+                return Promise.resolve({
+                    message: to.message,
+                    Component: to.contentsClass,
+                    response: to.resolve,
+                });
+            }
+
             const next = this._requestComponentFromTransition(transition).then((Component) => {
                 const {data, message} = this._getResolveInformation(Component);
-                const next = this._resolveObject(data).then((response) => {
+                const next = this._resolveObject(data).then((_response) => {
+                    const response = fromJS(_response);
+
                     setTimeout(() => {
                         deferred.resolve(response);
                     });
@@ -166,7 +184,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                     return {
                         message,
                         Component,
-                        response,
+                        response: response,
                     };
                 });
 
