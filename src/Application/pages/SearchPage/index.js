@@ -56,7 +56,7 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
      */
     static get resolve() {
         return {
-            message: 'Authenticating...',
+            message: 'Resolving Users...',
             data: {
                 users: () => {
                     return new Promise((resolve) => {

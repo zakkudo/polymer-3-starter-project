@@ -28,13 +28,13 @@ function* resolve(action) {
             chain = yield next;
         }
 
-        const {Component, message, resolve} = chain;
+        const {Component, message, response} = chain;
 
         yield put(setPageComponent(Component));
         yield put(setPageResolve(fromJS({
             loading: false,
             message,
-            resolve,
+            response,
         })));
     } catch (reason) {
         yield put(setPageResolve(fromJS({

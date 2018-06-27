@@ -92,7 +92,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     _pageResolveChanged(pageResolve, Component) {
         if (this.transition) {
-            debugger;
             this.transition.to().contents = Component;
             this.transition.to().resolve = pageResolve.get('response');
         }
@@ -103,7 +102,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     _routesChanged(routes) {
         this._routes = routes.map((r) => {
-            debugger;
             return r.merge({
                 component: 'z-route',
                 contents: r.get('component'),
@@ -131,7 +129,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @private
      */
     _getResolveInformation(component) {
-        debugger;
         const resolve = component.resolve || {};
         const data = resolve.data || {};
         const message = resolve.message;
@@ -156,31 +153,23 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         const deferred = defer();
 
         const resolve = () => {
-            debugger;
-            const next = this._requestComponentFromTransition(transition).catch((reason) => {
-                debugger;
-            }).then((Component) => {
-                debugger;
+            const next = this._requestComponentFromTransition(transition).then((Component) => {
                 const {data, message} = this._getResolveInformation(Component);
-                const next = this._resolveObject(data).then((resolve) => {
+                const next = this._resolveObject(data).then((response) => {
                     setTimeout(() => {
-                        deferred.resolve(resolve);
+                        deferred.resolve(response);
                     });
-
-                    debugger;
 
                     return {
                         message,
                         Component,
-                        resolve,
+                        response,
                     };
                 });
 
                 setTimeout(() => {
                     next.catch(deferred.reject);
                 });
-
-                    debugger;
 
                 return {
                     message,
