@@ -1,14 +1,14 @@
 import '@polymer/polymer/lib/elements/dom-if';
 import '@polymer/polymer/lib/elements/dom-repeat';
-import 'polymer-ui-router/uirouter-sref';
+import 'lib/components/Link';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
 import 'lib/components/View';
 import ActionsMixin from './ActionsMixin';
+import Immutable from 'immutable';
 import routes from './routes';
 import saga from './saga';
 import {fromJS} from 'immutable';
-import Immutable from 'immutable';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
 
@@ -67,13 +67,13 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
 
             <ul>
             <li>
-                <uirouter-sref state="home">UI Home</uirouter-sref>
+                <z-link state="home">UI Home</z-link>
             </li>
             <li>
-                <uirouter-sref state="home" reload>UI Home with forced reload</uirouter-sref>
+                <z-link state="home" reload>UI Home with forced reload</z-link>
             </li>
             <li>
-                <uirouter-sref state="about">UI About</uirouter-sref>
+                <z-link state="about">UI About</z-link>
             </li>
             </ul>
             <z-router
