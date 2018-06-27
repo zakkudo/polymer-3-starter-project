@@ -9,6 +9,7 @@
     ],
     "plugins": [
         "@babel/transform-runtime",
-        "webpack-alias"
+        "webpack-alias",
+        "@babel/syntax-dynamic-import"
     ]
 }

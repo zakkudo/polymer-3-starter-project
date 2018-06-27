@@ -6,41 +6,41 @@ import Application from '.';
 function* resolve(action) {
     const {
         request,
-        message,
     } = action;
     const {
         setPageResolve,
+        setPageComponent,
         pageResolveRequestSucceeded,
         pageResolveRequestFailed,
     } = Application.actions;
-    const hasPageResolve = Boolean(request);
 
-    yield put(setPageResolve(fromJS({
-        loading: hasPageResolve,
-        message,
-    })));
+    try {
+        let chain = yield call(request);
 
-    if (hasPageResolve) {
-        try {
-            const response = yield call(request);
-            const body = fromJS(response);
+        while (chain.next) {
+            const {next, message} = chain;
 
-            yield put(pageResolveRequestSucceeded(body));
             yield put(setPageResolve(fromJS({
-                loading: false,
+                loading: true,
                 message,
-                response: body,
             })));
-        } catch (error) {
-            const reason = fromJS(error);
 
-            yield put(pageResolveRequestFailed(reason));
-            yield put(setPageResolve(fromJS({
-                loading: false,
-                message,
-                reason,
-            })));
+            chain = yield next;
         }
+
+        const {Component, message, resolve} = chain;
+
+        yield put(setPageComponent(Component));
+        yield put(setPageResolve(fromJS({
+            loading: false,
+            message,
+            resolve,
+        })));
+    } catch (reason) {
+        yield put(setPageResolve(fromJS({
+            loading: false,
+            error: reason,
+        })));
     }
 }
 

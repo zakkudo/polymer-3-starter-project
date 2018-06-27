@@ -5,11 +5,10 @@ export default (Parent, saga, ...leftover) => {
     return class ActionsMixin extends ReduxMixin(Parent, saga, ...leftover) {
         static get actions() {
             return {
-                requestPageResolve(request, message='loading...') {
+                requestPageResolve(request) {
                     return {
                         type: actions.REQUEST_PAGE_RESOLVE,
-                        request,
-                        message,
+                        request
                     };
                 },
                 pageResolveRequestSucceeded(response) {
@@ -30,10 +29,10 @@ export default (Parent, saga, ...leftover) => {
                         resolve,
                     };
                 },
-                setPageReducer(reducer) {
+                setPageComponent(component) {
                     return {
-                        type: actions.SET_PAGE_REDUCER,
-                        reducer,
+                        type: actions.SET_PAGE_COMPONENT,
+                        component,
                     };
                 },
             };

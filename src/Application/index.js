@@ -18,10 +18,10 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
                 type: Immutable.List,
                 value: fromJS(routes),
             },
-            'pageReducer': {
-                type: Function,
+            'pageComponent': {
+                type: Object,
                 statePath: (state) => {
-                    return state.pageReducer;
+                    return state.pageComponent;
                 },
             },
             'pageResolve': {
@@ -36,9 +36,10 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
     _handleRequestPageResolve(e) {
         const {requestPageResolve} = Application.actions;
         const request = e.detail.resolve;
-        const message = e.detail.message;
 
-        this.dispatch(requestPageResolve(request, message));
+        debugger;
+
+        this.dispatch(requestPageResolve(request));
     }
 
     static get is() {
@@ -69,8 +70,8 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
             </ul>
             <z-router
                 routes="[[routes]]"
+                page-component="[[pageComponent]]"
                 page-resolve="[[pageResolve]]"
-                on-page-reducer-change="_handlePageReducerChange"
                 on-request-page-resolve="_handleRequestPageResolve"></z-router>
 
             <template is="dom-if" if="[[_getFromImmutable(pageResolve, 'loading')]]">

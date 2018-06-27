@@ -1,7 +1,10 @@
-import './pages/SearchPage';
-import './pages/AboutPage';
+function importPage(name) {
+    return () => {
+        return import(/* webpackChunkName: "[request]" */ `./pages/${name}`).then((C) => C.default);
+    }
+}
 
 export default [
-    {name: 'home', url: '/', component: 'z-search-page'},
-    {name: 'about', url: '/about', component: 'z-about-page'},
+    {name: 'home', url: '/', component: importPage('SearchPage')},
+    {name: 'about', url: '/about', component: importPage('AboutPage')},
 ];

@@ -7,6 +7,20 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 import {pushStateLocationPlugin} from '@uirouter/core';
 
+/**
+ * Creates a deferred object
+ * @return {Object} Things
+ */
+function defer() {
+    let resolve;
+    let reject;
+    const promise = new Promise((_resolve, _reject) => {
+        resolve = _resolve;
+        reject = _reject;
+    });
+
+    return {promise, resolve, reject};
+}
 
 /**
  * Defines sets of components to display for a specific url pattern.
@@ -69,15 +83,17 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     static get observers() {
         return [
             '_routesChanged(routes)',
-            '_pageResolveChanged(pageResolve)',
+            '_pageResolveChanged(pageResolve, pageComponent)',
         ];
     }
 
     /**
      * @private
      */
-    _pageResolveChanged(pageResolve) {
+    _pageResolveChanged(pageResolve, Component) {
         if (this.transition) {
+            debugger;
+            this.transition.to().contents = Component;
             this.transition.to().resolve = pageResolve.get('response');
         }
     }
@@ -87,6 +103,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     _routesChanged(routes) {
         this._routes = routes.map((r) => {
+            debugger;
             return r.merge({
                 component: 'z-route',
                 contents: r.get('component'),
@@ -97,16 +114,24 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     /**
      * @private
      */
-    _getComponentFromTransition(transition) {
+    _requestComponentFromTransition(transition) {
         const to = transition.to();
 
-        return customElements.get(to.contents);
+        switch (typeof to.contents) {
+            case 'function':
+                return to.contents();
+            case 'string':
+                return Promise.resolve(customElements.get(to.contents));
+        }
+
+        return Promise.resolve(to.contents);
     }
 
     /**
      * @private
      */
     _getResolveInformation(component) {
+        debugger;
         const resolve = component.resolve || {};
         const data = resolve.data || {};
         const message = resolve.message;
@@ -114,71 +139,92 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         return {data, message};
     }
 
-    /**
-     * @private
-     */
-    _generateRequestFromTransition(transition) {
-        let _resolve;
-        let _reject;
-        const component = this._getComponentFromTransition(transition);
-        const {data, message} = this._getResolveInformation(component);
+    _resolveObject(data) {
+        const keys = Object.keys(data);
 
-        const promise = new Promise((resolve, reject) => {
-            _resolve = resolve;
-            _reject = reject;
+        return Promise.all(keys.map((k) => data[k]())).then((response) => {
+            return keys.reduce((accumulator, k, index) => {
+                return Object.assign(accumulator, {[k]: response[index]});
+            }, {});
         });
-
-        function resolve() {
-            const keys = Object.keys(data);
-
-            return Promise.all(keys.map((k) => {
-                return data[k]();
-            })).then((response) => {
-                const payload = keys.reduce((accumulator, k, index) => {
-                    return Object.assign(accumulator, {[k]: response[index]});
-                }, {});
-
-                setTimeout(() => {
-                    _resolve(payload);
-                });
-
-                return payload;
-            }).catch((reason) => {
-                setTimeout(() => {
-                    _reject(reason);
-                });
-
-                throw reason;
-            });
-        }
-
-        return {
-            resolve,
-            promise,
-            message,
-        };
     }
 
     /**
      * @private
      */
+    _generateRequestFromTransition(transition) {
+        const deferred = defer();
+
+        const resolve = () => {
+            debugger;
+            const next = this._requestComponentFromTransition(transition).catch((reason) => {
+                debugger;
+            }).then((Component) => {
+                debugger;
+                const {data, message} = this._getResolveInformation(Component);
+                const next = this._resolveObject(data).then((resolve) => {
+                    setTimeout(() => {
+                        deferred.resolve(resolve);
+                    });
+
+                    debugger;
+
+                    return {
+                        message,
+                        Component,
+                        resolve,
+                    };
+                });
+
+                setTimeout(() => {
+                    next.catch(deferred.reject);
+                });
+
+                    debugger;
+
+                return {
+                    message,
+                    Component,
+                    next,
+                };
+            });
+
+            setTimeout(() => {
+                next.catch(deferred.reject);
+            });
+
+            return {
+                message: null,
+                next,
+            };
+        };
+
+        return {
+            resolve,
+            deferred,
+        };
+    }
+
+    /**
+     * @private
+     * @param {CustomEvent} e - Javascript Event
+     */
     _handleStart(e) {
         const transition = e.detail.transition;
-        const component = this._getComponentFromTransition(transition);
         const {
             resolve,
-            promise,
-            message,
+            deferred,
         } = this._generateRequestFromTransition(transition);
 
         e.detail.transition.addResolvable({
             token: 'resolve',
             deps: [],
-            resolveFn: () => promise,
+            resolveFn: () => deferred.promise,
         });
 
-        this.dispatchEvent(new CustomEvent('page-reducer-change', {detail: {reducer: component.reducer}}));
-        this.dispatchEvent(new CustomEvent('request-page-resolve', {detail: {resolve, message}}));
+        this.dispatchEvent(new CustomEvent('request-page-resolve', {
+            detail: {resolve},
+        }));
         this.transition = transition;
     }
 
