@@ -55,8 +55,7 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
         return html`
             <style>
             .loading-curtain {
-            debugger;
-            position: absolute;
+                position: absolute;
                 font-size: 100px;
                 display: inline-block;
                 transform: rotate(10deg);

@@ -40,7 +40,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             <template is="dom-if" if="[[_routes.size]]">
                 <uirouter-router
                     location-plugin="[[locationPlugin]]"
-                    on-uirouter-enter="_handleStart"
+                    on-uirouter-before="_handleStart"
                     on-uirouter-leave="_handleFinish"
                     states="[[_toJSFromImmutable(_routes)]]"
                     auto-start></uirouter-router>
