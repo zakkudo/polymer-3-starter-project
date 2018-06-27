@@ -56,7 +56,7 @@ class Route extends PolymerElement {
      */
     _transitioned(transition) {
         const to = transition.to();
-        const component = to.contents;
+        const component = to.contentsClass;
         const resolve = to.resolve || fromJS({});
 
         if (component !== this._component) {

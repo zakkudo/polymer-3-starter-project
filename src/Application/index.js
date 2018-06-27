@@ -1,5 +1,6 @@
 import '@polymer/polymer/lib/elements/dom-if';
 import '@polymer/polymer/lib/elements/dom-repeat';
+import 'polymer-ui-router/uirouter-sref';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
 import 'lib/components/View';
@@ -54,6 +55,8 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
         return html`
             <style>
             .loading-curtain {
+            debugger;
+            position: absolute;
                 font-size: 100px;
                 display: inline-block;
                 transform: rotate(10deg);
@@ -63,8 +66,15 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
             <h1>Polymer with Webpack example</h1>
 
             <ul>
-            <li><a href="/">Go to home</a></li>
-            <li><a href="/about">Go to about</a></li>
+            <li>
+                <uirouter-sref state="home">UI Home</uirouter-sref>
+            </li>
+            <li>
+                <uirouter-sref state="home" reload>UI Home with forced reload</uirouter-sref>
+            </li>
+            <li>
+                <uirouter-sref state="about">UI About</uirouter-sref>
+            </li>
             </ul>
             <z-router
                 routes="[[routes]]"

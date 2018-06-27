@@ -40,8 +40,8 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             <template is="dom-if" if="[[_routes.size]]">
                 <uirouter-router
                     location-plugin="[[locationPlugin]]"
-                    on-uirouter-start="_handleStart"
-                    on-uirouter-finish="_handleFinish"
+                    on-uirouter-enter="_handleStart"
+                    on-uirouter-leave="_handleFinish"
                     states="[[_toJSFromImmutable(_routes)]]"
                     auto-start></uirouter-router>
             </template>
@@ -92,7 +92,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     _pageResolveChanged(pageResolve, Component) {
         if (this.transition) {
-            this.transition.to().contents = Component;
+            this.transition.to().contentsClass = Component;
             this.transition.to().resolve = pageResolve.get('response');
         }
     }
@@ -117,6 +117,9 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
         switch (typeof to.contents) {
             case 'function':
+                if (to.contents instanceof PolymerElement) {
+                    return Promise.resolve(to.contents);
+                }
                 return to.contents();
             case 'string':
                 return Promise.resolve(customElements.get(to.contents));

@@ -11,6 +11,8 @@ export default function reducer(state = defaultState, action) {
 
     switch (action.type) {
         case actions.SET_PAGE_RESOLVE:
+            debugger;
+            console.log(action.resolve.toJS());
             return Object.assign(copy, {pageResolve: action.resolve});
         case actions.SET_PAGE_COMPONENT:
             return Object.assign(copy, {pageComponent: action.component});

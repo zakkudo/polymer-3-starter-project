@@ -93,11 +93,11 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
               border: 1em solid green;
           }
           </style>
-          <h2>Welcome to home!</h2>
+          <h2>Welcome to home! You can search for groceries here.</h2>
 
           <a href="#" on-click="_handleClick">Search!</a>
           <div>
-              <h2>Results</h2>
+              <h2>Groceries</h2>
               <template is="dom-if" if={{results.size}}>
                   <ul>
                       <template
