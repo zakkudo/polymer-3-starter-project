@@ -42,6 +42,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                     location-plugin="[[locationPlugin]]"
                     on-uirouter-before="_handleStart"
                     on-uirouter-leave="_handleFinish"
+                    on-uirouter-error="_handleError"
                     states="[[_toJSFromImmutable(_routes)]]"
                     auto-start></uirouter-router>
             </template>
@@ -53,6 +54,10 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     static get is() {
         return 'z-router';
+    }
+
+    _handleError(e) {
+        debugger;
     }
 
     /**

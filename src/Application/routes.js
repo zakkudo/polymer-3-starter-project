@@ -7,4 +7,5 @@ function importPage(name) {
 export default [
     {name: 'home', url: '/', component: importPage('SearchPage')},
     {name: 'about', url: '/about', component: importPage('AboutPage')},
+    {name: '404', url: '/{url:.*}', component: importPage('NotFoundPage')},
 ];

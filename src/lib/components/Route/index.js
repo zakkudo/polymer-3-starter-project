@@ -48,7 +48,16 @@ class Route extends PolymerElement {
     static get observers() {
         return [
             '_transitioned(uiRouterTransition)',
+            '_paramsChanged(uiRouterParams)',
         ];
+    }
+
+    _paramsChanged(params) {
+        const element = this.shadowRoot.firstChild;
+
+        if (element) {
+            element.set('params', fromJS(this.uiRouterParams));
+        }
     }
 
     /**
@@ -61,6 +70,7 @@ class Route extends PolymerElement {
 
         if (component !== this._component) {
             this._component = component;
+
             if (component) {
                 const element = document.createElement(component.is);
                 this.innerHTML = '';
