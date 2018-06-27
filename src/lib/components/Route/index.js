@@ -59,7 +59,6 @@ class Route extends PolymerElement {
         const component = to.contents;
         const resolve = to.resolve || fromJS({});
 
-        debugger;
         if (component !== this._component) {
             this._component = component;
             if (component) {

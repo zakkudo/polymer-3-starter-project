@@ -37,8 +37,6 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
         const {requestPageResolve} = Application.actions;
         const request = e.detail.resolve;
 
-        debugger;
-
         this.dispatch(requestPageResolve(request));
     }
 
@@ -76,7 +74,7 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
 
             <template is="dom-if" if="[[_getFromImmutable(pageResolve, 'loading')]]">
                 <div class="loading-curtain">
-                    LOADING.... [spinner]
+                    [[_getFromImmutable(pageResolve, 'message')]].... [spinner]
                 </div>
             </template>
 
