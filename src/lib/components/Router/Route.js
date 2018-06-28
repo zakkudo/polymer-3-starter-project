@@ -5,9 +5,9 @@ import {fromJS} from 'immutable';
 
 
 /**
- * @private
  * Used by the `z-router` internally to control what properties are sent
  * to individual page components.
+ * @private
  * @module lib/components/Router
  * @customElement
  * @polymer

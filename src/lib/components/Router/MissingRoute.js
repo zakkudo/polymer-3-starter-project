@@ -3,11 +3,10 @@ import Route from './Route';
 import {fromJS} from 'immutable';
 
 /**
- * @private
  * Used by the `z-router` internally to control what properties are sent
  * to individual page components. Extends Route.
- * @module lib/components/Router
  * @private
+ * @module lib/components/Router
  * @customElement
  * @polymer
  */
