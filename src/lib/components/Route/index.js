@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 
+
 /**
  * Used by the `z-router` internally to control what properties are sent
  * to individual page components.
@@ -29,7 +30,8 @@ export default class Route extends PolymerElement {
     /**
      * @property {Object} properties - Public Properties.
      * @property {String} properties.component - The component to render.
-     * @property {Immutable.Map} properties.resolve - Data to pass as properties to the component.
+     * @property {Immutable.Map} properties.resolve - Data to pass as
+     * properties to the component.
      */
     static get properties() {
         return {
@@ -54,6 +56,7 @@ export default class Route extends PolymerElement {
 
     /**
      * @private
+     * @param {Object} params - The url parameters
      */
     _paramsChanged(params) {
         const element = this.shadowRoot.firstChild;
@@ -65,6 +68,8 @@ export default class Route extends PolymerElement {
 
     /**
      * @private
+     * @param {UIRouterTransition} transition - A transition as
+     * described on the ui-router documentation
      */
     _transitioned(transition) {
         const to = transition.to();

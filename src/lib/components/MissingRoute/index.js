@@ -1,12 +1,10 @@
 import 'polymer-ui-router/uirouter-router';
-import Immutable from 'immutable';
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import Route from 'lib/components/Route';
 import {fromJS} from 'immutable';
 
 /**
  * Used by the `z-router` internally to control what properties are sent
- * to individual page components.
+ * to individual page components. Extends Route.
  * @module lib/components/MissingRoute
  * @customElement
  * @polymer
@@ -19,6 +17,11 @@ export default class MissingRoute extends Route {
         return 'z-missing-route';
     }
 
+    /**
+     * @private
+     * @param {UIRouterTransition} transition - A transition as
+     * described on the ui-router documentation
+     */
     _transitioned(transition) {
         const to = transition.to();
 
@@ -27,7 +30,6 @@ export default class MissingRoute extends Route {
             message: 'The path was not found',
             code: '404',
         });
-        debugger;
 
         super._transitioned(transition);
     }

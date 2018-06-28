@@ -49,7 +49,8 @@ export default class Toggle extends PolymerElement {
 
     /**
      * @property {Object} properties - Public Properties.
-     * @property {Boolean} properties.active - The active state of the toggle button.
+     * @property {Boolean} properties.active - The active state of the toggle
+     * button.
      */
     static get properties() {
         return {

@@ -1,27 +1,14 @@
 import '@polymer/polymer/lib/elements/dom-if.js';
-import 'lib/components/Route';
 import 'lib/components/MissingRoute';
+import 'lib/components/Route';
 import 'polymer-ui-router/uirouter-router';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
+import defer from 'lib/defer';
+import shallowResolveObject from 'lib/shallowResolveObject';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 import {pushStateLocationPlugin} from '@uirouter/core';
-
-/**
- * Creates a deferred object
- * @return {Object} Things
- */
-function defer() {
-    let resolve;
-    let reject;
-    const promise = new Promise((_resolve, _reject) => {
-        resolve = _resolve;
-        reject = _reject;
-    });
-
-    return {promise, resolve, reject};
-}
 
 /**
  * Defines sets of components to display for a specific url pattern.
@@ -58,9 +45,12 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @property {Object} properties - Public Properties.
-     * @property {Immutable.Map} properties.pageResolve - The resolve configuration to pass ot the page.
-     * @property {Immutable.List} properties.routes - The routes configuration to match up components to urls.
-     * @property {Immutable.List} properties.locationPlugin - Control if hash tags or html5 urls are used.
+     * @property {Immutable.Map} properties.pageResolve - The resolve
+     * configuration to pass ot the page.
+     * @property {Immutable.List} properties.routes - The routes configuration
+     * to match up components to urls.
+     * @property {Immutable.List} properties.locationPlugin - Control if hash
+     * tags or html5 urls are used.
      */
     static get properties() {
         return {
@@ -92,6 +82,10 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
+     * @param {Immutable.Map} pageResolve - The resolved data to be injected
+     * into the initial page load
+     * @param {PolymerElement} Component - A polymer component representing
+     * the page to render. It should implement `is`.
      */
     _pageResolveChanged(pageResolve, Component) {
         if (this.transition) {
@@ -111,6 +105,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
+     * @param {Array} routes - A list of routes to configure pages to urls
      */
     _routesChanged(routes) {
         this._routes = routes || fromJS([]);
@@ -139,6 +134,11 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
+     * @param {UiRouterTransition} transition - A transition as
+     * described on the ui-router documentation
+     * @return {Promise} A page component may laod asynchronously,
+     * because of code splitting, making a promise necessary.  The Promise
+     * will resolve either resolve to a PolymerElement or a String.
      */
     _requestComponentFromTransition(transition) {
         const to = transition.to();
@@ -158,6 +158,10 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
+     * @param {PolymerElement} component - A polymer component to get resolve
+     * information from
+     * @return {Object} An object containing an object with function values
+     * that return promises and a loading message.
      */
     _getResolveInformation(component) {
         const resolve = component.resolve || {};
@@ -167,18 +171,12 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         return {data, message};
     }
 
-    _resolveObject(data) {
-        const keys = Object.keys(data);
-
-        return Promise.all(keys.map((k) => data[k]())).then((response) => {
-            return keys.reduce((accumulator, k, index) => {
-                return Object.assign(accumulator, {[k]: response[index]});
-            }, {});
-        });
-    }
-
     /**
      * @private
+     * @param {UiRouterTransition} transition - A transition as
+     * described on the ui-router documentation
+     * @return {Object} An object contining a defered promise and a resolve
+     * function that will cause it to resolve.
      */
     _generateRequestFromTransition(transition) {
         const deferred = defer();
@@ -187,6 +185,13 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         const from = transition.from();
         const to = transition.to();
 
+        /**
+         * @private
+         * @param {String} message - A loading message.
+         * @param {Object} deferred - A deferred object.
+         * @return {Function} A function for handling the error
+         * @throws {Object} The error in resolve format.
+         */
         function handleError(message, deferred) {
             return (reason) => {
                 let message = null;
@@ -217,7 +222,10 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         }
 
         const resolve = () => {
-            if (reload === false && from === to && to.resolve && to.contentsClass) {
+            if (reload === false &&
+                from === to &&
+                to.resolve &&
+                to.contentsClass) {
                 setTimeout(() => {
                     deferred.resolve(to.resolve);
                 });
@@ -231,7 +239,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
             const next = this._requestComponentFromTransition(transition).then((Component) => {
                 const {data, message} = this._getResolveInformation(Component);
-                const next = this._resolveObject(data).then((_response) => {
+                const next = shallowResolveObject(data).then((_response) => {
                     const response = fromJS(_response);
 
                     setTimeout(() => {
@@ -289,6 +297,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
+     * @param {CustomEvent} e - A javascript event
      */
     _handleFinish(e) {
         const transition = e.detail.transition;

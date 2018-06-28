@@ -30,8 +30,10 @@ export default class Link extends PolymerElement {
 
     /**
      * @property {Object} properties - Public Properties.
-     * @property {String} properties.state - Alias for the url you want to transition to
-     * @property {Boolean} properties.reload - Force the state to refresh regardless if it is already loaded
+     * @property {String} properties.state - Alias for the url you want to
+     * transition to
+     * @property {Boolean} properties.reload - Force the state to refresh
+     * regardless if it is already loaded
      */
     static get properties() {
         return {

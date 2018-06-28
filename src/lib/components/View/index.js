@@ -26,8 +26,10 @@ export default class View extends PolymerElement {
 
     /**
      * @property {Object} properties - Public Properties.
-     * @property {String} properties.name - Name used to allow routes to request specific coomponents for the view.
-     * @property {String} properties.component - Fallback component to display in the view.
+     * @property {String} properties.name - Name used to allow routes to
+     * request specific coomponents for the view.
+     * @property {String} properties.component - Fallback component to display
+     * in the view.
      */
     static get properties() {
         return {
