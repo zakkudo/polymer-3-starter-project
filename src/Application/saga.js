@@ -5,6 +5,7 @@ import Application from '.';
 
 /**
  * @private
+ * @param {Object} action - A redux action
  */
 function* resolve(action) {
     const {
@@ -39,11 +40,13 @@ function* resolve(action) {
             message,
             response,
         })));
+        yield put(pageResolveRequestSucceeded(response));
     } catch (reason) {
         yield put(setPageResolve(fromJS({
             loading: false,
             error: reason,
         })));
+        yield put(pageResolveRequestFailed(reason));
     }
 }
 

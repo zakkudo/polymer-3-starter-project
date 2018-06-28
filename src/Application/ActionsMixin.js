@@ -4,8 +4,12 @@ import actions from './actions';
 /**
  * Add Application Actions to a polymer class
  * @module Application/ActionsMixin
+ * @mixes Parent
  */
 export default (Parent, saga, ...leftover) => {
+    /**
+     * @mixin
+     */
     return class ActionsMixin extends ReduxMixin(Parent, saga, ...leftover) {
         static get actions() {
             return {
