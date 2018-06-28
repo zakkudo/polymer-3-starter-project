@@ -1,14 +1,16 @@
+import './MissingRoute';
+import './Route';
 import '@polymer/polymer/lib/elements/dom-if.js';
-import 'lib/components/MissingRoute';
-import 'lib/components/Route';
 import 'polymer-ui-router/uirouter-router';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
+import RouterError from './RouterError';
 import defer from 'lib/defer';
 import shallowResolveObject from 'lib/shallowResolveObject';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 import {pushStateLocationPlugin} from '@uirouter/core';
+
 
 /**
  * Defines sets of components to display for a specific url pattern.
@@ -16,7 +18,6 @@ import {pushStateLocationPlugin} from '@uirouter/core';
  * @module lib/components/Router
  * @customElement
  * @polymer
- *
  */
 export default class Router extends ImmutableMixin(PolymerElement) {
     /**
@@ -76,7 +77,9 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     static get observers() {
         return [
             '_routesChanged(routes)',
-            '_pageResolveChanged(pageResolve, pageComponent, errorMessageComponent)',
+            '_pageResolveChanged(pageResolve, ' +
+                                'pageComponent, ' +
+                                'errorMessageComponent)',
         ];
     }
 
@@ -93,13 +96,15 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             const response = pageResolve.get('response');
             const error = pageResolve.get('error');
 
+            debugger;
+
             delete to.resolve;
             delete to.error;
 
             to.contentsClass = Component;
             to.errorMessageComponent = this.errorMessageComponent;
             to.resolve = response;
-            to.error = error || to.staticError;
+            to.error = error;
         }
     }
 
@@ -190,15 +195,20 @@ export default class Router extends ImmutableMixin(PolymerElement) {
          * @param {String} message - A loading message.
          * @param {Object} deferred - A deferred object.
          * @return {Function} A function for handling the error
-         * @throws {Object} The error in resolve format.
+         * @throws {RouterError} The error in resolve format.
          */
         function handleError(message, deferred) {
             return (reason) => {
                 let message = null;
+                let fileName = null;
+                let lineNumber = null;
                 let code = null;
 
                 if (reason instanceof Error) {
-                    message = String(reason.message);
+                    message = reason.message;
+                    fileName = reason.fileName;
+                    lineNumber = reason.lineNumber;
+
                     code = '-1';
                 } else if (typeof reason === 'string') {
                     message = reason;
@@ -214,10 +224,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
                 deferred.resolve({error: {message, code}});
 
-                throw {
-                    message,
-                    code,
-                };
+                throw new RouterError(message, fileName, lineNumber, code);
             };
         }
 

@@ -5,14 +5,16 @@ import {fromJS} from 'immutable';
 
 
 /**
+ * @private
  * Used by the `z-router` internally to control what properties are sent
  * to individual page components.
- * @module lib/components/Route
+ * @module lib/components/Router
  * @customElement
  * @polymer
  */
 export default class Route extends PolymerElement {
     /**
+     * @private
      * @property {String} is - The HTML tag representing the component.
      */
     static get is() {
@@ -20,6 +22,7 @@ export default class Route extends PolymerElement {
     }
 
     /**
+     * @private
      * @property {DocumentFragment} template - Template used for
      * rendering the contents of the component.
      */
@@ -28,6 +31,8 @@ export default class Route extends PolymerElement {
     }
 
     /**
+     *
+     * @private
      * @property {Object} properties - Public Properties.
      * @property {String} properties.component - The component to render.
      * @property {Immutable.Map} properties.resolve - Data to pass as
@@ -84,9 +89,8 @@ export default class Route extends PolymerElement {
             this.innerHTML = '';
             this.shadowRoot.appendChild(element);
 
-            error.keySeq().forEach((k) => {
-                element.set(k, error.get(k));
-            });
+            element.set('message', error.message);
+            element.set('code', error.code);
         } else if (component !== this._component) {
             this._component = component;
 

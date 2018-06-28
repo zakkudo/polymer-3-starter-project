@@ -1,16 +1,19 @@
 import 'polymer-ui-router/uirouter-router';
-import Route from 'lib/components/Route';
+import Route from './Route';
 import {fromJS} from 'immutable';
 
 /**
+ * @private
  * Used by the `z-router` internally to control what properties are sent
  * to individual page components. Extends Route.
- * @module lib/components/MissingRoute
+ * @module lib/components/Router
+ * @private
  * @customElement
  * @polymer
  */
 export default class MissingRoute extends Route {
     /**
+     * @private
      * @property {String} is - The HTML tag representing the component.
      */
     static get is() {
