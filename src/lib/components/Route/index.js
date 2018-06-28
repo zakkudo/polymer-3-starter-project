@@ -10,7 +10,7 @@ import {fromJS} from 'immutable';
  * @customElement
  * @polymer
  */
-class Route extends PolymerElement {
+export default class Route extends PolymerElement {
     /**
      * @property {String} is - The HTML tag representing the component.
      */
@@ -52,6 +52,9 @@ class Route extends PolymerElement {
         ];
     }
 
+    /**
+     * @private
+     */
     _paramsChanged(params) {
         const element = this.shadowRoot.firstChild;
 
@@ -66,13 +69,25 @@ class Route extends PolymerElement {
     _transitioned(transition) {
         const to = transition.to();
         const component = to.contentsClass;
-        const resolve = to.resolve || fromJS({});
+        const errorMessageComponent = to.errorMessageComponent;
+        const resolve = to.resolve;
+        const error = to.error;
 
-        if (component !== this._component) {
+        if (error && errorMessageComponent) {
+            const element = document.createElement(errorMessageComponent);
+
+            this.innerHTML = '';
+            this.shadowRoot.appendChild(element);
+
+            error.keySeq().forEach((k) => {
+                element.set(k, error.get(k));
+            });
+        } else if (component !== this._component) {
             this._component = component;
 
-            if (component) {
+            if (component && resolve) {
                 const element = document.createElement(component.is);
+
                 this.innerHTML = '';
                 this.shadowRoot.appendChild(element);
 

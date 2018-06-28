@@ -1,5 +1,6 @@
 import '@polymer/polymer/lib/elements/dom-if.js';
 import 'lib/components/Route';
+import 'lib/components/MissingRoute';
 import 'polymer-ui-router/uirouter-router';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
@@ -42,7 +43,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                     location-plugin="[[locationPlugin]]"
                     on-uirouter-before="_handleStart"
                     on-uirouter-leave="_handleFinish"
-                    on-uirouter-error="_handleError"
                     states="[[_toJSFromImmutable(_routes)]]"
                     auto-start></uirouter-router>
             </template>
@@ -56,10 +56,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         return 'z-router';
     }
 
-    _handleError(e) {
-        debugger;
-    }
-
     /**
      * @property {Object} properties - Public Properties.
      * @property {Immutable.Map} properties.pageResolve - The resolve configuration to pass ot the page.
@@ -71,6 +67,8 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             pageResolve: {
                 type: Immutable.Map,
             },
+            errorMessageComponent: String,
+            pageComponent: String,
             routes: {
                 type: Immutable.List,
                 value: () => fromJS([]),
@@ -88,7 +86,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     static get observers() {
         return [
             '_routesChanged(routes)',
-            '_pageResolveChanged(pageResolve, pageComponent)',
+            '_pageResolveChanged(pageResolve, pageComponent, errorMessageComponent)',
         ];
     }
 
@@ -97,8 +95,17 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     _pageResolveChanged(pageResolve, Component) {
         if (this.transition) {
-            this.transition.to().contentsClass = Component;
-            this.transition.to().resolve = pageResolve.get('response');
+            const to = this.transition.to();
+            const response = pageResolve.get('response');
+            const error = pageResolve.get('error');
+
+            delete to.resolve;
+            delete to.error;
+
+            to.contentsClass = Component;
+            to.errorMessageComponent = this.errorMessageComponent;
+            to.resolve = response;
+            to.error = error || to.staticError;
         }
     }
 
@@ -106,12 +113,28 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @private
      */
     _routesChanged(routes) {
-        this._routes = routes.map((r) => {
+        this._routes = routes || fromJS([]);
+
+        this._routes = this._routes.map((r) => {
             return r.merge({
                 component: 'z-route',
                 contents: r.get('component'),
             });
         });
+
+
+        if (this.errorMessageComponent) {
+            this._routes = this._routes.push(fromJS({
+                name: '404',
+                url: '/{path:.*}',
+                error: {
+                    'code': '404',
+                    'message': 'BOOM',
+                },
+                component: 'z-missing-route',
+                contents: this.errorMessageComponent,
+            }));
+        }
     }
 
     /**
@@ -164,6 +187,35 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         const from = transition.from();
         const to = transition.to();
 
+        function handleError(message, deferred) {
+            return (reason) => {
+                let message = null;
+                let code = null;
+
+                if (reason instanceof Error) {
+                    message = String(reason.message);
+                    code = '-1';
+                } else if (typeof reason === 'string') {
+                    message = reason;
+                    code = '-1';
+                } else if (Object(reason) === reason) {
+                    message = reason.message;
+                    code = reason.code;
+                }
+
+                setTimeout(() => {
+                    deferred.resolve(reason);
+                });
+
+                deferred.resolve({error: {message, code}});
+
+                throw {
+                    message,
+                    code,
+                };
+            };
+        }
+
         const resolve = () => {
             if (reload === false && from === to && to.resolve && to.contentsClass) {
                 setTimeout(() => {
@@ -189,24 +241,16 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                     return {
                         message,
                         Component,
-                        response: response,
+                        response,
                     };
-                });
-
-                setTimeout(() => {
-                    next.catch(deferred.reject);
-                });
+                }).catch(handleError(message, deferred));
 
                 return {
                     message,
                     Component,
                     next,
                 };
-            });
-
-            setTimeout(() => {
-                next.catch(deferred.reject);
-            });
+            }).catch(handleError(null, deferred));
 
             return {
                 message: null,

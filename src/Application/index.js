@@ -1,5 +1,6 @@
 import '@polymer/polymer/lib/elements/dom-if';
 import '@polymer/polymer/lib/elements/dom-repeat';
+import 'Application/pages/ErrorPage';
 import 'lib/components/Link';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
@@ -54,7 +55,13 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
     static get template() {
         return html`
             <style>
+            @keyframes spin {
+                from {transform:rotate(0deg);}
+                to {transform:rotate(360deg);}
+            }
+
             .loading-curtain {
+                animation: spin 2s infinite linear;
                 position: absolute;
                 font-size: 100px;
                 display: inline-block;
@@ -78,6 +85,7 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
             <z-router
                 routes="[[routes]]"
                 page-component="[[pageComponent]]"
+                error-message-component="z-error-page"
                 page-resolve="[[pageResolve]]"
                 on-request-page-resolve="_handleRequestPageResolve"></z-router>
 
