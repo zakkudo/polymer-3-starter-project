@@ -1,6 +1,10 @@
 import ReduxMixin from './ReduxMixin';
 import actions from './actions';
 
+/**
+ * Add Application Actions to a polymer class
+ * @module Application/ActionsMixin
+ */
 export default (Parent, saga, ...leftover) => {
     return class ActionsMixin extends ReduxMixin(Parent, saga, ...leftover) {
         static get actions() {
@@ -8,7 +12,7 @@ export default (Parent, saga, ...leftover) => {
                 requestPageResolve(request) {
                     return {
                         type: actions.REQUEST_PAGE_RESOLVE,
-                        request
+                        request,
                     };
                 },
                 pageResolveRequestSucceeded(response) {

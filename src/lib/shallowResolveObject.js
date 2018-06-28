@@ -1,5 +1,6 @@
 /**
  * A convenience function to shallow resolve an object into usable data.
+ * @module lib/shallowResolveObject
  * @param {Object} data - A object who's values are functions that return
  * promises.
  * @return {Promise} Resolves to an object with the same keys, but with the

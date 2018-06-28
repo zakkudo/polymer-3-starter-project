@@ -4,15 +4,16 @@ import ActionsMixin from './ActionsMixin';
 import reducer from './reducer';
 import saga from './saga';
 
- /**
-   * description
-   * @customElement
-   * @polymer
-   *
-   */
+/**
+ * @module Application/pages/SearchPage
+ * @customElement
+ * @polymer
+ */
 export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
     /**
-     * description
+     * @property {Object} properties - Public Properties.
+     * @property {Immutable.List} properties.results - The search results of
+     * the api call
      */
     static get properties() {
         return {
@@ -34,7 +35,7 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
     }
 
     /**
-     * description
+     * @property {String} is - The HTML tag representing the component.
      */
     static get is() {
         return 'z-search-page';
@@ -81,8 +82,8 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
     }
 
     /**
-     * description
-     * @param {Object} e The element to be made awesome.
+     * @property {Native.DocumentFragment} template - Template used for
+     * rendering the contents of the component.
      */
     static get template() {
         return html`

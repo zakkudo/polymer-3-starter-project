@@ -1,5 +1,6 @@
 /**
  * Creates a deferred object
+ * @module lib/defer
  * @return {Object} Returns an object with the deferred promise, the resolve
  * method and the reject method as when received when initializing a new
  * Promise.

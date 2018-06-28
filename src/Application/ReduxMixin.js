@@ -10,6 +10,9 @@ const store = createStore(reducer, composeEnhancers(applyMiddleware(sagaMiddlewa
 const ReduxMixin = PolymerRedux(store);
 const instances = new Map();
 
+/**
+ * @private
+ */
 function cancel(key) {
     if (instances.has(key)) {
         instances.get(key).cancel();
@@ -17,8 +20,15 @@ function cancel(key) {
     }
 }
 
+/**
+ * Add Redux connectivity to a PolymerElement
+ * @module Application/ReduxMixin
+ */
 export default (Parent, saga) => {
     return class SagaMixin extends ImmutableMixin(ReduxMixin(Parent)) {
+        /**
+         * @private
+         */
         connectedCallback() {
             super.connectedCallback();
             if (saga) {
@@ -27,11 +37,14 @@ export default (Parent, saga) => {
             }
         }
 
+        /**
+         * @private
+         */
         disconnectedCallback() {
             super.disconnectedCallback();
             if (instances.has(this)) {
                 cancel(this);
             }
         }
-    }
-}
+    };
+};

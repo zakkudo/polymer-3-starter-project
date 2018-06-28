@@ -4,6 +4,10 @@ const defaultState = {
     'name': 'Polymer 3/Redux Demo Application',
 };
 
+/**
+ * Application reducer.
+ * @private
+ */
 export default function reducer(state = defaultState, action) {
     const copy = Object.assign({}, state);
     const pageComponent = copy.pageComponent || {};

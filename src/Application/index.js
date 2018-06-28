@@ -13,6 +13,12 @@ import {fromJS} from 'immutable';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
 
+/**
+ * Demo Application
+ * @module Application
+ * @customElement
+ * @polymer
+ */
 export default class Application extends ActionsMixin(PolymerElement, saga) {
     static get properties() {
         return {

@@ -20,7 +20,7 @@ import {pushStateLocationPlugin} from '@uirouter/core';
  */
 export default class Router extends ImmutableMixin(PolymerElement) {
     /**
-     * @property {DocumentFragment} template - Template used for
+     * @property {Native.DocumentFragment} template - Template used for
      * rendering the contents of the component.
      */
     static get template() {
@@ -274,7 +274,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
-     * @param {CustomEvent} e - Javascript Event
+     * @param {Native.CustomEvent} e - Javascript Event
      */
     _handleStart(e) {
         const transition = e.detail.transition;
@@ -297,7 +297,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
-     * @param {CustomEvent} e - A javascript event
+     * @param {Native.CustomEvent} e - A javascript event
      */
     _handleFinish(e) {
         const transition = e.detail.transition;

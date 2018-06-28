@@ -1,22 +1,21 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 
- /**
-   * description
-   * @customElement
-   * @polymer
-   *
-   */
+/**
+ * @module Application/pages/AboutPage
+ * @customElement
+ * @polymer
+ */
 export default class AboutPage extends PolymerElement {
     /**
-     * description
+     * @property {String} is - The HTML tag representing the component.
      */
     static get is() {
         return 'z-about-page';
     }
 
     /**
-     * description
-     * @param {Object} e The element to be made awesome.
+     * @property {Native.DocumentFragment} template - Template used for
+     * rendering the contents of the component.
      */
     static get template() {
         return html`

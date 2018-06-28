@@ -1,3 +1,7 @@
+/**
+ * An enumeration of available actions for the application.
+ * @module Application/actions
+ */
 export default {
     PAGE_RESOLVE_REQUEST_SUCCEEDED: 'APPLICATION/PAGE_RESOLVE_REQUEST_SUCCEEDED',
     PAGE_RESOLVE_REQUEST_FAILED: 'APPLICATION/PAGE_RESOLVE_REQUEST_FAILED',

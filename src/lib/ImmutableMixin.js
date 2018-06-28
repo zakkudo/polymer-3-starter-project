@@ -1,5 +1,10 @@
-import Immutable from 'immutable';
-
+/**
+ * A PolyerElement Mixin that adds methods for reading from an immutable type
+ * in the template.
+ * @param {Class} Parent - The class suppliment.
+ * @module lib/ImmutableMixin
+ * @return {Class} The wrapped class
+ */
 export default (Parent) => {
     return class ImmutableMixin extends Parent {
         _getFromImmutable(instance, key) {
@@ -15,7 +20,7 @@ export default (Parent) => {
             return instance.hasIn(searchKeyPath);
         }
         _firstFromImmutable(instance) {
-            return instance.first()
+            return instance.first();
         }
         _lastFromImmutable(instance) {
             return instance.last();
@@ -29,5 +34,5 @@ export default (Parent) => {
         _toJSFromImmutable(instance) {
             return instance.toJS();
         }
-    }
-}
+    };
+};

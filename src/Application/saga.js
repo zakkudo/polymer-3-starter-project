@@ -3,6 +3,9 @@ import actions from './actions';
 import {fromJS} from 'immutable';
 import Application from '.';
 
+/**
+ * @private
+ */
 function* resolve(action) {
     const {
         request,
@@ -44,6 +47,9 @@ function* resolve(action) {
     }
 }
 
+/**
+ * @private
+ */
 export default function* rootSaga() {
     yield takeEvery(actions.REQUEST_PAGE_RESOLVE, resolve);
 }

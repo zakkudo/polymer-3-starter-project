@@ -4,6 +4,10 @@ function importPage(name) {
     }
 }
 
+/**
+ * Routes for the application
+ * @private
+ */
 export default [
     {name: 'home', url: '/', component: importPage('SearchPage')},
     {name: 'about', url: '/about', component: importPage('AboutPage')},

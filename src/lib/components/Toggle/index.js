@@ -17,7 +17,7 @@ export default class Toggle extends PolymerElement {
     }
 
     /**
-     * @property {DocumentFragment} template - Template used for
+     * @property {Native.DocumentFragment} template - Template used for
      * rendering the contents of the component.
      */
     static get template() {
@@ -70,7 +70,8 @@ export default class Toggle extends PolymerElement {
 
     /**
      * @private
-     * @param {CustomEvent} e - Dispatched event when the component is clicked.
+     * @param {Native.CustomEvent} e - Dispatched event when the component is
+     * clicked.
      */
     _handleClick(e) {
         const active = !this.active;

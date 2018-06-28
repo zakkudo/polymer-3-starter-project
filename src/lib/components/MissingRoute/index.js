@@ -19,7 +19,7 @@ export default class MissingRoute extends Route {
 
     /**
      * @private
-     * @param {UIRouterTransition} transition - A transition as
+     * @param {UIRouter.Transition} transition - A transition as
      * described on the ui-router documentation
      */
     _transitioned(transition) {
