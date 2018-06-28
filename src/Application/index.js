@@ -81,6 +81,12 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
             <li>
                 <z-link state="about">UI About</z-link>
             </li>
+            <li>
+                <z-link state="forbidden">Forbidden Page</z-link>
+            </li>
+            <li>
+                <z-link state="fail">Internal Error Page</z-link>
+            </li>
             </ul>
             <z-router
                 routes="[[routes]]"
