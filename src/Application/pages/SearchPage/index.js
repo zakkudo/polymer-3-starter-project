@@ -28,7 +28,7 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
     }
 
     /**
-     * description
+     * The page reducer.
      */
     static get reducer() {
         return reducer;
@@ -42,8 +42,7 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
     }
 
     /**
-     * description
-     * @param {Object} e The element to be made awesome.
+     * @private
      */
     _handleClick(e) {
         e.preventDefault();
@@ -53,7 +52,8 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
     }
 
     /**
-     * description
+     * The resovle object that should be loaded
+     * before showing the page.
      */
     static get resolve() {
         return {
@@ -70,6 +70,9 @@ export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
         };
     }
 
+    /**
+     * @private
+     */
     _handleActiveChange(e) {
         const setResults = SearchPage.actions.setResults;
         const active = e.detail.active;

@@ -1,5 +1,8 @@
 import actions from './actions';
 
+/**
+ * @private
+ */
 export default function reducer(state = {}, action) {
     switch (action.type) {
         case actions.SET_RESULTS:

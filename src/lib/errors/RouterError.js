@@ -1,8 +1,7 @@
 /**
  * Errors propogated so that error pages an expect data in a standard
  * format.
- * @module lib/components/Router/RouterError
- * @memberof module:/lib/components/Router
+ * @module lib/errors/RouterError
  */
 export default class RouterError extends Error {
     /**
