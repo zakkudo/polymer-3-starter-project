@@ -11,7 +11,8 @@ module.exports = function(config) {
       'src/**/*.swp'
     ],
     preprocessors: {
-      'src/**/*test.js': ['webpack', 'coverage']
+      'src/**/*test.js': ['webpack'],
+      'src/**/*.js': ['sourcemap', 'coverage'],
     },
     webpack: webpack,
     reporters: ['progress', 'coverage'],
