@@ -96,8 +96,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             const response = pageResolve.get('response');
             const error = pageResolve.get('error');
 
-            debugger;
-
             delete to.resolve;
             delete to.error;
 
@@ -244,7 +242,8 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                 });
             }
 
-            const next = this._requestComponentFromTransition(transition).then((Component) => {
+            const next = this._requestComponentFromTransition(transition)
+                .then((Component) => {
                 const {data, message} = this._getResolveInformation(Component);
                 const next = shallowResolveObject(data).then((_response) => {
                     const response = fromJS(_response);
@@ -296,6 +295,14 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             resolveFn: () => deferred.promise,
         });
 
+        /**
+         *
+         * Requests the data needed to display the next page state.
+         * @event module:lib/components/Router~request-page-resolve
+         * @type {Object}
+         * @property {Function} resolve - A function that triggers a
+         * side-effect to fetch the initial component state.
+         */
         this.dispatchEvent(new CustomEvent('request-page-resolve', {
             detail: {resolve},
         }));
@@ -307,9 +314,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @param {Native.CustomEvent} e - A javascript event
      */
     _handleFinish(e) {
-        const transition = e.detail.transition;
-
-        this.dispatchEvent(new CustomEvent('route-change-finish', {detail: {transition}}));
         delete this.transition;
     }
 }

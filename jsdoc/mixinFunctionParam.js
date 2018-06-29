@@ -1,6 +1,6 @@
 exports.defineTag = function(dictionary) {
     dictionary.defineTag('mixinFunction', {
-        mustHaveValue: true,
+        mustHaveValue: false,
         mustNotHaveDescription: true,
         canHaveType: false,
         canHaveName: false,

@@ -4,7 +4,7 @@
  * @param {Class} Parent - The class suppliment.
  * @fires ImmutableMixin#FISH
  * @polymer
- * @mixinFunction ImmutableMixin
+ * @mixinFunction
  * @module lib/ImmutableMixin
  * @return {Class} The wrapped class
  */

@@ -7,7 +7,7 @@ import Application from '.';
  * @private
  * @param {Object} action - A redux action
  */
-function* resolve(action) {
+export function* resolve(action) {
     const {
         request,
     } = action;

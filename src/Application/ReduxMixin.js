@@ -6,12 +6,14 @@ import createSagaMiddleware from 'redux-saga';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
+const store = createStore(reducer,
+    composeEnhancers(applyMiddleware(sagaMiddleware)));
 const ReduxMixin = PolymerRedux(store);
 const instances = new Map();
 
 /**
  * @private
+ * @param {String} key - Key for the saga
  */
 function cancel(key) {
     if (instances.has(key)) {
@@ -24,8 +26,12 @@ function cancel(key) {
  * Add Redux connectivity to a PolymerElement
  * @module Application/ReduxMixin
  * @polymer
+ * @mixinFunction
  * @appliesMixin ReduxMixin
  * @appliesMixin ImmutableMixin
+ * @param {PolymerElement} Parent - The class to augment
+ * @param {Function} saga - A saga function to manage.
+ * @return {PolymerElement} The augmented class.
  */
 export default (Parent, saga) => {
     return class SagaMixin extends ImmutableMixin(ReduxMixin(Parent)) {

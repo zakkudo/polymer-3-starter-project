@@ -12,8 +12,6 @@ exports.defineTag = function(dictionary) {
 
 exports.newDocletHandler = function(e) {
     if (e.doclet.polymer) {
-        console.log(JSON.stringify(e.doclet.polymer, null, 2));
-
         const keys = Object.keys(e.doclet.polymer).sort();
         const values = keys.map((k) => e.doclet.polymer[k].description);
 

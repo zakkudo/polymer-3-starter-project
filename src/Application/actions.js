@@ -1,12 +1,12 @@
 /**
  * An enumeration of available actions for the application.
- * @module Application/actions
  * @enum
+ * @module Application/actions
  */
 export default {
-    /** Delegated page resolved succeeded (For debugging only) */
+    /** Debugging action to show a request succeeded and with what payload. */
     PAGE_RESOLVE_REQUEST_SUCCEEDED: 'APPLICATION/PAGE_RESOLVE_REQUEST_SUCCEEDED',
-    /** Delegated page resolved succeeded (For debugging only) */
+    /** Debugging action to show a request failed and with what payload. */
     PAGE_RESOLVE_REQUEST_FAILED: 'APPLICATION/PAGE_RESOLVE_REQUEST_FAILED',
     /** Requests page resolve side effects to execute. */
     REQUEST_PAGE_RESOLVE: 'APPLICATION/REQUEST_PAGE_RESOLVE',
