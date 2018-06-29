@@ -1,3 +1,7 @@
+/**
+ * @enum
+ * @module Application/pages/SearchPage/actions
+ */
 export default {
     REQUEST_SEARCH: 'PAGE/REQUEST_SEARCH',
     SEARCH_REQUEST_FAILED: 'PAGE/SEARCH_REQUEST_FAILED',

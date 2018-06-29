@@ -57,6 +57,6 @@
     "start": "./node_modules/.bin/webpack-dev-server --open",
     "build": "./node_modules/.bin/webpack",
     "test": "./node_modules/.bin/karma start",
-    "documentation": "./node_modules/.bin/jsdoc -c jsdoc.conf.json"
+    "document": "./node_modules/.bin/jsdoc -c jsdoc.conf.json"
   }
 }

@@ -2,14 +2,13 @@
  * A PolyerElement Mixin that adds methods for reading from an immutable type
  * in the template.
  * @param {Class} Parent - The class suppliment.
- * @mixes Parent
+ * @fires ImmutableMixin#FISH
+ * @polymer
+ * @mixinFunction ImmutableMixin
  * @module lib/ImmutableMixin
  * @return {Class} The wrapped class
  */
-export default (Parent) => {
-    /**
-     * @mixin
-     */
+export default function ImmutableMixin(Parent) {
     return class ImmutableMixin extends Parent {
         /**
          * Get a value usign a key from an immutable Map
@@ -92,4 +91,4 @@ export default (Parent) => {
             return instance.toJS();
         }
     };
-};
+}

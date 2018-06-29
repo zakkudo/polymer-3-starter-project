@@ -23,6 +23,9 @@ function cancel(key) {
 /**
  * Add Redux connectivity to a PolymerElement
  * @module Application/ReduxMixin
+ * @polymer
+ * @appliesMixin ReduxMixin
+ * @appliesMixin ImmutableMixin
  */
 export default (Parent, saga) => {
     return class SagaMixin extends ImmutableMixin(ReduxMixin(Parent)) {

@@ -4,7 +4,7 @@ import '@polymer/polymer/lib/elements/dom-if.js';
 import 'polymer-ui-router/uirouter-router';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
-import RouterError from './RouterError';
+import RouterError from 'lib/errors/RouterError';
 import defer from 'lib/defer';
 import shallowResolveObject from 'lib/shallowResolveObject';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';

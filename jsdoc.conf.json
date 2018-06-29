@@ -3,6 +3,11 @@
 		"includePattern": "src/.+\\.js?$",
         "include": "src"
 	},
+    "tags": {
+    },
+    "plugins": [
+        "./jsdoc/index.js"
+    ],
     "opts": {
         "destination": "./documentation",
         "recurse": true,

@@ -1,6 +1,7 @@
 /**
  * An enumeration of available actions for the application.
  * @module Application/actions
+ * @enum
  */
 export default {
     /** Delegated page resolved succeeded (For debugging only) */
