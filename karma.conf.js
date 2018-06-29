@@ -11,10 +11,10 @@ module.exports = function(config) {
       'src/**/*.swp'
     ],
     preprocessors: {
-      'src/**/*test.js': ['webpack']
+      'src/**/*test.js': ['webpack', 'coverage']
     },
     webpack: webpack,
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
