@@ -81,7 +81,7 @@ export default class Toggle extends PolymerElement {
 
         /**
          * An active change request to raise the new active state.
-         * @event module:lib/components/Toggle~active-change
+         * @event active-change
          * @type {Object}
          * @property {boolean} active - The new active state.
          */

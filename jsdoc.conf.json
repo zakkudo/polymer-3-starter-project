@@ -6,11 +6,12 @@
     "tags": {
     },
     "plugins": [
-        "./jsdoc/index.js"
+        "./jsdoc/tags/index.js"
     ],
     "opts": {
         "destination": "./documentation",
         "recurse": true,
-        "encoding": "utf8"
+        "encoding": "utf8",
+        "template": "node_modules/jsdoc-rtd"
     }
 }

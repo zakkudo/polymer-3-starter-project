@@ -298,7 +298,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         /**
          *
          * Requests the data needed to display the next page state.
-         * @event module:lib/components/Router~request-page-resolve
+         * @event request-page-resolve
          * @type {Object}
          * @property {Function} resolve - A function that triggers a
          * side-effect to fetch the initial component state.
