@@ -29,9 +29,9 @@ function cancel(key) {
  * @mixinFunction
  * @appliesMixin ReduxMixin
  * @appliesMixin ImmutableMixin
- * @param {PolymerElement} Parent - The class to augment
+ * @param {Polymer.PolymerElement} Parent - The class to augment
  * @param {Function} saga - A saga function to manage.
- * @return {PolymerElement} The augmented class.
+ * @return {Polymer.PolymerElement} The augmented class.
  */
 export default (Parent, saga) => {
     return class SagaMixin extends ImmutableMixin(ReduxMixin(Parent)) {

@@ -21,5 +21,6 @@ exports.handlers = {
   newDoclet: function(e) {
     polymer.newDocletHandler(e);
     customElement.newDocletHandler(e);
+    polymerBehavior.newDocletHandler(e);
   }
 }

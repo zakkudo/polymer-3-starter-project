@@ -8,10 +8,10 @@ import actions from './actions';
  * @module Application/ActionsMixin
  * @polymer
  * @mixinFunction
- * @param {PolymerElement} Parent - The class to mix into
+ * @param {Polymer.PolymerElement} Parent - The class to mix into
  * @param {Function} saga - The saga to start with connection of the element
  * to the DOM. It will be stopped when disconnected.
- * @return {PolymerElement} The wrapped class
+ * @return {Polymer.PolymerElement} The wrapped class
  */
 export default (Parent, saga) => {
     /**
@@ -30,7 +30,7 @@ export default (Parent, saga) => {
          * @property {Immutable.Map} properties.setPageResolve - Set the
          * resolve data, used to control page loading state and what data is
          * passed to the initial page component.
-         * @property {PolymerElement} properties.setPageComponent - Set the
+         * @property {Polymer.PolymerElement} properties.setPageComponent - Set the
          * page displayed for the current route.
          */
         static get actions() {

@@ -1,0 +1,18 @@
+{
+	"source": {
+		"includePattern": "src/.+\\.js?$",
+        "include": "src"
+	},
+    "tags": {
+        "allowUnknownTags": false,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "plugins": [
+        "./jsdoc/tags/index.js"
+    ],
+    "opts": {
+        "destination": "./documentation",
+        "recurse": true,
+        "encoding": "utf8"
+    }
+}

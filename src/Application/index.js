@@ -24,7 +24,7 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
      * @property {Object} properties - Public Properties.
      * @property {Immutable.List} properties.routes - The router configuration
      * for the application
-     * @property {PolymerElement} properties.pageComponent - The current page
+     * @property {Polymer.PolymerElement} properties.pageComponent - The current page
      * to show.
      * @property {Function} properties.pageResolve - The current page resolve,
      * passing data to the pageComponent.

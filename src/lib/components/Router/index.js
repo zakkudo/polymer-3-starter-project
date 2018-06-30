@@ -87,7 +87,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @private
      * @param {Immutable.Map} pageResolve - The resolved data to be injected
      * into the initial page load
-     * @param {PolymerElement} Component - A polymer component representing
+     * @param {Polymer.PolymerElement} Component - A polymer component representing
      * the page to render. It should implement `is`.
      */
     _pageResolveChanged(pageResolve, Component) {
@@ -161,7 +161,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
     /**
      * @private
-     * @param {PolymerElement} component - A polymer component to get resolve
+     * @param {Polymer.PolymerElement} component - A polymer component to get resolve
      * information from
      * @return {Object} An object containing an object with function values
      * that return promises and a loading message.

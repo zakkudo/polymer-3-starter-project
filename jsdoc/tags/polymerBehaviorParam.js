@@ -1,17 +1,20 @@
 exports.defineTag = function(dictionary) {
     dictionary.defineTag('polymerBehavior', {
-        mustHaveValue: true,
+        mustHaveValue: false,
         mustNotHaveDescription: false,
         canHaveType: false,
-        canHaveName: false,
+        canHaveName: true,
         onTagged: function(doclet, tag) {
-            doclet.polymer[tag.title] = tag;
+            doclet.polymerBehavior = true;
         }
     });
 };
 
 exports.newDocletHandler = function(e) {
-    if (e.doclet.polymer.polymerBehavior) {
-        e.doclet.description = `TBA`;
+    const doclet = e.doclet;
+    const polymerBehavior = doclet.polymerBehavior;
+
+    if (polymerBehavior) {
+        doclet.description += `<ul><li>Legacy Polymer Behavior</li></ul>`;
     }
 }
