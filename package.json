@@ -26,6 +26,7 @@
     "eslint-config-google": "^0.9.1",
     "eslint-import-resolver-webpack": "^0.10.0",
     "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jasmine": "^2.10.1",
     "eslint-plugin-polymer": "^0.2.1",
     "generate-json-webpack-plugin": "^0.3.1",
     "html-webpack-plugin": "^3.2.0",
@@ -58,7 +59,8 @@
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --open",
     "build": "./node_modules/.bin/webpack",
-    "test": "./node_modules/.bin/karma start",
+    "test": "./node_modules/.bin/karma start --single-run",
+    "continuous": "./node_modules/.bin/karma start",
     "document": "./node_modules/.bin/jsdoc -c jsdoc.conf.json"
   }
 }

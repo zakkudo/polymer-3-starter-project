@@ -2608,6 +2608,10 @@ eslint-plugin-import@^2.8.0:
     read-pkg-up "^2.0.0"
     resolve "^1.6.0"
 
+eslint-plugin-jasmine@^2.10.1:
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jasmine/-/eslint-plugin-jasmine-2.10.1.tgz#5733b709e751f4bc40e31e1c16989bd2cdfbec97"
+
 eslint-plugin-polymer@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-polymer/-/eslint-plugin-polymer-0.2.1.tgz#53bd6820ea629503fd51f9dbc39e3261804f5331"

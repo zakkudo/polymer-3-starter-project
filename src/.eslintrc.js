@@ -3,8 +3,12 @@ module.exports = {
         "plugin:polymer/polymer-2",
         "plugin:import/errors"
     ],
+    "env": {
+        "jasmine": true
+    },
     "plugins": [
-        "polymer"
+        "polymer",
+        "jasmine"
     ],
     "parserOptions": {
         "ecmaVersion": 6,

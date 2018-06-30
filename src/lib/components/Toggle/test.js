@@ -1,4 +1,4 @@
-import Toggle from ".";
+import '.';
 import '@polymer/polymer/lib/elements/dom-bind.js';
 
 afterEach(() => {
@@ -33,79 +33,78 @@ class Helper {
 
 describe('Toggle', () => {
     it('renders child content', () => {
-        const template = '<z-toggle>Test Text</z-toggle>',
-            handleActiveChange = jasmine.createSpy('handleActiveChange'),
-            root = Helper.createElement(template, {handleActiveChange});
+        const template = '<z-toggle>Test Text</z-toggle>';
+        const handleActiveChange = jasmine.createSpy('handleActiveChange');
+        const root = Helper.createElement(template, {handleActiveChange});
 
         Helper.assert(root, {
-            'html': '<z-toggle>Test Text</z-toggle>'
+            'html': '<z-toggle>Test Text</z-toggle>',
         });
     });
 
     it('renders active when set to true', () => {
-        const template = '<z-toggle active="true">Test Text</z-toggle>',
-            handleActiveChange = jasmine.createSpy('handleActiveChange'),
-            root = Helper.createElement(template, {
-                active: true,
-                handleActiveChange
-            });
+        const template = '<z-toggle active="true">Test Text</z-toggle>';
+        const handleActiveChange = jasmine.createSpy('handleActiveChange');
+        const root = Helper.createElement(template, {
+            active: true,
+            handleActiveChange,
+        });
 
         Helper.assert(root, {
-            'html': '<z-toggle active="">Test Text</z-toggle>'
+            'html': '<z-toggle active="">Test Text</z-toggle>',
         });
     });
 
     it('renders active when set to true', () => {
-        const template = '<z-toggle active>Test Text</z-toggle>',
-            handleActiveChange = jasmine.createSpy('handleActiveChange'),
-            root = Helper.createElement(template, {handleActiveChange});
+        const template = '<z-toggle active>Test Text</z-toggle>';
+        const handleActiveChange = jasmine.createSpy('handleActiveChange');
+        const root = Helper.createElement(template, {handleActiveChange});
 
         Helper.assert(root, {
-            'html': '<z-toggle active="">Test Text</z-toggle>'
+            'html': '<z-toggle active="">Test Text</z-toggle>',
         });
     });
 
     it('renders active when set to false', () => {
-        const template = '<z-toggle active="[[active]]">Test Text</z-toggle>',
-            handleActiveChange = jasmine.createSpy('handleActiveChange'),
-            root = Helper.createElement(template, {
-                label: 'Text Text',
-                active: false,
-                handleActiveChange
-            });
+        const template = '<z-toggle active="[[active]]">Test Text</z-toggle>';
+        const handleActiveChange = jasmine.createSpy('handleActiveChange');
+        const root = Helper.createElement(template, {
+            label: 'Text Text',
+            active: false,
+            handleActiveChange,
+        });
 
         Helper.assert(root, {
-            'html': '<z-toggle>Test Text</z-toggle>'
+            'html': '<z-toggle>Test Text</z-toggle>',
         });
     });
 
     it('clicking a non-actve toggle requests it to become active', () => {
-        const template = '<z-toggle active on-active-change="handleActiveChange">Test Text</z-toggle>',
-            handleActiveChange = jasmine.createSpy('handleActiveChange'),
-            root = Helper.createElement(template, {handleActiveChange});
+        const template = '<z-toggle active on-active-change="handleActiveChange">Test Text</z-toggle>';
+        const handleActiveChange = jasmine.createSpy('handleActiveChange');
+        const root = Helper.createElement(template, {handleActiveChange});
 
         root.firstChild.dispatchEvent(new MouseEvent('click'));
 
         Helper.assert(root, {
-            'html': '<z-toggle active="">Test Text</z-toggle>'
+            'html': '<z-toggle active="">Test Text</z-toggle>',
         });
 
-        handleActiveChange.calls.all()[0].args[0].detail
-        expect(handleActiveChange.calls.all().map(Helper.getDetail)).toEqual([{active: false}]);
+        expect(handleActiveChange.calls.all().map(Helper.getDetail))
+            .toEqual([{active: false}]);
     });
 
     it('clicking a actve toggle requests it to become non-active', () => {
-        const template = '<z-toggle on-active-change="handleActiveChange">Test Text</z-toggle>',
-            handleActiveChange = jasmine.createSpy('handleActiveChange'),
-            root = Helper.createElement(template, {handleActiveChange});
+        const template = '<z-toggle on-active-change="handleActiveChange">Test Text</z-toggle>';
+        const handleActiveChange = jasmine.createSpy('handleActiveChange');
+        const root = Helper.createElement(template, {handleActiveChange});
 
         root.firstChild.dispatchEvent(new MouseEvent('click'));
 
         Helper.assert(root, {
-            'html': '<z-toggle>Test Text</z-toggle>'
+            'html': '<z-toggle>Test Text</z-toggle>',
         });
 
-        handleActiveChange.calls.all()[0].args[0].detail
         expect(handleActiveChange.calls.all().map(Helper.getDetail)).toEqual([{active: true}]);
     });
 });
