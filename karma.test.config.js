@@ -5,13 +5,13 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      'src/**/*test.js'
+      'src/test.js'
     ],
     exclude: [
       'src/**/*.swp'
     ],
     preprocessors: {
-      'src/**/*test.js': ['webpack']
+      'src/test.js': ['webpack']
     },
     webpack: webpack,
     reporters: ['progress'],

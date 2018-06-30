@@ -1,14 +1,31 @@
 const webpack = require('./webpack.config.js'),
-    setDefaults = require('./karma.test.conf.js');
+    setDefaults = require('./karma.test.config.js'),
+    path = require('path');
 
 module.exports = function(config) {
     setDefaults(config);
 
-    config.set({
-        preprocessors: {
-            'src/**/*test.js': ['webpack'],
-            'src/**/*.js': ['sourcemap', 'webpack', 'coverage'],
+    webpack.module.rules.push({
+        test: /\.js$/,
+        use: {
+            loader: 'istanbul-instrumenter-loader',
+            options: {
+                esModules: true,
+            },
         },
-        reporters: ['progress', 'coverage'],
+        exclude: [/node_modules/, /test.js$/],
+    });
+
+    config.set({
+        webpack: webpack,
+        preprocessors: {
+            'src/test.js': ['webpack', 'sourcemap']
+        },
+        reporters: [ 'progress', 'coverage-istanbul' ],
+        coverageIstanbulReporter: {
+            reports: ['html', 'text-summary' ],
+            fixWebpackSourcePaths: true,
+            skipFilesWithNoCoverage: false
+        }
     });
 };
