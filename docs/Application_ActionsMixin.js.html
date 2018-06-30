@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Application/ActionsMixin.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Application/ActionsMixin.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import ReduxMixin from './ReduxMixin';
+import actions from './actions';
+
+/**
+ * Add Application action creators to a polymer class.  It also connects the
+ * component to the Redux store as well as manage any passed saga
+ * scripts.
+ * @module Application/ActionsMixin
+ * @polymer
+ * @mixinFunction
+ * @param {Polymer.PolymerElement} Parent - The class to mix into
+ * @param {Function} saga - The saga to start with connection of the element
+ * to the DOM. It will be stopped when disconnected.
+ * @return {Polymer.PolymerElement} The wrapped class
+ */
+export default (Parent, saga) => {
+    /**
+     * @polymer
+     * @mixinClass
+     */
+    return class ActionsMixin extends ReduxMixin(Parent, saga) {
+        /**
+         * @property {Object} properties - Public Properties.
+         * @property {Function} properties.requestPageResolve - Requests a
+         * side effect that will handle the page resolve.
+         * @property {Immutable.Map} properties.pageResolveRequestSucceeded -
+         * Debugging action to show a request succeeded and with what payload.
+         * @property {Immutable.Map} properties.pageResolveRequestFailed -
+         * Debugging action to show a request failed and with what reason.
+         * @property {Immutable.Map} properties.setPageResolve - Set the
+         * resolve data, used to control page loading state and what data is
+         * passed to the initial page component.
+         * @property {Polymer.PolymerElement} properties.setPageComponent - Set the
+         * page displayed for the current route.
+         */
+        static get actions() {
+            return {
+                requestPageResolve(request) {
+                    return {
+                        type: actions.REQUEST_PAGE_RESOLVE,
+                        request,
+                    };
+                },
+                pageResolveRequestSucceeded(response) {
+                    return {
+                        type: actions.PAGE_RESOLVE_REQUEST_SUCCEEDED,
+                        response,
+                    };
+                },
+                pageResolveRequestFailed(reason) {
+                    return {
+                        type: actions.PAGE_RESOLVE_REQUEST_FAILED,
+                        reason,
+                    };
+                },
+                setPageResolve(resolve) {
+                    return {
+                        type: actions.SET_PAGE_RESOLVE,
+                        resolve,
+                    };
+                },
+                setPageComponent(component) {
+                    return {
+                        type: actions.SET_PAGE_COMPONENT,
+                        component,
+                    };
+                },
+            };
+        }
+    };
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Application.html">Application</a></li><li><a href="module-Application_actions.html">Application/actions</a></li><li><a href="module-Application_ActionsMixin.html">Application/ActionsMixin</a></li><li><a href="module-Application_pages_AboutPage.html">Application/pages/AboutPage</a></li><li><a href="module-Application_pages_ErrorPage.html">Application/pages/ErrorPage</a></li><li><a href="module-Application_pages_SearchPage.html">Application/pages/SearchPage</a></li><li><a href="module-Application_pages_SearchPage_actions.html">Application/pages/SearchPage/actions</a></li><li><a href="module-Application_ReduxMixin.html">Application/ReduxMixin</a></li><li><a href="module-lib_components_Link.html">lib/components/Link</a></li><li><a href="module-lib_components_Router.html">lib/components/Router</a></li><li><a href="module-lib_components_Toggle.html">lib/components/Toggle</a></li><li><a href="module-lib_components_View.html">lib/components/View</a></li><li><a href="module-lib_defer.html">lib/defer</a></li><li><a href="module-lib_errors_RouterError.html">lib/errors/RouterError</a></li><li><a href="module-lib_ImmutableMixin.html">lib/ImmutableMixin</a></li><li><a href="module-lib_shallowResolveObject.html">lib/shallowResolveObject</a></li></ul><h3>Events</h3><ul><li><a href="module-lib_components_Toggle.html#~event:active-change">active-change</a></li><li><a href="module-lib_components_Router.html#~event:request-page-resolve">request-page-resolve</a></li></ul><h3>Namespaces</h3><ul><li><a href="Immutable.html">Immutable</a></li><li><a href="Native.html">Native</a></li><li><a href="Polymer.html">Polymer</a></li><li><a href="UIRouter.html">UIRouter</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jun 29 2018 18:54:41 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
