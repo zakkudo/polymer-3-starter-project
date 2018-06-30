@@ -12,16 +12,13 @@ module.exports = function(config) {
     ],
     preprocessors: {
       'src/**/*test.js': ['webpack']
-      //'src/**/*.js': ['sourcemap', 'webpack', 'coverage'], //This increases testing time
     },
     webpack: webpack,
-    reporters: ['progress', 'coverage'],
-    port: 9876,
+    reporters: ['progress'],
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
     autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: false,
     concurrency: Infinity
   })
 }

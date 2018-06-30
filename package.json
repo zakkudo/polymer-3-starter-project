@@ -59,8 +59,9 @@
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --open",
     "build": "./node_modules/.bin/webpack",
-    "test": "./node_modules/.bin/karma start --single-run",
-    "continuous": "./node_modules/.bin/karma start",
+    "test": "./node_modules/.bin/karma start karma.test.conf.js --single-run ",
+    "continuous": "./node_modules/.bin/karma start karma.test.conf.js --no-single-run",
+    "cover": "./node_modules/.bin/karma start karma.coverage.conf.js --single-run",
     "document": "./node_modules/.bin/jsdoc -c jsdoc.conf.json"
   }
 }
