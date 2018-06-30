@@ -31,7 +31,7 @@ class Helper {
     }
 }
 
-describe('Toggle', () => {
+describe('lib/components/Toggle', () => {
     it('renders child content', () => {
         const template = '<z-toggle>Test Text</z-toggle>';
         const handleActiveChange = jasmine.createSpy('handleActiveChange');

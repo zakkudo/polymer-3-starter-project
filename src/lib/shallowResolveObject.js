@@ -7,10 +7,13 @@
  * promises resolved.
  */
 export default function shallowResolveObject(data) {
+    debugger;
     const keys = Object.keys(data);
 
     return Promise.all(keys.map((k) => data[k]())).then((response) => {
+    debugger;
         return keys.reduce((accumulator, k, index) => {
+    debugger;
             return Object.assign(accumulator, {[k]: response[index]});
         }, {});
     });
