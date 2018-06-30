@@ -29,7 +29,6 @@ module.exports = {
                 use: ["source-map-loader"],
                 enforce: "pre"
             },
-            /* This is honestly not needed for modern browsers
             {
                 test: /\.js$/,
                 exclude: /(node_modules)/,
@@ -37,7 +36,6 @@ module.exports = {
                     loader: 'babel-loader'
                 }
             },
-            */
             {
                 test:/\.css$/,
                 use:[MiniCssExtractPlugin.loader,'css-loader']

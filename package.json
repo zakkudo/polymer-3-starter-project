@@ -48,6 +48,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.51",
     "@polymer/polymer": "^3.0.2",
+    "@webcomponents/webcomponentsjs": "^2.0.2",
     "immutable": "^3.8.2",
     "polymer-redux": "^1.0.5",
     "polymer-ui-router": "^3.0.1",
