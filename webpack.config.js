@@ -1,5 +1,6 @@
 const path = require('path'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
+    HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin'),
     GenerateJsonWebpackPlugin = require('generate-json-webpack-plugin'),
     WriteFileWebpackPlugin = require('write-file-webpack-plugin'),
     MiniCssExtractPlugin = require('mini-css-extract-plugin'),
@@ -39,6 +40,15 @@ module.exports = {
             {
                 test:/\.css$/,
                 use:[MiniCssExtractPlugin.loader,'css-loader']
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {}
+                    }
+                ]
             }
         ]
     },
@@ -51,6 +61,11 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Polymer with webpack'
+        }),
+        new HtmlWebpackIncludeAssetsPlugin({
+            //Needed for Firefox and Edge
+            assets: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'],
+            append: false
         }),
         new BaseHrefWebpackPlugin({baseHref: '/'}),
         new WriteFileWebpackPlugin({

@@ -1,4 +1,3 @@
-import '@webcomponents/webcomponentsjs/webcomponents-bundle.js';
 import './theme.css';
 
 import('./Application').then(() => {
