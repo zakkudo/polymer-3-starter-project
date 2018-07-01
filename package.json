@@ -9,6 +9,7 @@
     "redux-Saga",
     "polymer",
     "immutable",
+    "storybook",
     "eslint"
   ],
   "license": "BSD-3-Clause",
