@@ -29,10 +29,10 @@ Bootstrap with
 Start the project with a webserver with
 `yarn start`
 
-Test with
+Test (headlessly) with
 `yarn test`
 
-Run continuous testing with
+Run continuous testing (with chrome) for debugging with
 `yarn continuous`
 
 Check test coverage with
