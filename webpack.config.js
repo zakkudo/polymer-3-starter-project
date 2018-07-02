@@ -94,7 +94,8 @@ module.exports = {
     ],
     devServer: {
         historyApiFallback: true
-    }
+    },
+    stats: "errors-only",
 };
 
 

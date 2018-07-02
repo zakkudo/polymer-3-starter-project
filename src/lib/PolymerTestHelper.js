@@ -5,18 +5,23 @@ export default class PolymerTestHelper {
     /**
      * @private
      */
-    static createElement(template, data) {
-        const root = document.createElement('dom-bind');
+    static createElement(template, data, target) {
+        const binding = document.createElement('dom-bind');
+        const container = document.createElement('div');
 
-        root.innerHTML = `<template><div class="test-root">${template}</div></template>`;
+        binding.innerHTML = `<template>${template}</template>`;
 
         if (data) {
-            Object.assign(root, data);
+            Object.assign(binding, data);
         }
 
-        document.body.appendChild(root);
+        container.appendChild(binding);
 
-        return document.body.querySelector('.test-root');
+        //The element may never be appended to the document body, so we force
+        //a render here to make sure the component is assertable
+        binding.render();
+
+        return container.firstChild;
     }
 
     /**
@@ -24,7 +29,7 @@ export default class PolymerTestHelper {
      */
     static assert(root, asserts = {}) {
         if (asserts.hasOwnProperty('html')) {
-            expect(root.innerHTML).toEqual(asserts.html);
+            expect(root.outerHTML).toEqual(asserts.html);
         }
     }
 

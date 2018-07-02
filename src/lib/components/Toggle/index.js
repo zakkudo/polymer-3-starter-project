@@ -26,8 +26,8 @@ export default class Toggle extends PolymerElement {
           :host {
               border: 1px solid gray;
               border-radius: 3px;
-              color: var(--default-fg);
-              background-color: var(--default-bg);
+              color: var(--default-fg, black);
+              background-color: var(--default-bg, white);
               user-select: none;
               -webkit-user-select: none;
               cursor: default;
@@ -38,8 +38,8 @@ export default class Toggle extends PolymerElement {
           }
 
           :host([active]) {
-              background-color: var(--primary-fg);
-              color: var(--primary-bg);
+              background-color: var(--primary-fg, blue);
+              color: var(--primary-bg, white);
           }
           </style>
           <span class="icon">✓</span>
