@@ -8,6 +8,7 @@
 - Yarn <https://yarnpkg.com>
 - Redux-Saga <https://redux-saga.js.org>
 - Karma <https://karma-runner.github.io/2.0/index.html>
+- Storybook <https://storybook.js.org>
 - Eslint <https://eslint.org>
 
 ## Demonstates:
@@ -25,14 +26,26 @@
 Bootstrap with
 `yarn install`
 
-Start with
+Start the project with a webserver with
 `yarn start`
-
-Build with
-`yarn build`
 
 Test with
 `yarn test`
 
-Document with
-`yarn documentation`
+Run continuous testing with
+`yarn continuous`
+
+Check test coverage with
+`yarn cover`
+
+Generate documenation with
+`yarn document`
+
+Demo with storybook with
+`yarn demo`
+
+Build everything (coverage, documentation, demo, project) with
+`yarn build`
+
+Clean the project with
+`yarn clean`

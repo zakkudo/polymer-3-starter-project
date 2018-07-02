@@ -93,7 +93,8 @@ module.exports = {
         })
     ],
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        open: true
     },
     stats: "errors-only",
 };

@@ -7446,6 +7446,16 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+open-browser-webpack-plugin@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/open-browser-webpack-plugin/-/open-browser-webpack-plugin-0.0.5.tgz#5e6dc6f8b8797331e212985de218572d84c0521f"
+  dependencies:
+    open "0.0.5"
+
+open@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/open/-/open-0.0.5.tgz#42c3e18ec95466b6bf0dc42f3a2945c3f0cad8fc"
+
 opn@5.3.0, opn@^5.1.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.3.0.tgz#64871565c863875f052cfdf53d3e3cb5adb53b1c"
