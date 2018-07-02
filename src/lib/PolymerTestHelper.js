@@ -1,15 +1,34 @@
 /**
- * @private
+ * A set of helper methods for assisting in testing Polymer components.
  */
 export default class PolymerTestHelper {
     /**
-     * @private
+     * Creates a dom node from the template, injecting the data
+     * for the dynamic attributes. There is a single forced
+     * render of the element, but if you want it to update
+     * due to changes in state, the returned node should probably
+     * be appended to the body's DOM.
+     * @param {DocumentFragment} template - Usually generate with polymer's
+     * html helper
+     * @param {Object} data - The data that is passed to the template element
+     * to be subbed in for the values.
+     * @return {HTMLElement} The rendered template
+     * @example
+     *  const template = html`
+     *      <z-toggle active="{{active}}" on-active-change="_handleActiveChange">
+     *            Test Content
+     *        </z-toggle>
+     *    `;
+     *  const root = Helper.createElement(template, {
+     *      active: true,
+     *      _handleActiveChange,
+     *  });
      */
-    static createElement(template, data, target) {
+    static createElement(template, data) {
         const binding = document.createElement('dom-bind');
         const container = document.createElement('div');
 
-        binding.innerHTML = `<template>${template}</template>`;
+        binding.appendChild(template);
 
         if (data) {
             Object.assign(binding, data);
@@ -17,15 +36,16 @@ export default class PolymerTestHelper {
 
         container.appendChild(binding);
 
-        //The element may never be appended to the document body, so we force
-        //a render here to make sure the component is assertable
         binding.render();
 
-        return container.firstChild;
+        return container.children[0];
     }
 
     /**
-     * @private
+     * Helper assert methods.  By defailt, the only included assert
+     * asserts the serialized html.
+     * @param {HTMLElement} root - The dom to assert
+     * @param {Object} asserts - Key value pairs of what you want ot assert.
      */
     static assert(root, asserts = {}) {
         if (asserts.hasOwnProperty('html')) {
@@ -34,7 +54,12 @@ export default class PolymerTestHelper {
     }
 
     /**
-     * @private
+     * When using a spy to test CustomEvent calls, this methods will
+     * map the CustomEvent to just the detail which is much more assertable
+     * and meaningful in most tests.
+     * @param {Object} call - The information when the spy was called.
+     * @return {Object} The mapped data to ony contain the contents of the
+     * detail.
      */
     static getDetail(call) {
         return call.args[0].detail;

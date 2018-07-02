@@ -1,6 +1,7 @@
 import '.';
 import '@polymer/polymer/lib/elements/dom-bind.js';
 import Helper from 'lib/PolymerTestHelper';
+import {html} from '@polymer/polymer/polymer-element.js';
 
 afterEach(() => {
     document.body.innerHTML = '';
@@ -8,7 +9,7 @@ afterEach(() => {
 
 describe('lib/components/Toggle', () => {
     it('renders child content', () => {
-        const template = '<z-toggle>Test Text</z-toggle>';
+        const template = html`<z-toggle>Test Text</z-toggle>`;
         const handleActiveChange = jasmine.createSpy('handleActiveChange');
         const root = Helper.createElement(template, {handleActiveChange});
 
@@ -18,7 +19,7 @@ describe('lib/components/Toggle', () => {
     });
 
     it('renders active when set to true', () => {
-        const template = '<z-toggle active="true">Test Text</z-toggle>';
+        const template = html`<z-toggle active="true">Test Text</z-toggle>`;
         const handleActiveChange = jasmine.createSpy('handleActiveChange');
         const root = Helper.createElement(template, {
             active: true,
@@ -31,7 +32,7 @@ describe('lib/components/Toggle', () => {
     });
 
     it('renders active when set to true', () => {
-        const template = '<z-toggle active>Test Text</z-toggle>';
+        const template = html`<z-toggle active>Test Text</z-toggle>`;
         const handleActiveChange = jasmine.createSpy('handleActiveChange');
         const root = Helper.createElement(template, {handleActiveChange});
 
@@ -41,7 +42,7 @@ describe('lib/components/Toggle', () => {
     });
 
     it('renders active when set to false', () => {
-        const template = '<z-toggle active="[[active]]">Test Text</z-toggle>';
+        const template = html`<z-toggle active="[[active]]">Test Text</z-toggle>`;
         const handleActiveChange = jasmine.createSpy('handleActiveChange');
         const root = Helper.createElement(template, {
             label: 'Text Text',
@@ -55,7 +56,7 @@ describe('lib/components/Toggle', () => {
     });
 
     it('clicking a non-actve toggle requests it to become active', () => {
-        const template = '<z-toggle active on-active-change="handleActiveChange">Test Text</z-toggle>';
+        const template = html`<z-toggle active on-active-change="handleActiveChange">Test Text</z-toggle>`;
         const handleActiveChange = jasmine.createSpy('handleActiveChange');
         const root = Helper.createElement(template, {handleActiveChange});
 
@@ -70,7 +71,7 @@ describe('lib/components/Toggle', () => {
     });
 
     it('clicking a actve toggle requests it to become non-active', () => {
-        const template = '<z-toggle on-active-change="handleActiveChange">Test Text</z-toggle>';
+        const template = html`<z-toggle on-active-change="handleActiveChange">Test Text</z-toggle>`;
         const handleActiveChange = jasmine.createSpy('handleActiveChange');
         const root = Helper.createElement(template, {handleActiveChange});
 

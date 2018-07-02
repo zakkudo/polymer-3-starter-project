@@ -1,19 +1,21 @@
+import {html} from '@polymer/polymer/polymer-element.js';
+
 import Helper from 'lib/PolymerTestHelper';
 import {storiesOf} from '@storybook/html';
-import {decorateAction} from '@storybook/addon-actions';
+import {action} from '@storybook/addon-actions';
 
 import '.';
 import '@polymer/polymer/lib/elements/dom-bind.js';
 
-const _handleActiveChange = decorateAction([
-  (request) => {
-      return {request, value: request[1].active};
-  },
-])('on-active-change');
+const _handleActiveChange = action('on-active-change');
 
 storiesOf('Toogle', module)
     .add('inactive', () => {
-        const template = `<z-toggle on-active-change="_handleActiveChange">Test Content</z-toggle>`;
+        const template = html`
+            <z-toggle on-active-change="_handleActiveChange">
+                Test Content
+            </z-toggle>
+        `;
         const root = Helper.createElement(template, {
             _handleActiveChange,
         });
@@ -21,7 +23,11 @@ storiesOf('Toogle', module)
         return root;
     })
     .add('active', () => {
-        const template = `<z-toggle active="{{active}}" on-active-change="_handleActiveChange">Test Content</z-toggle>`;
+        const template = html`
+            <z-toggle active="{{active}}" on-active-change="_handleActiveChange">
+                Test Content
+            </z-toggle>
+        `;
         const root = Helper.createElement(template, {
             active: true,
             _handleActiveChange,
