@@ -3,6 +3,7 @@ const webpackConfig = require('../webpack.config.js');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
 const OpenBrowserWebpackPlugin = require('open-browser-webpack-plugin');
+const JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
 
 // Export a function. Accept the base config as the only param.
 module.exports = (storybookBaseConfig, configType) => {
@@ -31,6 +32,12 @@ module.exports = (storybookBaseConfig, configType) => {
             from: 'node_modules/@webcomponents/webcomponentsjs',
             to: storybookBaseConfig.output.path + '/webcomponentsjs/'
         }])
+    );
+
+    storybookBaseConfig.plugins.push(
+        new JsDocWebpackPlugin({
+            conf: './jsdoc.config.json'
+        })
     );
 
     storybookBaseConfig.plugins.push(

@@ -7,7 +7,8 @@ const path = require('path'),
     UglifyJSWebpackPlugin = require('uglifyjs-webpack-plugin'),
     {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin'),
     program = path.basename(process.argv[1]),
-    mode = program == 'webpack' ? 'production' : 'development';
+    mode = program == 'webpack' ? 'production' : 'development',
+    JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
 
 console.log('Webpack mode: ', mode);
 
@@ -66,6 +67,9 @@ module.exports = {
             //Needed for Firefox and Edge
             assets: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'],
             append: false
+        }),
+        new JsDocWebpackPlugin({
+            conf: './jsdoc.config.json'
         }),
         new BaseHrefWebpackPlugin({baseHref: '/'}),
         new WriteFileWebpackPlugin({
