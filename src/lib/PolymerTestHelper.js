@@ -85,6 +85,8 @@ function karmaToJest(files) {
 
 /**
  * A set of helper methods for assisting in testing Polymer components.
+ * None of these methods should ever be included in production code.
+ * @module lib/PolymerTestHelper
  */
 export default class PolymerTestHelper {
     /**
@@ -151,9 +153,33 @@ export default class PolymerTestHelper {
     }
 
 
+    /**
+     * Adds a tst pane to storybook for the current component
+     * @param {String} componentPath - The documentation module to include,
+     * like 'lib/componentsToggle'
+     * @return {*} The decorator information required for storybook
+     */
     static withTests(componentPath) {
         const normalized = componentPath.replace(/\//g, fractionSlash);
 
         return withTests(karmaToJest(testResults), {filesExt: ''})(normalized);
+    }
+
+    /**
+     * Adds relevant jsdoc documentation to the notes pane.
+     * @param {String} componentPath - The documentation module to include,
+     * like 'lib/componentsToggle'
+     * @return {Object} The response as expected from the
+     * <code>@storybook/plugin-notes</code> plugin.
+     */
+    static withDocumentation(componentPath) {
+        const normalizedPath = componentPath.replace(/\//g, '_');
+        const url = `documentation/module-${normalizedPath}.html`;
+        const styles = 'position: absolute; top: 0; left: 0; right: 0; ' +
+            'bottom: 0; border: 0; width: 100%; height: 100%;';
+
+        return {
+            notes: `<iframe src="${url}" style="${styles}"></iframe>`,
+        };
     }
 }

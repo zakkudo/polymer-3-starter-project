@@ -35,6 +35,7 @@
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jasmine": "^2.10.1",
     "eslint-plugin-polymer": "^0.2.1",
+    "extract-loader": "^2.0.1",
     "file-loader": "^1.1.11",
     "generate-json-webpack-plugin": "^0.3.1",
     "html-webpack-include-assets-plugin": "^1.0.4",

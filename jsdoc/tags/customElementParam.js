@@ -11,7 +11,7 @@ exports.defineTag = function(dictionary) {
 };
 
 exports.newDocletHandler = function(e) {
-    if (e.doclet.customElement) {
+    if (e.doclet.customElement && !e.doclet.polymer) {
         e.doclet.description += `<ul><li>Custom Element</li></ul>`;
     }
 }

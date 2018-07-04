@@ -28,6 +28,7 @@ exports.newDocletHandler = function(e) {
 
         if (e.doclet.customElement) {
             values.unshift('Polymer Element');
+            values.unshift('Custom Element');
         }
 
         if (values.length) {
