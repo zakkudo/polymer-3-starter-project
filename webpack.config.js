@@ -56,7 +56,8 @@ module.exports = {
     resolve: {
         alias: {
             Application: path.resolve(__dirname, 'src', 'Application'),
-            lib: path.resolve(__dirname, 'src', 'lib')
+            lib: path.resolve(__dirname, 'src', 'lib'),
+            testResults: path.resolve(__dirname, '.test-results.json')
         }
     },
     plugins: [

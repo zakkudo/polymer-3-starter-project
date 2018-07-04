@@ -6,4 +6,5 @@ yarn-error.log
 documentation
 coverage
 demo
-test-results.json
+.test-results.json
+*.tmp

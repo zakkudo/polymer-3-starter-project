@@ -1,3 +1,88 @@
+import testResults from 'testResults';
+import withTests from 'storybook-addon-jest';
+
+
+const fractionSlash = '⁄';
+
+/**
+ * @private
+ */
+function cleanupLog(log) {
+    return log.filter((l) => {
+        return !l.includes('<Jasmine>');
+    }).map((l) => {
+        return l.replace(/.*webpack:\/\/\/\.(.[^)]*)/, 'at ($1');
+    });
+}
+
+/**
+ * @private
+ */
+function toAssertionResults(tests) {
+    let suiteStatus;
+    let suiteStartTime = new Date().getTime();
+    let suiteEndTime = suiteStartTime;
+    const assertionResults = Object.keys(tests).map((testname) => {
+        const test = tests[testname];
+
+        if (!test.status) {
+            return null;
+        }
+
+        const fullName = testname;
+        const status = test.status.toLowerCase();
+        const startTime = suiteStartTime;
+        const endTime = suiteEndTime + test.time;
+        const failureMessages = cleanupLog(test.log);
+
+        if (!suiteStatus) {
+            suiteStatus = status;
+        } else if (status === 'failed') {
+            suiteStatus = status;
+        }
+
+        suiteEndTime = endTime;
+
+        return {
+            fullName,
+            status,
+            startTime,
+            failureMessages,
+            endTime,
+        };
+    }).filter((t) => t);
+
+    return {
+        status: suiteStatus || 'passed',
+        startTime: suiteStartTime,
+        endTime: suiteEndTime,
+        assertionResults,
+    };
+}
+
+/**
+ * @private
+ */
+function karmaToJest(files) {
+    return {
+        testResults: Object.keys(files).map((filename) => {
+            const tests = files[filename];
+            const {assertionResults, startTime, endTime, status} = toAssertionResults(tests);
+
+            return {
+                assertionResults,
+                'coverage': {},
+                endTime,
+                'message': 'TEST MESSAGE',
+                'name': filename.replace(/\//g, fractionSlash),
+                startTime,
+                status,
+                'summary': 'TEST SUMMARY',
+            };
+        }),
+    };
+}
+
 /**
  * A set of helper methods for assisting in testing Polymer components.
  */
@@ -63,5 +148,12 @@ export default class PolymerTestHelper {
      */
     static getDetail(call) {
         return call.args[0].detail;
+    }
+
+
+    static withTests(componentPath) {
+        const normalized = componentPath.replace(/\//g, fractionSlash);
+
+        return withTests(karmaToJest(testResults), {filesExt: ''})(normalized);
     }
 }

@@ -1,6 +1,8 @@
 const webpack = require('./webpack.config.js');
 
 module.exports = function(config) {
+    webpack.devtool = 'eval';
+
     config.set({
         basePath: '',
         frameworks: ['jasmine'],
@@ -11,12 +13,12 @@ module.exports = function(config) {
             'src/**/*.swp'
         ],
         preprocessors: {
-            'src/test.js': ['webpack']
+            'src/test.js': ['webpack', 'sourcemap']
         },
         webpack: webpack,
         reporters: ['progress', 'json-result'],
         jsonResultReporter: {
-            outputFile: "test-results.json",
+            outputFile: ".test-results.tmp.json",
             isSynchronous: true
         },
         colors: true,

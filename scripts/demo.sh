@@ -2,8 +2,10 @@
 
 set -e
 
+PROJECT_DIR=$(git rev-parse --show-toplevel)
 BIN_DIR=$(npm bin)
 STORYBOOK="$BIN_DIR/start-storybook"
 
-$STORYBOOK -p 6006
+echo '{}' > $PROJECT_DIR/.test-results.json
 
+$STORYBOOK -p 6006 -c $PROJECT_DIR/.demo "$@"
