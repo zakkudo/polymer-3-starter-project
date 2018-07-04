@@ -26,6 +26,10 @@ exports.newDocletHandler = function(e) {
             return list.join(' ');
         });
 
+        if (e.doclet.customElement) {
+            values.unshift('Polymer Element');
+        }
+
         if (values.length) {
             e.doclet.description += `<ul><li>${values.join('</li><li>')}</li></ul>`;
         }
