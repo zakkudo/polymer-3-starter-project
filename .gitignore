@@ -7,4 +7,5 @@ documentation
 coverage
 demo
 .test-results.json
+.test-results.tmp.json
 *.tmp

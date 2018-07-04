@@ -57,7 +57,8 @@ module.exports = {
         alias: {
             Application: path.resolve(__dirname, 'src', 'Application'),
             lib: path.resolve(__dirname, 'src', 'lib'),
-            testResults: path.resolve(__dirname, '.test-results.json')
+            testResults: path.resolve(__dirname, '.test-results.json'),
+            documentation: path.resolve(__dirname, 'documentation')
         }
     },
     plugins: [
@@ -69,9 +70,11 @@ module.exports = {
             assets: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'],
             append: false
         }),
+        /*
         new JsDocWebpackPlugin({
             conf: './jsdoc.config.json'
         }),
+        */
         new BaseHrefWebpackPlugin({baseHref: '/'}),
         new WriteFileWebpackPlugin({
         }),

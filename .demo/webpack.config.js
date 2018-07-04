@@ -12,7 +12,7 @@ module.exports = (storybookBaseConfig, configType) => {
     module.rules = webpackConfig.module.rules;
 
     module.rules.push({
-        test: /stories\.js?$/,
+        test: /story\.js?$/,
         loaders: [require.resolve('@storybook/addon-storysource/loader')],
         enforce: 'pre',
     });

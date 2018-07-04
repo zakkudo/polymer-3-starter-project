@@ -12,7 +12,7 @@ module.exports = (storybookBaseConfig, configType) => {
     module.rules = webpackConfig.module.rules;
 
     module.rules.push({
-        test: /stories\.js?$/,
+        test: /story\.js?$/,
         loaders: [require.resolve('@storybook/addon-storysource/loader')],
         enforce: 'pre',
     });
@@ -35,10 +35,19 @@ module.exports = (storybookBaseConfig, configType) => {
     );
 
     storybookBaseConfig.plugins.push(
+        new CopyWebpackPlugin([{
+            from: 'documentation',
+            to: storybookBaseConfig.output.path + '/documentation/'
+        }])
+    );
+
+    /*
+    storybookBaseConfig.plugins.push(
         new JsDocWebpackPlugin({
             conf: './jsdoc.config.json'
         })
     );
+    */
 
     storybookBaseConfig.plugins.push(
         new OpenBrowserWebpackPlugin({ url: 'http://localhost:6006' })

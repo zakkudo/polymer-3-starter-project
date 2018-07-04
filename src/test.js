@@ -1,7 +1,7 @@
 const lib = require.context('./lib', true, /\.js$/);
 
 function filter(k) {
-    return !k.endsWith('stories.js');
+    return !k.endsWith('story.js');
 }
 
 lib.keys().filter(filter).forEach(lib);
