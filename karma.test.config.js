@@ -3,6 +3,11 @@ const webpack = require('./webpack.config.js');
 module.exports = function(config) {
     webpack.devtool = 'eval';
 
+    webpack.module.rules.push({
+        test: /\.md$/,
+        use: 'null-loader'
+    });
+
     config.set({
         basePath: '',
         frameworks: ['jasmine'],

@@ -16,6 +16,11 @@ module.exports = function(config) {
         exclude: [/node_modules/, /test.js$/, 'test-results'],
     });
 
+    webpack.module.rules.push({
+        test: /\.md$/,
+        use: 'null-loader'
+    });
+
     config.set({
         webpack: webpack,
         preprocessors: {

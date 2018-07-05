@@ -10,8 +10,6 @@ const path = require('path'),
     mode = program == 'webpack' ? 'production' : 'development',
     JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
 
-console.log('Webpack mode: ', mode);
-
 module.exports = {
     devtool: 'source-map',
     mode: mode,
