@@ -18,7 +18,7 @@ function parse(data, options, self) {
     }
 }
 
-export default class Api {
+export default class ApiTree {
     constructor(config, options) {
         return parse(config, options, this);
     }

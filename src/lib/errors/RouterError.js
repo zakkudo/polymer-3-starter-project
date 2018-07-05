@@ -14,4 +14,11 @@ export default class RouterError extends Error {
             this.code = code;
         }
     }
+
+    /**
+     * @private
+     */
+    toString() {
+        return `Error ${this.code}: ${this.message}`;
+    }
 }
