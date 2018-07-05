@@ -3,10 +3,6 @@ import '@polymer/polymer/lib/elements/dom-bind.js';
 import Helper from 'lib/PolymerTestHelper';
 import {html} from '@polymer/polymer/polymer-element.js';
 
-afterEach(() => {
-    document.body.innerHTML = '';
-});
-
 describe('lib/components/Toggle', () => {
     it('renders child content', () => {
         const template = html`<z-toggle>Test Text</z-toggle>`;

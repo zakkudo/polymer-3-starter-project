@@ -72,6 +72,17 @@ export default class PolymerTestHelper {
         if (asserts.hasOwnProperty('html')) {
             expect(root.outerHTML).toEqual(asserts.html);
         }
+
+        if (asserts.hasOwnProperty('properties')) {
+            Object.keys(asserts.properties).forEach((selector) => {
+                const element = root.shadowRoot.querySelector(selector);
+                const actual = Object.keys(asserts.properties[selector]).reduce((accumulator, k) => {
+                    return Object.assign(accumulator, {[k]: element.get(k)});
+                }, {});
+
+                expect(actual).toEqual(asserts.properties[selector]);
+            });
+        }
     }
 
     /**

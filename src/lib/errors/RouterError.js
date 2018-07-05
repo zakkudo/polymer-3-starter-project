@@ -10,9 +10,7 @@ export default class RouterError extends Error {
     constructor(message, fileName, lineNumber, code) {
         super(message, fileName, lineNumber);
 
-        if (code) {
-            this.code = code;
-        }
+        this.code = String(code || "-1");
     }
 
     /**

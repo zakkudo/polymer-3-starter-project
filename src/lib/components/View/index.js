@@ -14,7 +14,10 @@ export default class View extends PolymerElement {
      * rendering the contents of the component.
      */
     static get template() {
-        return html`<uirouter-uiview></uirouter-uiview>`;
+        return html`
+            <uirouter-uiview name=[[name]] component=[[component]]>
+            </uirouter-uiview>
+        `;
     }
 
     /**
