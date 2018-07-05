@@ -1,8 +1,9 @@
-import shallowResolveObject from './shallowResolveObject';
+import shallowResolve from './shallowResolve';
+import NotImplementedError from 'lib/errors/NotImplementedError';
 
-describe('lib/shallowResolveObject', () => {
-    it('resovles all of the sub-requests into an object', () => {
-        const promise = shallowResolveObject({
+describe('lib/shallowResolve', () => {
+    it('resolves all of the sub-requests into an object', () => {
+        const promise = shallowResolve({
             users: () => Promise.resolve([
                 'test user 1',
                 'test user 2',
@@ -30,7 +31,7 @@ describe('lib/shallowResolveObject', () => {
     });
 
     it('fails the resolve if one of the functions rejects', () => {
-        const promise = shallowResolveObject({
+        const promise = shallowResolve({
             users: () => Promise.reject(`Couldn't resolve users`),
             type: () => Promise.resolve('storage'),
             attributes: () => Promise.resolve({
@@ -41,5 +42,13 @@ describe('lib/shallowResolveObject', () => {
         return promise.catch((reason) => {
             expect(reason).toEqual(`Couldn't resolve users`);
         });
+    });
+
+    it('throws a NotImplementedError when receiving an array', () => {
+        return expect(() => {
+            shallowResolve([]);
+        }).toThrow(new NotImplementedError(
+            'Array functionality is not implemented yet for shallowResolve'
+        ));
     });
 });

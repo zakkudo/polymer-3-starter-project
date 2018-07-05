@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
 import RouterError from 'lib/errors/RouterError';
 import defer from 'lib/defer';
-import shallowResolveObject from 'lib/shallowResolveObject';
+import shallowResolve from 'lib/shallowResolve';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 import {pushStateLocationPlugin} from '@uirouter/core';
@@ -245,7 +245,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             const next = this._requestComponentFromTransition(transition)
                 .then((Component) => {
                 const {data, message} = this._getResolveInformation(Component);
-                const next = shallowResolveObject(data).then((_response) => {
+                const next = shallowResolve(data).then((_response) => {
                     const response = fromJS(_response);
 
                     setTimeout(() => {
