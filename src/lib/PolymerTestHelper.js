@@ -1,5 +1,5 @@
-import testResults from 'testResults';
 import withTests from 'storybook-addon-jest';
+import testResults from 'test-results';
 
 
 const fractionSlash = '⁄';

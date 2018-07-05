@@ -1,4 +1,4 @@
-import ReduxMixin from 'Application/ReduxMixin';
+import ReduxMixin from 'application/ReduxMixin';
 import actions from './actions';
 
 export default (Parent, saga, ...leftover) => {

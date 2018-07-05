@@ -12,3 +12,5 @@ rm -rf $PROJECT_DIR/documentation
 rm -rf $PROJECT_DIR/demo
 rm -f $PROJECT_DIR/.test-results.json
 rm -f $PROJECT_DIR/.test-results.tmp.json
+rm -f $PROJECT_DIR/jsdoc.*.conf.tmp
+rm -f $PROJECT_DIR/yarn-error.log

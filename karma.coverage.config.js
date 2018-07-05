@@ -13,7 +13,7 @@ module.exports = function(config) {
                 esModules: true,
             },
         },
-        exclude: [/node_modules/, /test.js$/],
+        exclude: [/node_modules/, /test.js$/, 'test-results'],
     });
 
     config.set({

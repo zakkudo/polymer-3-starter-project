@@ -8,4 +8,4 @@ STORYBOOK="$BIN_DIR/start-storybook"
 
 echo '{}' > $PROJECT_DIR/.test-results.json
 
-$STORYBOOK -p 6006 -c $PROJECT_DIR/.demo "$@"
+$STORYBOOK -p 6006 -c $PROJECT_DIR/.demo -s $PROJECT_DIR "$@"

@@ -1,6 +1,6 @@
 import '@polymer/polymer/lib/elements/dom-if';
 import '@polymer/polymer/lib/elements/dom-repeat';
-import 'Application/pages/ErrorPage';
+import 'application/pages/ErrorPage';
 import 'lib/components/Link';
 import 'lib/components/Router';
 import 'lib/components/Toggle';

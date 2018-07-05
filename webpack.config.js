@@ -31,6 +31,7 @@ module.exports = {
                 use: ["source-map-loader"],
                 enforce: "pre"
             },
+            /*
             {
                 test: /\.js$/,
                 exclude: /(node_modules)/,
@@ -38,6 +39,7 @@ module.exports = {
                     loader: 'babel-loader'
                 }
             },
+            */
             {
                 test:/\.css$/,
                 use:[MiniCssExtractPlugin.loader,'css-loader']
@@ -55,9 +57,9 @@ module.exports = {
     },
     resolve: {
         alias: {
-            Application: path.resolve(__dirname, 'src', 'Application'),
+            application: path.resolve(__dirname, 'src', 'Application'),
             lib: path.resolve(__dirname, 'src', 'lib'),
-            testResults: path.resolve(__dirname, '.test-results.json')
+            'test-results': path.resolve(__dirname, '.test-results.json')
         }
     },
     plugins: [

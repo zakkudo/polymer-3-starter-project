@@ -16,10 +16,12 @@ echo -e "\nBUILDING COVERAGE -------------------\n"
 $SCRIPT_DIR/cover.sh
 
 echo -e "\nBUILDING DEMO -------------------\n"
-$STORYBOOK -o demo
+$STORYBOOK -o $PROJECT_DIR/demo -c $PROJECT_DIR/.demo
 
 echo -e "\nBUILDING DOCUMENTATION -------------------\n"
 $SCRIPT_DIR/document.sh
+
+cp -rf $PROJECT_DIR/documentation $PROJECT_DIR/demo
 
 echo -e "\nBUILDING PROJECT -------------------\n"
 $WEBPACK
