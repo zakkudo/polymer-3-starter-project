@@ -3,8 +3,9 @@
 const fs = require('fs');
 const path = require('path');
 const watch = require('node-watch');
-const destinationPath = path.join(__dirname, '..', '.test-results.json');
-const sourcePath = path.join(__dirname, '..', '.test-results.tmp.json');
+const destinationPath = path.resolve(__dirname, '..', '.jest-test-results.json');
+const sourcePath = path.resolve(__dirname, '..', '.karma-test-results.json');
+const toJestTestResults = require('./toJestTestResults');
 
 if (!fs.existsSync(sourcePath)) {
     fs.writeFileSync(sourcePath, '{}', {encoding: 'utf8'});
@@ -14,27 +15,22 @@ if (!fs.existsSync(destinationPath)) {
     fs.writeFileSync(destinationPath, '{}', {encoding: 'utf8'});
 }
 
-function makeComparable(files) {
-    return Object(files) === files && Object.keys(files).sort().reduce((accumulator, filename) => {
-        const tests = files[filename];
+function makeComparable(contents = {}) {
+    const testResults = contents.testResults || {};
 
-        if (!Object(tests) === tests) {
-            return false;
-        }
+    return testResults.reduce((accumulator, suite) => {
+        const assertionResults = suite.assertionResults || [];
 
-        return accumulator.concat(Object.keys(tests).sort().map((testname) => {
-            const test = tests[testname];
-
-            if (!Object(test) === test || !test.hasOwnProperty('status')) {
-                return false;
-            }
-
+        return accumulator.concat(assertionResults.map((test) => {
+            const fullName = test.fullName;
             const status = test.status;
+            const failureMessages = test.failureMessages.join(':') || 'none';
 
-            return `${filename}:${testname}:${status}`;
+            return `${suite.name}:${fullName}:${status}:${failureMessages}`;
         }));
-    }, []).filter((t) => t).join(', ');
+    }, []).sort().join(', ');
 }
+
 
 watch(sourcePath, {recursive: false}, function(evt, name) {
     let sourceContents = '{}';
@@ -43,7 +39,7 @@ watch(sourcePath, {recursive: false}, function(evt, name) {
     let destinationComparable = '';
 
     try {
-        sourceContents = JSON.parse(String(fs.readFileSync(sourcePath)));
+        sourceContents = toJestTestResults(JSON.parse(String(fs.readFileSync(sourcePath))));
         sourceComparable = makeComparable(sourceContents);
     } catch (e) {
     }

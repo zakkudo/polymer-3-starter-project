@@ -1,87 +1,21 @@
 import withTests from 'storybook-addon-jest';
 import testResults from 'test-results';
-
+import Styles from 'lib/Styles';
 
 const fractionSlash = '⁄';
 
 /**
+ * storybook-addon-jest has some odd handling for slashes (using path.basename)
+ * that we work around by using something that looks like a slash so the
+ * string doesn't get modified.
+ * @param {String} filename - The module name which isn't actually a filename
+ * @return {String} The filename with the slashes converted to fraction slashes
  * @private
  */
-function cleanupLog(log) {
-    return log.filter((l) => {
-        return !l.includes('<Jasmine>');
-    }).map((l) => {
-        return l.replace(/.*webpack:\/\/\/\.(.[^)]*)/, 'at ($1');
-    });
+function normalizeFilenameSlashes(filename) {
+    return filename.replace(/\//g, fractionSlash);
 }
 
-/**
- * @private
- */
-function toAssertionResults(tests) {
-    let suiteStatus;
-    let suiteStartTime = new Date().getTime();
-    let suiteEndTime = suiteStartTime;
-    const assertionResults = Object.keys(tests).map((testname) => {
-        const test = tests[testname];
-
-        if (!test.status) {
-            return null;
-        }
-
-        const fullName = testname;
-        const status = test.status.toLowerCase();
-        const startTime = suiteStartTime;
-        const endTime = suiteEndTime + test.time;
-        const failureMessages = cleanupLog(test.log);
-
-        if (!suiteStatus) {
-            suiteStatus = status;
-        } else if (status === 'failed') {
-            suiteStatus = status;
-        }
-
-        suiteEndTime = endTime;
-
-        return {
-            fullName,
-            status,
-            startTime,
-            failureMessages,
-            endTime,
-        };
-    }).filter((t) => t);
-
-    return {
-        status: suiteStatus || 'passed',
-        startTime: suiteStartTime,
-        endTime: suiteEndTime,
-        assertionResults,
-    };
-}
-
-/**
- * @private
- */
-function karmaToJest(files) {
-    return {
-        testResults: Object.keys(files).map((filename) => {
-            const tests = files[filename];
-            const {assertionResults, startTime, endTime, status} = toAssertionResults(tests);
-
-            return {
-                assertionResults,
-                'coverage': {},
-                endTime,
-                'message': 'TEST MESSAGE',
-                'name': filename.replace(/\//g, fractionSlash),
-                startTime,
-                status,
-                'summary': 'TEST SUMMARY',
-            };
-        }),
-    };
-}
 
 /**
  * A set of helper methods for assisting in testing Polymer components.
@@ -154,19 +88,25 @@ export default class PolymerTestHelper {
 
 
     /**
-     * Adds a tst pane to storybook for the current component
+     * A storybook helper method. Adds a tst pane to storybook for the
+     * current component
      * @param {String} componentPath - The documentation module to include,
      * like 'lib/componentsToggle'
      * @return {*} The decorator information required for storybook
      */
     static withTests(componentPath) {
-        const normalized = componentPath.replace(/\//g, fractionSlash);
+        const normalized = normalizeFilenameSlashes(componentPath);
 
-        return withTests(karmaToJest(testResults), {filesExt: ''})(normalized);
+        ((testResults || {}).testResults || []).forEach((r) => {
+                r.name = normalizeFilenameSlashes(r.name);
+        });
+
+        return withTests(testResults, {filesExt: ''})(normalized);
     }
 
     /**
-     * Adds relevant jsdoc documentation to the notes pane.
+     * A storybook helper method. Adds relevant jsdoc documentation to the
+     * notes pane.
      * @param {String} componentPath - The documentation module to include,
      * like 'lib/componentsToggle'
      * @return {Object} The response as expected from the
@@ -175,8 +115,16 @@ export default class PolymerTestHelper {
     static withDocumentation(componentPath) {
         const normalizedPath = componentPath.replace(/\//g, '_');
         const url = `documentation/module-${normalizedPath}.html`;
-        const styles = 'position: absolute; top: 0; left: 0; right: 0; ' +
-            'bottom: 0; border: 0; width: 100%; height: 100%;';
+        const styles = new Styles({
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            border: 0,
+            width: '100%',
+            height: '100%',
+        });
 
         return {
             notes: `<iframe src="${url}" style="${styles}"></iframe>`,

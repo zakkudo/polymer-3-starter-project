@@ -31,7 +31,7 @@ module.exports = {
                 use: ["source-map-loader"],
                 enforce: "pre"
             },
-            /*
+            /* Babel isn't needed for current browsers
             {
                 test: /\.js$/,
                 exclude: /(node_modules)/,
@@ -59,7 +59,7 @@ module.exports = {
         alias: {
             application: path.resolve(__dirname, 'src', 'Application'),
             lib: path.resolve(__dirname, 'src', 'lib'),
-            'test-results': path.resolve(__dirname, '.test-results.json')
+            'test-results': path.resolve(__dirname, '.jest-test-results.json')
         }
     },
     plugins: [

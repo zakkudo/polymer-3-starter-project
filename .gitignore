@@ -6,6 +6,6 @@ yarn-error.log
 documentation
 coverage
 demo
-.test-results.json
-.test-results.tmp.json
+.karma-test-results.json
+.jest-test-results.json
 *.tmp

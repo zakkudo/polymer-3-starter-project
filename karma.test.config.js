@@ -18,7 +18,7 @@ module.exports = function(config) {
         webpack: webpack,
         reporters: ['progress', 'json-result'],
         jsonResultReporter: {
-            outputFile: ".test-results.tmp.json",
+            outputFile: ".karma-test-results.json",
             isSynchronous: true
         },
         colors: true,

@@ -7,6 +7,6 @@ SCRIPT_DIR="$PROJECT_DIR/scripts"
 BIN_DIR=$(npm bin)
 KARMA="$BIN_DIR/karma"
 
-echo '{}' > $PROJECT_DIR/.test-results.json
+echo '{}' > $PROJECT_DIR/.jest-test-results.json
 
 $KARMA start $PROJECT_DIR/karma.test.config.js --single-run "$@"
