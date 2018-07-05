@@ -20,6 +20,7 @@
 - Side effects with redux-saga
 - shadow dom
 - css variables
+- Babel is not requried for a modern web application
 
 ## Commands
 
