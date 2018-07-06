@@ -281,7 +281,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @param {Native.CustomEvent} e - Javascript Event
      */
     _handleStart(e) {
-        debugger;
         const transition = e.detail.transition;
         const {
             resolve,
@@ -313,7 +312,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @param {Native.CustomEvent} e - A javascript event
      */
     _handleFinish(e) {
-        debugger;
         delete this.transition;
     }
 }
