@@ -61,12 +61,6 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
         return 'z-application';
     }
 
-    _handlePageReducerChange(e) {
-        const {setPageReducer} = Application.actions;
-
-        this.dispatch(setPageReducer(e.detail.reducer));
-    }
-
     static get template() {
         return html`
             <style>

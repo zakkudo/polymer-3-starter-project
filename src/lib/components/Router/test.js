@@ -8,11 +8,10 @@ import defer from 'lib/defer';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 
+/**
+ * @private
+ */
 afterEach(() => {
-    const router = document.body.querySelector('z-router').shadowRoot.querySelector('uirouter-router');
-
-        //Hack to force the component to use the passed routes
-        router.states = {};
     document.body.innerHTML = '';
 });
 
@@ -41,6 +40,9 @@ export default class Dummy extends ImmutableMixin(PolymerElement) {
         return {};
     }
 
+    /**
+     * @private
+     */
     static get resolve() {
         return {
             message: 'Test Loading Message...',
@@ -53,7 +55,7 @@ export default class Dummy extends ImmutableMixin(PolymerElement) {
 
 customElements.define(Dummy.is, Dummy);
 
-fdescribe('lib/components/Router', () => {
+describe('lib/components/Router', () => {
     it('renders the component with resolve props when routes match', () => {
         const deferred = defer();
         const template = html`

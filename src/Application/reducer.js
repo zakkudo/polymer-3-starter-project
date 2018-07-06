@@ -17,15 +17,19 @@ export default function reducer(state = defaultState, action) {
         case actions.SET_PAGE_RESOLVE:
             return Object.assign(copy, {pageResolve: action.resolve});
         case actions.SET_PAGE_COMPONENT:
-            return Object.assign(copy, {pageComponent: action.component});
+            copy.pageComponent = action.component;
+            if (action.component && action.component.reducer) {
+                copy.page = {};
+            } else {
+                delete copy.page;
+            }
+            return copy;
     }
 
     if (pageReducer) {
         copy.page = pageReducer(copy.page, action);
 
         return copy;
-    } else if ((!pageReducer) && copy.page) {
-        delete copy.page;
     }
 
     return copy;
