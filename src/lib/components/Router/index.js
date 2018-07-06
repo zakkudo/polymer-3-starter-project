@@ -55,9 +55,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     static get properties() {
         return {
-            pageResolve: {
-                type: Immutable.Map,
-            },
+            pageResolve: Immutable.Map,
             errorMessageComponent: String,
             pageComponent: String,
             routes: {
@@ -127,7 +125,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                 url: '/{path:.*}',
                 error: {
                     'code': '404',
-                    'message': 'BOOM',
+                    'message': 'Not Found',
                 },
                 component: 'z-missing-route',
                 contents: this.errorMessageComponent,
@@ -283,6 +281,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @param {Native.CustomEvent} e - Javascript Event
      */
     _handleStart(e) {
+        debugger;
         const transition = e.detail.transition;
         const {
             resolve,
@@ -314,6 +313,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @param {Native.CustomEvent} e - A javascript event
      */
     _handleFinish(e) {
+        debugger;
         delete this.transition;
     }
 }

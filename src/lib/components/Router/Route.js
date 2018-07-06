@@ -40,12 +40,8 @@ export default class Route extends PolymerElement {
      */
     static get properties() {
         return {
-            component: {
-                type: String,
-            },
-            resolve: {
-                type: Immutable.Map,
-            },
+            component: String,
+            resolve: Immutable.Map,
         };
     }
 

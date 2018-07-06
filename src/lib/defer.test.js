@@ -22,8 +22,8 @@ describe('lib/defer', () => {
     });
 
     it('does not resolve or catch with no interaction', () => {
-        const thenFunc = jasmine.createSpy('then');
-        const catchFunc = jasmine.createSpy('catch');
+        const thenFunc = jasmine.createSpy();
+        const catchFunc = jasmine.createSpy();
         const deferred = defer();
         const promise = deferred.promise;
 

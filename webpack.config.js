@@ -39,6 +39,10 @@ module.exports = {
             },
             */
             {
+                test: /\.md$/,
+                use: 'null-loader'
+            },
+            {
                 test:/\.css$/,
                 use:[MiniCssExtractPlugin.loader,'css-loader']
             },
