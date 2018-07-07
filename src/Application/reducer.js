@@ -4,6 +4,20 @@ const defaultState = {
     'name': 'Polymer 3/Redux Demo Application',
 };
 
+function buildTitle(applicationName, component) {
+    const parts = [];
+
+    if (applicationName) {
+        parts.push(applicationName);
+    }
+
+    if (component && component.title) {
+        parts.push(component.title);
+    }
+
+    return parts.join(' | ');
+}
+
 /**
  * Application reducer.
  * @private
@@ -16,13 +30,25 @@ export default function reducer(state = defaultState, action) {
     switch (action.type) {
         case actions.SET_PAGE_RESOLVE:
             return Object.assign(copy, {pageResolve: action.resolve});
+        case actions.SET_PAGE_TITLE:
+            Object.assign(copy, {
+                pageTitle: action.title,
+                title: [state.name, action.title].filter((t) => t).join(' | '),
+            });
+
+            return copy;
         case actions.SET_PAGE_COMPONENT:
             copy.pageComponent = action.component;
+
             if (action.component && action.component.reducer) {
                 copy.page = {};
             } else {
                 delete copy.page;
             }
+
+            copy.title = buildTitle(state.name, copy.pageComponent);
+            delete copy.pageTitle;
+
             return copy;
     }
 

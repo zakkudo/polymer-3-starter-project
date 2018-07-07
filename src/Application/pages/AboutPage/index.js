@@ -7,6 +7,13 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
  */
 export default class AboutPage extends PolymerElement {
     /**
+     * The default page title
+     */
+    static get title() {
+        return 'About';
+    }
+
+    /**
      * @property {String} is - The HTML tag representing the component.
      */
     static get is() {

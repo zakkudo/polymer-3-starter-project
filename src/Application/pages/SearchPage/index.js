@@ -30,6 +30,13 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
     }
 
     /**
+     * The default page title
+     */
+    static get title() {
+        return 'Search';
+    }
+
+    /**
      * The page reducer.
      */
     static get reducer() {
@@ -121,9 +128,9 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
               </template>
           </div>
 
-            <p>
+          <p>
               Resolved users: [[users]]
-              </p>
+          </p>
       `;
     }
 }

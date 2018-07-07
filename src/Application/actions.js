@@ -42,4 +42,11 @@ export default new Actions({
             component,
         };
     },
+    /** Dynamically set the page title */
+    setPageTitle(title) {
+        return {
+            type: 'SET_PAGE_TITLE',
+            title,
+        };
+    },
 });

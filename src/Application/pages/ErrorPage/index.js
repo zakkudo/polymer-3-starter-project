@@ -9,8 +9,13 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
  * @polymer
  */
 export default class ErrorPage extends ImmutableMixin(PolymerElement) {
+    /**
+     * Converts an erorr code to a string
+     * @param {String} code - An http error code
+     * @return {String} A text representation of the code
+     */
     errorByCode(code) {
-        return  {
+        return {
             '-1': 'Internal Error',
             '400': 'Bad Request',
             '401': 'Unauthorized',
@@ -18,6 +23,13 @@ export default class ErrorPage extends ImmutableMixin(PolymerElement) {
             '404': 'Not Found',
             '500': 'Internal Server Error',
         }[code];
+    }
+
+    /**
+     * The default page title
+     */
+    static get title() {
+        return 'Oops! You weren\'t supposed to see this...';
     }
 
     /**

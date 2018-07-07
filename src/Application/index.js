@@ -46,6 +46,16 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
                     return state.pageResolve;
                 },
             },
+            'title': {
+                type: String,
+                statePath: (state) => {
+                    if (document.title !== state.title) {
+                        document.title = state.title;
+                    }
+
+                    return state.title;
+                },
+            },
         };
     }
 

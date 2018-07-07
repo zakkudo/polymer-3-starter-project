@@ -42,6 +42,7 @@ export function* resolve(action) {
         })));
         yield put(pageResolveRequestSucceeded(response));
     } catch (reason) {
+        yield put(setPageComponent(customElements.get(reason.fallbackComponent)));
         yield put(setPageResolve(fromJS({
             loading: false,
             error: reason,

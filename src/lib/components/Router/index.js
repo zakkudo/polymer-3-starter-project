@@ -185,6 +185,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         const reload = options.reload;
         const from = transition.from();
         const to = transition.to();
+        const fallbackComponent = this.errorMessageComponent;
 
         /**
          * @private
@@ -218,9 +219,17 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                     deferred.resolve(reason);
                 });
 
-                deferred.resolve({error: {message, code}});
+                deferred.resolve({
+                    error: {message, code},
+                });
 
-                throw new RouterError(message, fileName, lineNumber, code);
+                throw new RouterError(
+                    message,
+                    fileName,
+                    lineNumber,
+                    code,
+                    fallbackComponent
+                );
             };
         }
 

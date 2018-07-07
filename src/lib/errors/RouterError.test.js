@@ -5,11 +5,13 @@ describe('lib/RouterError', () => {
         const error = new RouterError(
             'test message',
             'test file name', 5,
-            'test code'
+            'test code',
+            'test-component'
         );
 
         expect(error.message).toEqual('test message');
         expect(error.code).toEqual('test code');
+        expect(error.fallbackComponent).toEqual('test-component');
         expect(String(error)).toEqual('Error test code: test message');
     });
 

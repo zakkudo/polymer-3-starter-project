@@ -7,10 +7,14 @@ export default class RouterError extends Error {
     /**
      * @private
      */
-    constructor(message, fileName, lineNumber, code) {
+    constructor(message, fileName, lineNumber, code, fallbackComponent) {
         super(message, fileName, lineNumber);
 
-        this.code = String(code || "-1");
+        if (fallbackComponent) {
+            this.fallbackComponent = fallbackComponent;
+        }
+
+        this.code = String(code || '-1');
     }
 
     /**
