@@ -7,6 +7,7 @@ import ImmutableMixin from 'lib/ImmutableMixin';
 import defer from 'lib/defer';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
+import noop from 'lib/noop';
 
 /**
  * @private
@@ -186,7 +187,7 @@ describe('lib/components/Router', () => {
 
             next.then(() => {
                 deferred.reject('An exception should be thrown');
-            }).catch(() => {});
+            }).catch(noop);
 
             next.catch((reason) => {
                 const expected = new RouterError('test error', null, null, -1);
