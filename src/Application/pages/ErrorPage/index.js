@@ -39,6 +39,13 @@ export default class ErrorPage extends ImmutableMixin(PolymerElement) {
         return 'z-error-page';
     }
 
+    static get properties() {
+        return {
+            code: String,
+            message: String,
+        };
+    }
+
     /**
      * @property {Native.DocumentFragment} template - Template used for
      * rendering the contents of the component.
