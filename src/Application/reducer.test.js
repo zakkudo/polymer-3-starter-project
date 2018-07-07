@@ -67,17 +67,25 @@ describe('application/reducer', () => {
         });
     });
 
-    it('removes the page object if there is no page component', () => {
+    it('auto generates page object when setting component with reducer', () => {
+        const state = reducer({}, actions.setPageComponent(TestComponentWithReducer));
+
+        expect(state).toEqual({
+            pageComponent: TestComponentWithReducer,
+            page: {},
+            title: '',
+        });
+    });
+
+    it('removes the page object and pageTitle if there is no page component', () => {
         const state = reducer({
-            name: 'test application',
             page: {},
             pageTitle: 'test page title', // This should be cleared on new page load
         }, actions.setPageComponent(null));
 
         expect(state).toEqual({
             pageComponent: null,
-            title: 'test application',
-            name: 'test application',
+            title: '',
         });
     });
 
@@ -180,6 +188,19 @@ describe('application/reducer', () => {
             pageComponent: TestComponentWithTitle,
             title: '',
             pageTitle: null,
+        });
+    });
+
+    it('applies the page resolve', () => {
+        const state = reducer({
+            page: {data: 'test data'},
+            pageComponent: TestComponentWithTitle,
+        }, actions.setPageResolve('test resolve'));
+
+        expect(state).toEqual({
+            page: {data: 'test data'},
+            pageComponent: TestComponentWithTitle,
+            pageResolve: 'test resolve',
         });
     });
 });
