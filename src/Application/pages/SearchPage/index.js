@@ -1,15 +1,17 @@
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import {fromJS} from 'immutable';
-import ActionsMixin from './ActionsMixin';
+import ActionsMixin from 'lib/ActionsMixin';
+import actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
+import store from 'application/store';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {fromJS} from 'immutable';
 
 /**
  * @module Application/pages/SearchPage
  * @customElement
  * @polymer
  */
-export default class SearchPage extends ActionsMixin(PolymerElement, saga) {
+export default class SearchPage extends ActionsMixin(PolymerElement, {actions, saga, store}) {
     /**
      * @property {Object} properties - Public Properties.
      * @property {Immutable.List} properties.results - The search results of

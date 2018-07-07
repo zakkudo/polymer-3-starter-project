@@ -5,29 +5,28 @@ import 'lib/components/Link';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
 import 'lib/components/View';
-import ActionsMixin from './ActionsMixin';
+import ActionsMixin from 'lib/ActionsMixin';
 import Immutable from 'immutable';
+import actions from './actions';
 import routes from './routes';
 import saga from './saga';
+import store from './store';
 import {fromJS} from 'immutable';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-
 
 /**
  * Demo Application
  * @module Application
+ * @appliesMixin lib/ActionsMixin
  * @customElement
  * @polymer
  */
-export default class Application extends ActionsMixin(PolymerElement, saga) {
+export default class Application extends ActionsMixin(PolymerElement, {actions, store, saga}) {
     /**
      * @property {Object} properties - Public Properties.
-     * @property {Immutable.List} properties.routes - The router configuration
-     * for the application
-     * @property {Polymer.PolymerElement} properties.pageComponent - The current page
-     * to show.
-     * @property {Function} properties.pageResolve - The current page resolve,
-     * passing data to the pageComponent.
+     * @property {Immutable.List} properties.routes - The router configuration for the application
+     * @property {Polymer.PolymerElement} properties.pageComponent - The current page to show.
+     * @property {Function} properties.pageResolve - The current page resolve, passing data to the pageComponent.
      */
     static get properties() {
         return {
@@ -50,6 +49,10 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
         };
     }
 
+    /**
+     * @private
+     * @param {CustomEvent} e - An html event
+     */
     _handleRequestPageResolve(e) {
         const {requestPageResolve} = Application.actions;
         const request = e.detail.resolve;
@@ -57,10 +60,17 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
         this.dispatch(requestPageResolve(request));
     }
 
+    /**
+     * @property {String} is - The HTML tag representing the component.
+     */
     static get is() {
         return 'z-application';
     }
 
+    /**
+     * @property {Native.DocumentFragment} template - Template used for
+     * rendering the contents of the component.
+     */
     static get template() {
         return html`
             <style>
@@ -104,7 +114,9 @@ export default class Application extends ActionsMixin(PolymerElement, saga) {
                 page-resolve="[[pageResolve]]"
                 on-request-page-resolve="_handleRequestPageResolve"></z-router>
 
-            <template is="dom-if" if="[[_getFromImmutable(pageResolve, 'loading')]]">
+            <template
+                is="dom-if"
+                if="[[_getFromImmutable(pageResolve, 'loading')]]">
                 <div class="loading-curtain">
                     [[_getFromImmutable(pageResolve, 'message')]].... [spinner]
                 </div>

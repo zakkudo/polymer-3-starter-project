@@ -1,14 +1,5 @@
-import {createStore, applyMiddleware, compose} from 'redux';
-import ImmutableMixin from 'lib/ImmutableMixin';
-import PolymerRedux from 'polymer-redux';
-import reducer from './reducer';
-import createSagaMiddleware from 'redux-saga';
+import ReduxMixin from 'lib/ReduxMixin';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer,
-    composeEnhancers(applyMiddleware(sagaMiddleware)));
-const ReduxMixin = PolymerRedux(store);
 const instances = new Map();
 
 /**
@@ -27,22 +18,24 @@ function cancel(key) {
  * @module Application/ReduxMixin
  * @polymer
  * @mixinFunction
- * @appliesMixin ReduxMixin
- * @appliesMixin ImmutableMixin
+ * @appliesMixin lib/ReduxMixin
  * @param {Polymer.PolymerElement} Parent - The class to augment
  * @param {Function} saga - A saga function to manage.
  * @return {Polymer.PolymerElement} The augmented class.
  */
-export default (Parent, saga) => {
-    return class SagaMixin extends ImmutableMixin(ReduxMixin(Parent)) {
+export default (Parent, {store, saga}) => {
+    return class SagaMixin extends ReduxMixin(Parent, {store}) {
         /**
          * @private
          */
         connectedCallback() {
+            const middleware = (store.middleware || {}).saga;
+
             super.connectedCallback();
-            if (saga) {
+
+            if (middleware && saga) {
                 cancel(this);
-                instances.set(this, sagaMiddleware.run(saga));
+                instances.set(this, middleware.run(saga));
             }
         }
 

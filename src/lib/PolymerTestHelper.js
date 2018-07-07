@@ -57,9 +57,15 @@ export default class PolymerTestHelper {
 
         container.appendChild(binding);
 
-        binding.render();
+        binding.connectedCallback();
 
-        return container.children[0];
+        const root = container.children[0];
+
+        if (root.connectedCallback) {
+            root.connectedCallback();
+        }
+
+        return root;
     }
 
     /**

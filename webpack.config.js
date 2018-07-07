@@ -8,7 +8,9 @@ const path = require('path'),
     {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin'),
     program = path.basename(process.argv[1]),
     mode = program == 'webpack' ? 'production' : 'development',
-    JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
+    JsDocWebpackPlugin = require('jsdoc-webpack4-plugin'),
+    CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
+
 
 module.exports = {
     devtool: 'source-map',
@@ -65,6 +67,7 @@ module.exports = {
         }
     },
     plugins: [
+        new CaseSensitivePathsWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Polymer with webpack'
         }),
