@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable';
+import NotImplementedError from 'lib/errors/NotImplementedError';
 
 function toJS(data) {
     return fromJS(data).toJS();
@@ -23,7 +24,7 @@ function cleanup({value, done}) {
         });
     }
 
-    return toJS(value);
+    throw new NotImplementedError();
 }
 
 export default class SagaTestHelper {
