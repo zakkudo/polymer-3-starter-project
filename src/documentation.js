@@ -87,9 +87,3 @@
  * @property {String} type - Indicator for the handling of the action
  */
 
-/**
- * @memberof Redux
- * @typedef Redux.ActionCreator
- * @return {Redux.Action}
- */
-
