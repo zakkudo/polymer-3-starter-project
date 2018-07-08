@@ -5,13 +5,11 @@ import {html} from '@polymer/polymer/polymer-element.js';
 describe('Application/pages/SearchPage', () => {
     it('renders', () => {
         const template = html`<z-search-page code="[[code]]" message="[[message]]"/>`;
-        const root = Helper.createElement(template, {
-            'message': 'Test Message',
-            'code': 'test search code',
-        });
+        const root = Helper.createElement(template);
+
+        // We purposefully dont assert very much for a component like this
 
         Helper.assert(root, {
-            hasContent: true,
             title: 'Search',
         });
     });
