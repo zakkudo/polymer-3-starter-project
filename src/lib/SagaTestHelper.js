@@ -10,6 +10,10 @@ function cleanup({value, done}) {
         return {done};
     }
 
+    if (Object(value) !== value) {
+        return value;
+    }
+
     if (value.CALL) {
         return toJS({
             CALL: {
@@ -53,7 +57,9 @@ export default class SagaTestHelper {
     }
 
     static assert(results, expected) {
-        expect(results.map(cleanup)).toEqual(expected);
+        const actual = results.map(cleanup);
+
+        expect(actual).toEqual(expected);
     }
 }
 

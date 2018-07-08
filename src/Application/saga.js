@@ -32,22 +32,24 @@ export function* resolve(action) {
             chain = yield next;
         }
 
-        const {Component, message, response} = chain;
+        const {Component = null, message = null, response = null} = chain;
 
+        yield put(pageResolveRequestSucceeded({Component, response}));
         yield put(setPageComponent(Component));
-        yield put(setPageResolve(fromJS({
-            loading: false,
-            message,
-            response,
-        })));
-        yield put(pageResolveRequestSucceeded(response));
+        if (response) {
+            yield put(setPageResolve(fromJS({
+                loading: false,
+                message,
+                response,
+            })));
+        }
     } catch (reason) {
+        yield put(pageResolveRequestFailed(reason));
         yield put(setPageComponent(customElements.get(reason.fallbackComponent)));
         yield put(setPageResolve(fromJS({
             loading: false,
             error: reason,
         })));
-        yield put(pageResolveRequestFailed(reason));
     }
 }
 
