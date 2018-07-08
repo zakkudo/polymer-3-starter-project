@@ -17,9 +17,9 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 /**
  * Demo Application
  * @module Application
- * @appliesMixin lib/ActionsMixin
  * @customElement
  * @polymer
+ * @appliesMixin lib/ActionsMixin
  */
 export default class Application extends ActionsMixin(PolymerElement, {actions, store, saga}) {
     /**

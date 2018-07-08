@@ -20,6 +20,8 @@ function buildTitle(applicationName, component) {
 
 /**
  * Application reducer.
+ * @redux
+ * @reduxReducer
  * @private
  */
 export default function reducer(state = defaultState, action) {

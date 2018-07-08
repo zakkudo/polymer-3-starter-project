@@ -1,6 +1,8 @@
 import actions from './actions';
 
 /**
+ * @redux
+ * @reduxReducer
  * @private
  */
 export default function reducer(state = {}, action) {

@@ -24,8 +24,4 @@ exports.defineTag = function(dictionary) {
 };
 
 exports.newDocletHandler = function(e) {
-    const parameters = e.doclet.mixinFunctions;
-    if (parameters) {
-        e.doclet.description = `Mixin Function for augmenting functionality of the class passed ot it.`;
-    }
 }

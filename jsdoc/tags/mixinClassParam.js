@@ -24,8 +24,4 @@ exports.defineTag = function(dictionary) {
 };
 
 exports.newDocletHandler = function(e) {
-    const parameters = e.doclet.mixinClasss;
-    if (parameters) {
-        e.doclet.description = `Mixin Class holding functionality for augmentation.`;
-    }
 }
