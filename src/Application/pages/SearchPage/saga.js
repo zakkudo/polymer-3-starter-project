@@ -3,7 +3,7 @@ import actions from './actions';
 import {fromJS} from 'immutable';
 import Page from '.';
 
-function* search(query) {
+export function* search(query) {
     const {
         searchRequestSucceeded,
         searchRequestFailed,
@@ -17,7 +17,7 @@ function* search(query) {
         yield put(searchRequestSucceeded(body));
         yield put(setResults(body.get('hits')));
     } catch (reason) {
-        yield put(searchRequestFailed(fromJS(reason)));
+        yield put(searchRequestFailed(reason));
     }
 }
 
