@@ -35,7 +35,7 @@ describe('Application/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'PAGE_RESOLVE_REQUEST_SUCCEEDED',
+                        type: '@APPLICATION/PAGE_RESOLVE_REQUEST_SUCCEEDED',
                         response: {
                             Component: {
                                 resolve: {
@@ -49,7 +49,7 @@ describe('Application/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'SET_PAGE_COMPONENT',
+                        type: '@APPLICATION/SET_PAGE_COMPONENT',
                         component: {'resolve': {'message': 'test message'}},
                     },
                 },
@@ -81,7 +81,7 @@ describe('Application/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'SET_PAGE_RESOLVE',
+                        type: '@APPLICATION/SET_PAGE_RESOLVE',
                         resolve: {
                             loading: true,
                             message: 'test first message',
@@ -93,7 +93,7 @@ describe('Application/saga', () => {
             {
                 PUT: {
                     action: {
-                        type: 'PAGE_RESOLVE_REQUEST_SUCCEEDED',
+                        type: '@APPLICATION/PAGE_RESOLVE_REQUEST_SUCCEEDED',
                         response: {
                             Component: 'test component',
                             response: 'test response',
@@ -103,14 +103,14 @@ describe('Application/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'SET_PAGE_COMPONENT',
+                        type: '@APPLICATION/SET_PAGE_COMPONENT',
                         component: 'test component',
                     },
                 },
             }, {
                 PUT: {
                     action: {
-                        type: 'SET_PAGE_RESOLVE',
+                        type: '@APPLICATION/SET_PAGE_RESOLVE',
                         resolve: {
                             loading: false,
                             message: 'test next message',
@@ -143,7 +143,7 @@ describe('Application/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'PAGE_RESOLVE_REQUEST_FAILED',
+                        type: '@APPLICATION/PAGE_RESOLVE_REQUEST_FAILED',
                         reason: new RouterError(
                             'test error',
                             'test filename',
@@ -156,14 +156,14 @@ describe('Application/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'SET_PAGE_COMPONENT',
+                        type: '@APPLICATION/SET_PAGE_COMPONENT',
                         component: TestApplicationSagaFallbackComponent,
                     },
                 },
             }, {
                 PUT: {
                     action: {
-                        type: 'SET_PAGE_RESOLVE',
+                        type: '@APPLICATION/SET_PAGE_RESOLVE',
                         resolve: {
                             loading: false,
                             error: new RouterError(

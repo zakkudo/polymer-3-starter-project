@@ -13,7 +13,13 @@ module.exports = function(config) {
                 esModules: true,
             },
         },
-        exclude: [/node_modules/, /test\.js$/, 'test-results', /PolymerTestHelper\.js/],
+        exclude: [
+            /node_modules/,
+            /test\.js$/,
+            'test-results', // Don't test test results
+            /\*TestHelper\.js/, // Don't test test helpers
+            /Application\/index.js/
+        ],
     });
 
     webpack.module.rules.push({

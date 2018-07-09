@@ -21,7 +21,7 @@ describe('Application/pages/SearchPage/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'SEARCH_REQUEST_SUCCEEDED',
+                        type: '@PAGE/SEARCH_REQUEST_SUCCEEDED',
                         response: {
                             hits: 'test response',
                         },
@@ -30,7 +30,7 @@ describe('Application/pages/SearchPage/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'SET_RESULTS',
+                        type: '@PAGE/SET_RESULTS',
                         results: 'test response',
                     },
                 },
@@ -52,7 +52,7 @@ describe('Application/pages/SearchPage/saga', () => {
             }, {
                 PUT: {
                     action: {
-                        type: 'SEARCH_REQUEST_FAILED',
+                        type: '@PAGE/SEARCH_REQUEST_FAILED',
                         reason: new Error('test failure'),
                     },
                 },
