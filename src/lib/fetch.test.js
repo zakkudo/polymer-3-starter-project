@@ -12,7 +12,7 @@ class Helper {
      */
     static assert(response, asserts) {
         if (asserts.hasOwnProperty('calls')) {
-            expect(fetchMock.calls.all().map((c) => c.args)).toEqual(asserts.calls);
+            expect(fetchMock.calls.all().map((c) => fromJS(c.args).toJS())).toEqual(asserts.calls);
         }
 
         if (asserts.hasOwnProperty('response')) {
@@ -21,7 +21,7 @@ class Helper {
     }
 }
 
-fdescribe('lib/fetch', () => {
+describe('lib/fetch', () => {
     beforeEach(() => {
         fetchMock = spyOn(window, 'fetch');
         fetchMock.and.returnValue(Promise.resolve({

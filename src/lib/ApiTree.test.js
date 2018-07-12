@@ -1,7 +1,7 @@
 import ApiTree from 'lib/ApiTree';
 import fetch from 'lib/fetch';
 
-fdescribe('lib/ApiTree', () => {
+describe('lib/ApiTree', () => {
     beforeEach(() => {
         fetch.and.returnValue(Promise.resolve('test response'));
     });

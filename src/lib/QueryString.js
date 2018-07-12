@@ -66,7 +66,19 @@ function encodeValue(value) {
  * @return {Object} The parsed data
  */
 function parseString(data) {
-    return data.split(/[;&]/g).map((p) => p.split('=')).filter(isValidPair).map(decodePair);
+    return data.replace(/^\?/, '')
+        .split(/[;&]/g)
+        .map((p) => p.split('='))
+        .filter(isValidPair)
+        .map(decodePair);
+}
+
+function getType(data) {
+    if (Object(data) === data && data.toString) {
+        return Object.prototype.toString.call(data).slice(8, -1);
+    }
+
+    return typeof data;
 }
 
 /**
@@ -75,7 +87,9 @@ function parseString(data) {
  * @return {Object} The parsed data
  */
 function parse(data) {
-    if (typeof data === 'string') {
+    if (data === undefined) {
+        return {};
+    } if (typeof data === 'string') {
         const parts = parseString(data);
 
         return parts.reduce((accumulator, [key, value]) => {
@@ -90,12 +104,12 @@ function parse(data) {
             return accumulator;
         }, {});
     } else if (Array.isArray(data)) {
-        throw new TypeError(`${typeof data} isn't an accepted constructor type`);
+        throw new TypeError(`${getType(data)} isn't an accepted constructor type`);
     } else if (data instanceof QueryString || Object(data) === data) {
         return data;
     }
 
-    throw new TypeError(`${typeof data} isn't an accepted constructor type`);
+    throw new TypeError(`${getType(data)} isn't an accepted constructor type`);
 }
 
 /**
@@ -117,18 +131,20 @@ export default class QueryString {
      * @return {String} The serialized representation of the QueryString
     */
     toString() {
-        const serialized = Object.keys(this).reduce((accumulator, k) => {
+        const keys = Object.keys(this);
+        const pairs = keys.reduce((accumulator, k) => {
             const value = this[k];
 
             if (Array.isArray(value)) {
                 return accumulator.concat(value.map((v) => [k, v]));
             }
 
-            return [k, value];
-        }, {}).map(encodePair).filter(isValidPair).map((p) => p.join('=')).join('&');
+            return accumulator.concat([[k, value]]);
+        }, []).map(encodePair).filter(isValidPair);
+        const serialized = pairs.map((p) => p.join('=')).join('&');
 
         if (serialized.length) {
-            return `&${serialized}`;
+            return `?${serialized}`;
         }
 
         return '';

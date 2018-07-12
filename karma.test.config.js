@@ -25,6 +25,7 @@ module.exports = function(config) {
             'src/test.js': ['webpack', 'sourcemap']
         },
         webpack: webpackConfig,
+        // Mutiple reports can make it look like the tests are running twice
         reporters: ['progress', 'json-result'],
         jsonResultReporter: {
             outputFile: ".karma-test-results.json",
