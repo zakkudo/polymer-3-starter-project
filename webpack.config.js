@@ -63,6 +63,8 @@ module.exports = {
         alias: {
             application: path.resolve(__dirname, 'src', 'Application'),
             lib: path.resolve(__dirname, 'src', 'lib'),
+            root: path.resolve(__dirname, 'src'),
+            mocks: path.resolve(__dirname, 'src', 'mocks'),
             'test-results': path.resolve(__dirname, '.jest-test-results.json')
         }
     },

@@ -1,12 +1,16 @@
-const webpack = require('./webpack.config.js');
+const path = require('path');
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config.js');
 
 module.exports = function(config) {
-    webpack.devtool = 'eval';
+    webpackConfig.devtool = 'eval';
 
-    webpack.module.rules.push({
-        test: /\.md$/,
-        use: 'null-loader'
-    });
+    // lib/fetch is mocked, but lib/fetch.js is not mocked to allow access
+    // to the original module.
+    webpackConfig.plugins.push(new webpack.NormalModuleReplacementPlugin(
+        /lib\/fetch$/,
+        path.resolve(__dirname, 'src', 'mocks', 'fetch.js')
+    ));
 
     config.set({
         basePath: '',
@@ -20,7 +24,7 @@ module.exports = function(config) {
         preprocessors: {
             'src/test.js': ['webpack', 'sourcemap']
         },
-        webpack: webpack,
+        webpack: webpackConfig,
         reporters: ['progress', 'json-result'],
         jsonResultReporter: {
             outputFile: ".karma-test-results.json",
