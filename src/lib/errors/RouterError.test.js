@@ -12,7 +12,7 @@ describe('lib/RouterError', () => {
         expect(error.message).toEqual('test message');
         expect(error.code).toEqual('test code');
         expect(error.fallbackComponent).toEqual('test-component');
-        expect(String(error)).toEqual('Error test code: test message');
+        expect(String(error)).toEqual('RouterError: test code test message');
     });
 
     it('fallsback to error code -1 when not supplied', () => {
@@ -23,6 +23,6 @@ describe('lib/RouterError', () => {
 
         expect(error.message).toEqual('test message');
         expect(error.code).toEqual('-1');
-        expect(String(error)).toEqual('Error -1: test message');
+        expect(String(error)).toEqual('RouterError: -1 test message');
     });
 });

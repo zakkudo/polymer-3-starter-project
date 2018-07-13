@@ -5,6 +5,6 @@ describe('lib/NotImplementedError', () => {
         const error = new NotImplementedError('test message');
 
         expect(error.message).toEqual('test message');
-        expect(String(error)).toEqual('Error: test message');
+        expect(String(error)).toEqual('NotImplementedError: test message');
     });
 });

@@ -6,17 +6,15 @@ import {fromJS} from 'immutable';
  * @module lib/ApiTree
  */
 export default class ApiTree {
-    constructor(tree, options = {}) {
-        this._setOptions(options);
-        Object.assign(this, this._parse(tree));
-    }
-
     /**
-     * Overwrite the default base options of the api tree.
-     * @param {Object} options - The new options
-     */
-    _setOptions(options) {
-        this._options = fromJS(options);
+     * @param {String} baseUrl - The url to concat with all paths
+     * @param {*} tree - The configuration tree for the apis
+     * @param {Object} options - Options that will be the default base init for fetch operations. Other inits are layered on top of this.
+    */
+    constructor(baseUrl, tree, options = {}) {
+        this.baseUrl = baseUrl || '';
+        this.options = fromJS(options);
+        Object.assign(this, this._parse(tree));
     }
 
     /**
@@ -27,11 +25,17 @@ export default class ApiTree {
      * @param {Object} args.options - An options object similar to what would be passed to fetch
      * @return {Function} A function with callable options to do an api call
      */
-    _generateFetchMethod([url, options]) {
+    _generateFetchMethod([pathname, endpointOptions]) {
         return (overrideOptions = {}) => {
-            const finalOptions = Object.assign(this._options.toJS(), options, overrideOptions);
+            const baseOptions = this.options.toJS();
+            const options = Object.assign(
+                baseOptions,
+                endpointOptions,
+                overrideOptions
+            );
+            const url = `${this.baseUrl}${pathname}`;
 
-            return fetch(url, finalOptions);
+            return fetch(url, options);
         };
     }
 

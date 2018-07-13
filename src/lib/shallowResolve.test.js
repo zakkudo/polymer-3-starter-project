@@ -40,7 +40,9 @@ describe('lib/shallowResolve', () => {
         });
 
         return promise.catch((reason) => {
-            expect(reason).toEqual(`Couldn't resolve users`);
+            expect(String(reason)).toEqual(
+                `Couldn't resolve users`
+            );
         });
     });
 

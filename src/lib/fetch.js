@@ -1,6 +1,7 @@
-import {fromJS} from 'immutable';
-import QueryString from 'lib/QueryString';
+import HttpError from 'lib/errors/HttpError';
 import Immutable from 'immutable';
+import QueryString from 'lib/QueryString';
+import {fromJS} from 'immutable';
 
 /**
  * Fetch config
@@ -93,6 +94,18 @@ function applyCustomOptions(url, init) {
     ];
 }
 
+function throwHttpErrors(response) {
+    return (payload) => {
+        if (!response.ok) {
+            const {status, statusText, headers, url} = response;
+
+            throw new HttpError(status, statusText, url, headers, payload);
+        }
+
+        return payload;
+    };
+}
+
 /**
  * A convenience wrapper for native fetch.
  * @param {String} url - The prefered url
@@ -106,10 +119,10 @@ export default function fetch(url, init = {}) {
 
         window.fetch(_url, _init.toJS()).then((response) => {
             if (contentTypeIsApplicationJson(_init)) {
-                return response.json();
+                return response.json().then(throwHttpErrors(response));
             }
 
-            return response.text();
+            return response.text().then(throwHttpErrors(response));
         }).then((response) => {
             return transformResponse.reduce(
                 (accumulator, fn) => fn(accumulator, _url, _init.toJS()),

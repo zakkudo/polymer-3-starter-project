@@ -1,12 +1,13 @@
 import fetch from './fetch.js';
 import {fromJS} from 'immutable';
+import MockTestHelper from 'lib/MockTestHelper';
 
 let fetchMock;
 
 /**
  * @private
  */
-class Helper {
+class Helper extends MockTestHelper {
     /**
      * @private
      */
@@ -21,14 +22,11 @@ class Helper {
     }
 }
 
-function toArgs(call) {
-    return fromJS(call.args).toJS();
-}
-
 describe('lib/fetch', () => {
     beforeEach(() => {
         fetchMock = spyOn(window, 'fetch');
         fetchMock.and.returnValue(Promise.resolve({
+            ok: true,
             json: () => Promise.resolve('test json response'),
             text: () => Promise.resolve('test text response'),
         }));
@@ -139,7 +137,7 @@ describe('lib/fetch', () => {
             transformResponse,
         }).then((response) => {
             expect(response).toEqual('test transformed response');
-            expect(transformResponse.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(transformResponse)).toEqual([[
                 'test text response',
                 'test url',
                 {},
@@ -161,13 +159,13 @@ describe('lib/fetch', () => {
             ],
         }).then((response) => {
             expect(response).toEqual('test second transformed response');
-            expect(firstTransformResponse.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(firstTransformResponse)).toEqual([[
                 'test text response',
                 'test url',
                 {},
             ]]);
 
-            expect(secondTransformResponse.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(secondTransformResponse)).toEqual([[
                 'test first transformed response',
                 'test url',
                 {},
@@ -183,11 +181,11 @@ describe('lib/fetch', () => {
             transformRequest,
         }).then((request) => {
             expect(request).toEqual('test text response');
-            expect(fetchMock.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(fetchMock)).toEqual([[
                 'test url',
                 {'test': 'test transformed request'},
             ]]);
-            expect(transformRequest.calls.all().map(toArgs)).toEqual([[{
+            expect(Helper.getCallArguments(transformRequest)).toEqual([[{
             }]]);
         });
     });
@@ -206,16 +204,16 @@ describe('lib/fetch', () => {
             ],
         }).then((request) => {
             expect(request).toEqual('test text response');
-            expect(fetchMock.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(fetchMock)).toEqual([[
                 'test url',
                 {'test': 'test second transformed request'},
             ]]);
 
-            expect(firstTransformRequest.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(firstTransformRequest)).toEqual([[
                 {},
             ]]);
 
-            expect(secondTransformRequest.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(secondTransformRequest)).toEqual([[
                 {test: 'test first transformed request'},
             ]]);
         });
@@ -227,7 +225,7 @@ describe('lib/fetch', () => {
                 'test': 'param',
             },
         }).then((response) => {
-            expect(fetchMock.calls.all().map(toArgs)).toEqual([[
+            expect(Helper.getCallArguments(fetchMock)).toEqual([[
                 'test url?test=param',
                 {},
             ]]);
@@ -240,7 +238,28 @@ describe('lib/fetch', () => {
                 'test': 'param',
             },
         }).catch((reason) => {
-            expect(reason).toEqual(new Error('Duplicate ? in URI'));
+            expect(String(reason)).toEqual(
+                'Error: Duplicate ? in URI'
+            );
+        });
+    });
+
+    it('throws an exception when ther is an http error', () => {
+        fetchMock.and.returnValue(Promise.resolve({
+            ok: false,
+            status: 'test status',
+            statusText: 'test status text',
+            url: 'test url',
+            json: () => Promise.resolve('test json response'),
+            text: () => Promise.resolve('test text response'),
+        }));
+
+        return fetch('test url').catch((reason) => {
+            expect(String(reason)).toEqual(
+                'HttpError: test status test status text <test url>'
+            );
+
+            expect(reason.response).toEqual('test text response');
         });
     });
 });

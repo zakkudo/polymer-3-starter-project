@@ -190,9 +190,10 @@ describe('lib/components/Router', () => {
             }).catch(noop);
 
             next.catch((reason) => {
-                const expected = new RouterError('test error', null, null, -1);
+                expect(String(reason)).toEqual(
+                    ''
+                );
 
-                expect(reason).toEqual(expected);
                 deferred.resolve();
             });
         });

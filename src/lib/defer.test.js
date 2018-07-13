@@ -18,7 +18,7 @@ describe('lib/defer', () => {
 
         deferred.reject('test reject');
 
-        return promise.catch((reason) => expect(reason).toBe('test reject'));
+        return promise.catch((reason) => expect(String(reason)).toBe('test reject'));
     });
 
     it('does not resolve or catch with no interaction', () => {
