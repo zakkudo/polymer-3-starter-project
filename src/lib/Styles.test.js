@@ -9,12 +9,13 @@ function toObject(instance) {
     return JSON.parse(JSON.stringify(instance));
 }
 
-describe('lib/Styles', () => {
+fdescribe('lib/Styles', () => {
     it('serializes an object with multiple values', () => {
         const styles = new Styles({'color': 'blue', 'width': 0});
 
         expect(toObject(styles)).toEqual({'color': 'blue', 'width': 0});
         expect(String(styles)).toEqual('color: blue; width: 0;');
+        expect(JSON.stringify(styles)).toEqual('{"color":"blue","width":0}');
     });
 
     it('serializes to an empty string when there are no values', () => {
@@ -22,6 +23,7 @@ describe('lib/Styles', () => {
 
         expect(toObject(styles)).toEqual({});
         expect(String(styles)).toEqual('');
+        expect(JSON.stringify(styles)).toEqual('{}');
     });
 
     it('serializes object with multiple values after construction', () => {
@@ -32,6 +34,7 @@ describe('lib/Styles', () => {
 
         expect(toObject(styles)).toEqual({'color': 'blue', 'width': 0});
         expect(String(styles)).toEqual('color: blue; width: 0;');
+        expect(JSON.stringify(styles)).toEqual('{"color":"blue","width":0}');
     });
 });
 
