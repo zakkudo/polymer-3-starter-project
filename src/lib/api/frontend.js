@@ -1,10 +1,11 @@
+import ApiTree from 'lib/ApiTree';
 
-export default {
+export default new ApiTree('', {
     version: {
         /**
          * @property {Function} api.frontent.version.get
         */
         get: ['/version.js'],
     },
-};
+});
 

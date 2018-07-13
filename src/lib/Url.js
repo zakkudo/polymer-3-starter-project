@@ -20,16 +20,17 @@ export default class Url {
      * @return {String} The string form of the url
      */
     toString() {
-        const pattern = /\/(:[^\S]+)/g;
+        const pattern = /\/(:[^/]+)/g;
         const query = new QueryString(this.params);
 
-        const url = this.url.replace(pattern, (match) => {
-            const param = query[match];
+        const url = this.url.replace(pattern, (m, match) => {
+            const key = match.substring(1);
+            const param = query[key];
 
-            if (query.hasOwnProperty(match) && param !== undefined) {
-                delete query[match];
+            if (query.hasOwnProperty(key) && param !== undefined) {
+                delete query[key];
 
-                return String(param);
+                return String(`/${param}`);
             }
 
             throw new UrlError(`No replacement exists for ${match} in the params`, this.url);

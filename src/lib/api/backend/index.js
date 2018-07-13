@@ -1,9 +1,10 @@
+import ApiTree from 'lib/ApiTree';
 import users from './users';
 
 /**
  * Apis for interacting with the backend
  * @module lib/api
  */
-export default {
-    users
-};
+export default new ApiTree('https://randomuser.me', {
+    users,
+});

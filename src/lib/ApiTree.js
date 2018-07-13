@@ -49,17 +49,17 @@ export default class ApiTree {
         // Assume is fetch configuration definition
         if (Array.isArray(data)) {
             return this._generateFetchMethod(data);
-        // Assume this is deeper in the tree
+        // If it's a function, bind ot the base object for convenience functions
+        } else if (typeof data === 'function') {
+            return data.bind(this);
+        // Otherwise we pass through
         } else if (Object(data) === data) {
             return Object.keys(data).reduce((accumulator, k) => {
                 return Object.assign(accumulator, {
                     [k]: this._parse(data[k]),
                 });
             }, {});
-        // If it's a function, bind ot the base object for convenience functions
-        } else if (typeof data === 'function') {
-            return data.bind(this);
-        // Otherwise we pass through
+        // Assume this is deeper in the tree
         } else {
             return data;
         }

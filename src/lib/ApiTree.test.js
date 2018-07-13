@@ -27,19 +27,25 @@ describe('lib/ApiTree', () => {
         });
     });
 
-    it('generates deep implied get', () => {
+    it('passes throught he convenience function', () => {
         const api = new ApiTree('https://backend/v1', {
-            get: ['/test/path'],
+            users: {
+                get: ['/users/:id'],
+                getSpecifically(options) {
+                    return api.users.get({'params': {'id': '1234'}});
+                },
+            },
         });
 
         expect(JSON.parse(JSON.stringify(api))).toEqual({
             baseUrl: 'https://backend/v1',
+            users: {},
             options: {},
         });
 
-        return api.get({'params': {id: '1234'}}).then((response) => {
+        return api.users.getSpecifically({'params': {id: '1234'}}).then((response) => {
             expect(Helper.getCallArguments(fetch)).toEqual([[
-                'https://backend/v1/test/path',
+                'https://backend/v1/users/:id',
                 {params: {id: '1234'}},
             ]]);
             expect(response).toEqual('test response');

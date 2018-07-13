@@ -1,4 +1,3 @@
-import ApiTree from 'lib/ApiTree';
 import api from 'lib/api';
 
 /**
@@ -12,12 +11,12 @@ export default {
      * Queries a list of users
      * @property {Function} api.backend.users.query
      */
-    query: ['https://randomuser.me/api/', {'method': 'GET'}],
+    query: ['/api'],
     /**
      * Convenience function to fetch the first 10 users
      * @property {Function} api.backend.users.queryFirstTenusers
      */
     queryFirstTenUsers() {
         return api.backend.users.query({params: {results: 10}});
-    }
-}
+    },
+};
