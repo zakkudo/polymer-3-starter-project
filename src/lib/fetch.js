@@ -3,37 +3,32 @@ import QueryString from 'lib/QueryString';
 import Immutable from 'immutable';
 
 /**
- * A convenience wrapper around native fetch. We might not actually
- * be using fetch for all you know...
- * @module lib/fetch
- * @param {String} url - A url to do the transaction
- * @param {FetchInit} [init] - Options to configure the type of transaction
+ * Fetch config
+ * @namepspace Fetch
+ * @typedef Fetch
+ * @see {@link https://developer.mozilla.org/docs/Web/API/Fetch_API}
  */
-    /*OPTIONS
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, cors, *same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, same-origin, *omit
-    headers: {
-        "Content-Type": "application/json; charset=utf-8",
-            // "Content-Type": "application/x-www-form-urlencoded",
-    },
-    redirect: "follow", // manual, *follow, error
-    referrer: "no-referrer", // no-referrer, *client
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
 
-
-    var myInit = { method: 'GET',
-        headers: {
-            'Content-Type': 'image/jpeg'
-        },
-        mode: 'cors',
-        cache: 'default' };
-    */
+/**
+ * Fetch Init
+ * @memberof Fetch
+ * @typedef {Object} Init
+ * @property {boolean} init.method - *GET, POST, PUT, DELETE, etc.
+ * @property {boolean} init.mode - no-cors, cors, *same-origin
+ * @property {boolean} init.cache - default, no-cache, reload, force-cache, only-if-cached
+ * @property {boolean} init.credentials - include, same-origin, *omit
+ * @property {boolean} init.headers - "application/json; charset=utf-8".
+ * @property {boolean} init.redirect - manual, *follow, error
+ * @property {boolean} init.referrer - no-referrer, *client
+ * @property {boolean} init.body - JSON.stringify(data), // body data type must match "Content-Type" header
+ * @property {boolean} init.params - Query params to be appended to the url. The url must not already have params.
+ * @property {boolean} init.transformRequest - Transforms for the request body.  When not supplied, it by default json serializes the contents if not a simple string.
+ * @property {boolean} init.transformResponse - Transform the response.
+ */
 
 function stringifyBody(init) {
-    if (init.has('body') && typeof init.get('body') !== 'string') {
-        return init.set('body', JSON.stringify(init.get('body').toJS()));
+    if (init.hasOwnProperty('body') && typeof init.body !== 'string') {
+        init.body = JSON.stringify(init.body);
     }
 
     return init;
@@ -45,7 +40,7 @@ function contentTypeIsApplicationJson(init) {
     return contentType.startsWith('application/json');
 }
 
-function toFetchInit(init = fromJS({})) {
+function toFetchInit(init) {
     let transformRequest = ensureImmutableList(init.get('transformRequest'));
     const blacklisted = new Set(['transformRequest', 'transformResponse', 'params']);
 
@@ -53,19 +48,15 @@ function toFetchInit(init = fromJS({})) {
         transformRequest = transformRequest.unshift(stringifyBody);
     }
 
-    return transformRequest.reduce(
+    return fromJS(transformRequest.reduce(
         (accumulator, fn) => fn(accumulator),
-        init.filter((value, key) => !blacklisted.has(key))
-    );
+        init.filter((value, key) => !blacklisted.has(key)).toJS()
+    ));
 }
 
 function ensureImmutableList(data) {
-    if (data === null) {
-        return null;
-    } else if (data === undefined) {
+    if (!data) {
         return fromJS([]);
-    } else if (Array.isArray(data)) {
-        return fromJS(data);
     } else if (data instanceof Immutable.List === false) {
         return fromJS([data]);
     }
@@ -77,11 +68,10 @@ function constructUrl(url, init) {
     const params = init.get('params');
 
     if (params && params.size) {
-        const serialized = new QueryString(params.toJS);
+        const serialized = new QueryString(params.toJS());
 
-        if (url.contains('?')) {
-            throw new UrlFormtError('Url cannot already contain a query string while ' +
-                            'query string is being passed to the fetch config.');
+        if (url.includes('?')) {
+            throw new Error('Duplicate ? in URI');
         }
 
         return `${url}${serialized}`;
@@ -90,20 +80,39 @@ function constructUrl(url, init) {
     return url;
 }
 
-export default function fetch(url, init = fromJS({})) {
-    const transformResponse = ensureImmutableList(init.get('transformResponse'));
-    const fetchArgs = [constructUrl(url, init), toFetchInit(init)];
+/**
+ * @private
+ */
+function applyCustomOptions(url, init) {
+    const _init = fromJS(init);
 
+    return [
+        constructUrl(url, _init),
+        toFetchInit(_init),
+        ensureImmutableList(_init.get('transformResponse')),
+    ];
+}
+
+/**
+ * A convenience wrapper for native fetch.
+ * @param {String} url - The prefered url
+ * @param {Fetch.Init} init - Options modifying the network call, mostly analogous to fetch
+ * @return {Promise} A promise that resolves to the response
+ * @module lib/fetch
+ */
+export default function fetch(url, init = {}) {
     return new Promise((resolve, reject) => {
-        window.fetch(...fetchArgs).then((response) => {
-            if (contentTypeIsApplicationJson(init)) {
+         const [_url, _init, transformResponse] = applyCustomOptions(url, init);
+
+        window.fetch(_url, _init.toJS()).then((response) => {
+            if (contentTypeIsApplicationJson(_init)) {
                 return response.json();
             }
 
             return response.text();
         }).then((response) => {
             return transformResponse.reduce(
-                (accumulator, fn) => fn(accumulator, fetchArgs),
+                (accumulator, fn) => fn(accumulator, _url, _init.toJS()),
                 response
             );
         }).then(resolve).catch(reject);
