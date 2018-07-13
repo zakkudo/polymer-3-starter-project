@@ -239,7 +239,7 @@ describe('lib/fetch', () => {
             },
         }).catch((reason) => {
             expect(String(reason)).toEqual(
-                'Error: Duplicate ? in URI'
+                'UrlError: Trying to add duplicate query param when already exists <test url?>'
             );
         });
     });

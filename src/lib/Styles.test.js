@@ -9,7 +9,7 @@ function toObject(instance) {
     return JSON.parse(JSON.stringify(instance));
 }
 
-fdescribe('lib/Styles', () => {
+describe('lib/Styles', () => {
     it('serializes an object with multiple values', () => {
         const styles = new Styles({'color': 'blue', 'width': 0});
 
