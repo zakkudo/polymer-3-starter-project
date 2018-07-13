@@ -1,4 +1,5 @@
 import ActionsMixin from 'lib/ActionsMixin';
+import api from 'lib/api';
 import actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
@@ -68,13 +69,13 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
         return {
             message: 'Resolving Users...',
             data: {
-                users: () => {
-                    return new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve('John Doe');
-                        }, 1000);
-                    });
-                },
+                users: () => new Promise((resolve, reject) => {
+                    setTimeout(() => { //Make the loading time more exciting!
+                        api.backend.users.query().then((response) => {
+                            resolve(response.join(', '));
+                        }).catch(reject);
+                    }, 1000);
+                }),
             },
         };
     }

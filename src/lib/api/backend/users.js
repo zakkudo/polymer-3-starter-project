@@ -11,7 +11,14 @@ export default {
      * Queries a list of users
      * @property {Function} api.backend.users.query
      */
-    query: ['/api'],
+    query: ['/api', {
+        transformResponse(response) {
+            debugger;
+            return response.results.map((r) => {
+                return `${r.name.first} ${r.name.last}`;
+            });
+        }
+    }],
     /**
      * Convenience function to fetch the first 10 users
      * @property {Function} api.backend.users.queryFirstTenusers

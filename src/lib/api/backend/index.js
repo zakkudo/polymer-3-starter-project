@@ -7,4 +7,8 @@ import users from './users';
  */
 export default new ApiTree('https://randomuser.me', {
     users,
+}, {
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });

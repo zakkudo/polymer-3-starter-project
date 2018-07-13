@@ -7,5 +7,9 @@ export default new ApiTree('', {
         */
         get: ['/version.js'],
     },
+}, {
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
