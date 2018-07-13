@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');
 
 module.exports = function(config) {
-    webpackConfig.devtool = 'eval';
+    webpackConfig.devtool = 'eval-source-map';
 
     // lib/fetch is mocked, but lib/fetch.js is not mocked to allow access
     // to the original module.

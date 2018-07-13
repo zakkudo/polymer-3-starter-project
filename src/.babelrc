@@ -7,6 +7,7 @@
         }]
     ],
     "plugins": [
+        "transform-undefined-to-void",
         "@babel/transform-runtime",
         "webpack-alias",
         "@babel/syntax-dynamic-import"
