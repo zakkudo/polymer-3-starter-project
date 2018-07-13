@@ -1,15 +1,16 @@
 import api from 'lib/api';
 
-/**
+/*
  * Used for manipulating backend users.
- * @namespace api
+ * @namespace
  * @property api.backend.users
  * @module lib/api
  */
 export default {
-    /**
+    /*
      * Queries a list of users
-     * @property {Function} api.backend.users.query
+     * @module lib/api
+     * @property {Object} api.backend.users.query
      */
     query: ['/api', {
         transformResponse(response) {
@@ -19,7 +20,7 @@ export default {
             });
         }
     }],
-    /**
+    /*
      * Convenience function to fetch the first 10 users
      * @property {Function} api.backend.users.queryFirstTenusers
      */

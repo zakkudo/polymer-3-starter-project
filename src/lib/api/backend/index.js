@@ -3,7 +3,9 @@ import users from './users';
 
 /**
  * Apis for interacting with the backend
- * @module lib/api
+ * @name lib/api
+ * @memberof module:lib/api
+ * @property {Object} api.backend - Backend api helpers
  */
 export default new ApiTree('https://randomuser.me', {
     users,

@@ -12,6 +12,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType SEARCH_REQUEST
+     * @instance
      * @param {Function} query - Search configuration controlly the results
      * @return {Redux.Action} The generated action
     */
@@ -27,6 +28,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType SEARCH_REQUEST_SUCCEEDED
+     * @instance
      * @param {Immutable.Map} response - The raw response of the executed action
      * @return {Redux.Action} The generated action
     */
@@ -42,6 +44,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType SEARCH_REQUEST_FAILED
+     * @instance
      * @param {Error} reason - The reason the request failed
      * @return {Redux.Action} The generated action
     */
@@ -56,6 +59,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType SET_RESULTS
+     * @instance
      * @param {Immutable.List} results - The search results
      * @return {Redux.Action} The generated action
     */

@@ -1,8 +1,11 @@
 {
 	"source": {
 		"includePattern": "src/.+\\.js?$",
-        "include": "src"
+        "include": "src",
+        "excludePattern": "(test.js|TestHelper.js)$"
+
 	},
+    "sourceType": "module",
     "tags": {
         "allowUnknownTags": false,
         "dictionaries": ["jsdoc", "closure"]

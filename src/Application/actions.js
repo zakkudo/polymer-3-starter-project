@@ -14,6 +14,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType REQUEST_PAGE_RESOLVE
+     * @instance
      * @param {Function} request - A method that should return a Promise
      * @return {Redux.Action} The generated action
     */
@@ -29,6 +30,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType PAGE_RESOLVE_REQUEST_SUCCEEDED
+     * @instance
      * @param {Immutable.Map} response - The raw response of the executed action
      * @return {Redux.Action} The generated action
     */
@@ -44,6 +46,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType PAGE_RESOLVE_REQUEST_FAILED
+     * @instance
      * @param {Error} reason - The reason the request failed
      * @return {Redux.Action} The generated action
     */
@@ -59,6 +62,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType SET_PAGE_RESOLVE
+     * @instance
      * @param {Immutable.Map} resolve - The resolved data for the page to use on initial load
      * @return {Redux.Action} The generated action
     */
@@ -73,6 +77,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType SET_PAGE_COMPONENT
+     * @instance
      * @param {PolymerElement} component - The component to use for page display
      * @return {Redux.Action} The generated action
     */
@@ -87,6 +92,7 @@ export default new Actions({
      * @redux
      * @reduxActionCreator
      * @reduxActionType SET_PAGE_TITLE
+     * @instance
      * @param {String} title - The new title for the page.  It will be joined with the application title.
      * @return {Redux.Action} The generated action
     */

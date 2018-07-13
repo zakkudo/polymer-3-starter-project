@@ -5,7 +5,7 @@ import {fromJS} from 'immutable';
 
 /**
  * Fetch config
- * @namepspace Fetch
+ * @namespace Fetch
  * @typedef Fetch
  * @see {@link https://developer.mozilla.org/docs/Web/API/Fetch_API}
  */
