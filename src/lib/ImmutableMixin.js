@@ -25,8 +25,9 @@ export default function ImmutableMixin(Parent) {
          * @param {String} searchKeyPath - A key path to use to get the value
          * @return {*} The value stored at the key or undefined
          */
-        _getInImmutable(instance, searchKeyPath) {
-            return instance.getIn(searchKeyPath);
+        _getInImmutable(instance, ...searchKeyPath) {
+            debugger;
+            return instance.getIn(searchKeyPath, searchKeyPath);
         }
         /**
          * Checks if a key exists in an immutable Map
@@ -44,7 +45,7 @@ export default function ImmutableMixin(Parent) {
          * existance
          * @return {Boolean} True if the key exists
          */
-        _hasInImmutable(instance, searchKeyPath) {
+        _hasInImmutable(instance, ...searchKeyPath) {
             return instance.hasIn(searchKeyPath);
         }
         /**

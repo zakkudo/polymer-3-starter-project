@@ -119,6 +119,9 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
                 <z-link to="/" reload>UI Home with forced reload</z-link>
             </li>
             <li>
+                <z-link to="/users/zach">Read data from url</z-link>
+            </li>
+            <li>
                 <z-link to="/about">UI About</z-link>
             </li>
             <li>

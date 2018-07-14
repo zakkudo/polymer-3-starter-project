@@ -125,9 +125,15 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         const _tail = this._tail || {};
         const _data = this._data || {};
         const routesByPattern = this.routesByPattern || fromJS({});
-        const activeRoute = routesByPattern.get(prefix);
+        const pattern = Object.keys(params).reduce((accumulator, k) => {
+            debugger;
+            return accumulator.replace(new RegExp(`\\b${params[k]}\\b`), `:${k}`);
+        }, prefix);
+        debugger;
+        const activeRoute = routesByPattern.get(pattern);
 
-        if (this._activeRoute !== activeRoute) {
+        debugger;
+        if (this._activeRoute !== activeRoute && (!activeRoute.exact || tail === '')) {
             this._activeRoute = activeRoute;
             this.requestResolve();
         }

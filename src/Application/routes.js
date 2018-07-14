@@ -11,10 +11,11 @@ function importPage(name) {
  * @private
  */
 export default [
-    {pattern: '/', component: importPage('SearchPage')},
-    {pattern: '/about', component: importPage('AboutPage')},
-    {pattern: '/fail', component: () => Promise.reject(new Error('This page failed to load because of some internal exception in the javascript but was handled gracefully'))},
-    {pattern: '/forbidden', component: () => Promise.reject(new HttpError(
+    {pattern: '/', exact: true, component: importPage('SearchPage')},
+    {pattern: '/users/:id', component: importPage('UserPage')},
+    {pattern: '/about', exact: true, component: importPage('AboutPage')},
+    {pattern: '/fail', exact: true, component: () => Promise.reject(new Error('This page failed to load because of some internal exception in the javascript but was handled gracefully'))},
+    {pattern: '/forbidden', exact: true, component: () => Promise.reject(new HttpError(
         403,
         'Forbidden',
         '',

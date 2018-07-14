@@ -131,6 +131,7 @@ export default class Route extends PolymerElement {
 
         element.addEventListener('title-change', this._handleTitleChange.bind(this));
 
+        debugger;
         data.keySeq().forEach((k) => {
             element.set(k, data.get(k));
         });
@@ -145,6 +146,7 @@ export default class Route extends PolymerElement {
     _componentChanged(component, resolve = fromJS({})) {
         const errorMessageComponent = this.errorMessageComponent;
         const title = this.title;
+        const match = this.match;
         const error = resolve.get('error');
         const response = resolve.get('response');
 
@@ -157,7 +159,7 @@ export default class Route extends PolymerElement {
         } else if (component !== this._component) {
             if (component && response) {
                 this._component = component;
-                this.setComponent(component, response.merge({title}));
+                this.setComponent(component, response.merge({title, match}));
             }
         }
     }
