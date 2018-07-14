@@ -1,6 +1,56 @@
+import HttpError from 'lib/errors/HttpError';
 import Immutable from 'immutable';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
+
+/**
+ * @private
+ * @param {String} message - A loading message.
+ * @throws {HttpError} The error in resolve format.
+ */
+function normalizeError(reason) {
+    debugger;
+    let message = null;
+    let status = null;
+
+    if (reason instanceof HttpError) {
+        return reason;
+    }
+
+    if (reason instanceof Error) {
+        return new HttpError(
+            -1,
+            'Internal Error',
+            '',
+            null,
+            reason.message
+        );
+
+        status = '-1';
+    } else if (typeof reason === 'string') {
+        return new HttpError(
+            -1,
+            'Internal Error',
+            '',
+            null,
+            reason
+        );
+    } else if (Object(reason) === reason) {
+        return new HttpError(
+            reason.status || 'Missing status error',
+            reason.statusText || '',
+            reason.url || '',
+            null,
+            reason.message || 'Missing error message'
+        );
+    }
+
+    return new HttpError(
+        status,
+        message
+    );
+}
+
 
 
 /**
@@ -51,7 +101,7 @@ export default class Route extends PolymerElement {
      */
     static get observers() {
         return [
-            '_componentChanged(component)',
+            '_componentChanged(component, resolve)',
             '_titleChanged(title)',
             '_matchChanged(match)',
         ];
@@ -94,24 +144,24 @@ export default class Route extends PolymerElement {
         });
     }
 
-    _componentChanged() {
-        const component = this.component;
+    _componentChanged(component, resolve = fromJS({})) {
+        debugger;
         const errorMessageComponent = this.errorMessageComponent;
-        const resolve = this.resolve || fromJS({});
         const title = this.title;
         const error = resolve.get('error');
         const response = resolve.get('response');
 
+        debugger;
         if (error && errorMessageComponent) {
+            debugger;
+            this._component = errorMessageComponent;
             this.setComponent(errorMessageComponent, fromJS({
                 title: title,
-                message: error.message,
-                code: error.code,
+                error: normalizeError(error),
             }));
         } else if (component !== this._component) {
-            this._component = component;
-
             if (component && response) {
+                this._component = component;
                 this.setComponent(component, response.merge({title}));
             }
         }

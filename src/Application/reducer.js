@@ -31,7 +31,6 @@ export default function reducer(state = defaultState, action) {
 
     switch (action.type) {
         case actions.SET_ROUTER_MATCH:
-            debugger;
             return Object.assign(copy, {
                 routerMatch: action.match,
             });

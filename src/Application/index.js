@@ -1,9 +1,9 @@
 import '@polymer/polymer/lib/elements/dom-if';
 import '@polymer/polymer/lib/elements/dom-repeat';
-import 'application/pages/ErrorPage';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
 import ActionsMixin from 'lib/ActionsMixin';
+import ErrorPage from 'application/pages/ErrorPage';
 import Immutable from 'immutable';
 import actions from './actions';
 import routes from './routes';
@@ -47,9 +47,12 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
             'routerMatch': {
                 type: Immutable.Map,
                 statePath: (state) => {
-                    debugger;
                     return state.routerMatch;
                 },
+            },
+            'errorPageComponent': {
+                type: PolymerElement,
+                value: () => ErrorPage,
             },
             'title': {
                 type: String,
@@ -70,7 +73,7 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
      */
     _handleRequestPageResolve(e) {
         const {requestPageResolve} = Application.actions;
-        const request = e.detail.resolve;
+        const {request} = e.detail;
 
         this.dispatch(requestPageResolve(request));
     }
@@ -131,10 +134,10 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
             <z-router
                 match="[[routerMatch]]"
                 on-match-change="_handleRouterMatchChange"
-                on-request-page-resolve="_handleRequestPageResolve"
                 resolve="[[pageResolve]]"
+                on-request-resolve="_handleRequestPageResolve"
                 component="[[pageComponent]]"
-                error-message-component="[[z-error-page]]"
+                error-message-component="[[errorPageComponent]]"
                 title="[[pageTitle]]"
                 on-title-change="_handlePageTitleChange"
                 routes="[[routes]]"></z-router>

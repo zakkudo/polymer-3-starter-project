@@ -13,7 +13,11 @@ export default class HttpError extends Error {
      *
     */
     constructor(status, statusText, url, headers, response) {
-        super(`${status} ${statusText} <${url}>`);
+        if (url) {
+            super(`${statusText} <${url}>`);
+        } else {
+            super(`${statusText}`);
+        }
 
         this.status = status;
         this.statusText = statusText;
@@ -27,6 +31,6 @@ export default class HttpError extends Error {
      * @return {String} The error represented as a string
      */
     toString() {
-        return `HttpError: ${this.message}`;
+        return `HttpError: ${this.status} ${this.statusText} ${this.message}`;
     }
 }

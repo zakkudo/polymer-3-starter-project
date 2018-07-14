@@ -95,7 +95,6 @@ function applyCustomOptions(url, options) {
  */
 function throwHttpErrors(response) {
     return (payload) => {
-        debugger;
         if (!response.ok) {
             const {status, statusText, headers, url} = response;
 

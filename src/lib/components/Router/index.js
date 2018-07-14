@@ -2,47 +2,14 @@ import '@polymer/app-route/app-location';
 import '@polymer/app-route/app-route';
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import 'lib/components/Route';
+import HttpError from 'lib/errors/HttpError';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
-import RouterError from 'lib/errors/RouterError';
 import equal from 'lib/equal';
 import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 
-
-/**
- * @private
- * @param {String} message - A loading message.
- * @throws {RouterError} The error in resolve format.
- */
-function handleResolveError(reason) {
-    let message = null;
-    let fileName = null;
-    let lineNumber = null;
-    let code = null;
-
-    if (reason instanceof Error) {
-        message = reason.message;
-        fileName = reason.fileName;
-        lineNumber = reason.lineNumber;
-
-        code = '-1';
-    } else if (typeof reason === 'string') {
-        message = reason;
-        code = '-1';
-    } else if (Object(reason) === reason) {
-        message = reason.message;
-        code = reason.code;
-    }
-
-    throw new RouterError(
-        message,
-        fileName,
-        lineNumber,
-        code
-    );
-}
 
 
 /*
@@ -78,12 +45,12 @@ export default class Router extends ImmutableMixin(PolymerElement) {
 
             TODO
             <z-route
-                resolve="[[resolve]]"
                 component="[[component]]"
                 error-message-component="[[errorMessageComponent]]"
+                match="[[match]]"
+                resolve="[[resolve]]"
                 title="[[title]]"
-                on-title-change="_handleTitleChange"
-                match="[[match]]">
+                on-title-change="_handleTitleChange">
             </z-route>
         `;
     }
@@ -95,8 +62,12 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     static get properties() {
         return {
-            routes: Immutable.List,
+            component: PolymerElement,
+            errorMessageComponent: PolymerElement,
             match: Immutable.Map,
+            resolve: Immutable.Map,
+            routes: Immutable.List,
+            title: String,
         };
     }
 
@@ -189,22 +160,23 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     requestResolve() {
         const activeRoute = this._activeRoute;
-        debugger;
 
         if (!activeRoute) {
-            return Promise.reject(new RouterError(`Route doesn't exist!`));
+            debugger;
+            return Promise.reject(new HttpError(404, 'Not Found', this.match.location));
         }
 
         const component = activeRoute.get('component');
 
         if (!component) {
-            return Promise.reject(new RouterError('Route has no component!'));
+            debugger;
+            return Promise.reject(new HttpError(-1, 'Route has no component!', this.match.location));
         }
 
         this.dispatchEvent(new CustomEvent('request-resolve', {
             detail: {
                 request() {
-                    return resolveComponent(component).catch(handleResolveError);
+                    return resolveComponent(component);
                 },
             },
         }));

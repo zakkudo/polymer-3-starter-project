@@ -10,11 +10,11 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
  */
 export default class ErrorPage extends ImmutableMixin(PolymerElement) {
     /**
-     * Converts an erorr code to a string
-     * @param {String} code - An http error code
-     * @return {String} A text representation of the code
+     * Converts an erorr status to a string
+     * @param {String} status - An http error status
+     * @return {String} A text representation of the status
      */
-    errorByCode(code) {
+    errorByCode(status) {
         return {
             '-1': 'Internal Error',
             '400': 'Bad Request',
@@ -22,7 +22,7 @@ export default class ErrorPage extends ImmutableMixin(PolymerElement) {
             '403': 'Forbidden',
             '404': 'Not Found',
             '500': 'Internal Server Error',
-        }[code];
+        }[status];
     }
 
     /**
@@ -41,8 +41,7 @@ export default class ErrorPage extends ImmutableMixin(PolymerElement) {
 
     static get properties() {
         return {
-            code: String,
-            message: String,
+            error: Error,
         };
     }
 
@@ -52,8 +51,8 @@ export default class ErrorPage extends ImmutableMixin(PolymerElement) {
      */
     static get template() {
         return html`
-          <h2>Error: [[code]] [[errorByCode(code)]]</h2>
-          <p>[[message]]</p>
+          <h2>Error: [[error.status]] [[error.statusText]]</h2>
+          <p>[[error.response]]</p>
         `;
     }
 }

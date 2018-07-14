@@ -7,6 +7,7 @@ import {fromJS} from 'immutable';
  * @private
  */
 function requestComponent(component) {
+    debugger;
     switch (typeof component) {
         case 'function':
             // Return component class
@@ -20,6 +21,7 @@ function requestComponent(component) {
             // Return the status component
             return Promise.resolve(customElements.get(component));
     }
+    debugger;
 
     return Promise.reject(new TypeError(`${getTypeName(component)} is not invalid`));
 }
@@ -65,8 +67,8 @@ export default function resolveComponent(component) {
             };
         });
 
-    return {
+    return Promise.resolve({
         message: null,
         next,
-    };
+    });
 }

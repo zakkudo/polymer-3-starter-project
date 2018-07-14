@@ -14,7 +14,6 @@ export default {
      */
     query: ['/api', {
         transformResponse(response) {
-            debugger;
             return response.results.map((r) => {
                 return `${r.name.first} ${r.name.last}`;
             });
