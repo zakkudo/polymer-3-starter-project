@@ -2,26 +2,22 @@ import routes from './routes';
 
 describe('Application/routes', () => {
     it('loads with no errors', () => {
-        expect(routes.map(({name, url, component}) => {
+        expect(routes.map(({pattern, component}) => {
             if (typeof component === 'function') {
                 //We don't care so much about the promise resolution other than
                 //if an actual exception is raised by this function call
                 component();
             }
 
-            return {name, url};
+            return {pattern};
         })).toEqual([{
-            name: 'home',
-            url: '/',
+            pattern: '/',
         }, {
-            name: 'about',
-            url: '/about',
+            pattern: '/about',
         }, {
-            name: 'fail',
-            url: '/fail',
+            pattern: '/fail',
         }, {
-            name: 'forbidden',
-            url: '/forbidden',
+            pattern: '/forbidden',
         }]);
     });
 });

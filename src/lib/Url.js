@@ -2,6 +2,25 @@ import QueryString from 'lib/QueryString';
 import UrlError from 'lib/errors/UrlError';
 
 /**
+ * @private
+ * @param {String} url - The url
+ * @return {Array} The url/params object
+ */
+function parse(url) {
+    const [_url, _params] = url.split('?');
+
+    return [_url, JSON.parse(JSON.stringify(new QueryString(_params)))];
+}
+
+/**
+ * @private
+ * @param {String} url - The url
+ */
+function createDuplicateQueryError(url) {
+    return new UrlError('Trying to add duplicate query param when already exists', url);
+}
+
+/**
  * Helper class to interpolate params into the url and
  * to attach the remained ero the end of the url as query params.
  */
@@ -11,8 +30,19 @@ export default class Url {
      * @param {Object} params - Params to interpolate or append to the url when stringify.
      */
     constructor(url, params = {}) {
-        this.params = params;
-        this.url = url;
+        if (url.includes('?')) {
+            if (Object.keys(params).length || url.indexOf('?') !== url.lastIndexOf('?')) {
+                throw createDuplicateQueryError(url);
+            }
+
+            const [_url, _params] = parse(url);
+
+            this.params = _params;
+            this.url = _url;
+        } else {
+            this.params = params;
+            this.url = url;
+        }
     }
 
     /**

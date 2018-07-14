@@ -1,4 +1,5 @@
 import Url from 'lib/Url';
+import UrlError from 'lib/errors/UrlError';
 
 class Helper {
     static assert(url, asserts) {
@@ -81,8 +82,36 @@ describe('lib/Url', () => {
 
     it('throws an exception when there is a replacement pattern but no matching param', () => {
         expect(() => String(new Url('http://backend/v1/users/:id/detail', {}))).toThrow(
-            new Error(
-                'No replacement exists for :id in the params <http://backend/v1/users/:id/detail>'
+            new UrlError(
+                'No replacement exists for :id in the params',
+                'http://backend/v1/users/:id/detail'
+            )
+        );
+    });
+
+    it('parses an inline query string', () => {
+        const url = new Url('http://backend/v1/users?limit=20');
+
+        expect(url.params).toEqual({limit: 20});
+    });
+
+    it('throws an exception when there are params and an inline query string', () => {
+        expect(() => String(new Url('http://backend/v1/users?limit=20', {offset: 5}))).toThrow(
+            new UrlError(
+                'Trying to add duplicate query param when already exists',
+                'http://backend/v1/users?limit=20'
+            )
+        );
+    });
+
+    it('throws an exception when query string added after initialization', () => {
+        const url = new Url('http://backend/v1/users', {offset: 5});
+        url.url = url.url + '?invalid=true';
+
+        expect(() => String(url)).toThrow(
+            new UrlError(
+                'Trying to add duplicate query param when already exists',
+                'http://backend/v1/users?invalid=true'
             )
         );
     });

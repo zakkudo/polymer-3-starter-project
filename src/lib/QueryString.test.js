@@ -1,4 +1,5 @@
 import QueryString from 'lib/QueryString';
+import UrlError from 'lib/errors/UrlError';
 
 describe('lib/QueryString', () => {
     it('parsing an object', () => {
@@ -194,5 +195,9 @@ describe('lib/QueryString', () => {
 
         expect(String(query)).toEqual('');
         expect(JSON.stringify(query)).toEqual('{}');
+    });
+
+    it('throws UrlError when query string contains multiple ?s', () => {
+        expect(() => new QueryString('?one=1?two=2')).toThrow(new UrlError('Trying to add duplicate query param when already exists', '?one=1?two=2'));
     });
 });

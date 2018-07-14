@@ -21,7 +21,7 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
     static get properties() {
         return {
             'results': {
-                statePath: (state) => {
+                statePath(state) {
                     const page = state.page || {};
 
                     return page.results || fromJS([]);

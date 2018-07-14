@@ -713,6 +713,19 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.0.tgz#50c1e2260ac0ed9439a181de3725a0168d59c48a"
 
+"@polymer/app-route@^3.0.0-pre.21":
+  version "3.0.0-pre.21"
+  resolved "https://registry.yarnpkg.com/@polymer/app-route/-/app-route-3.0.0-pre.21.tgz#7a0b75d495e44011ff380ca71db339540d14a644"
+  dependencies:
+    "@polymer/iron-location" "^3.0.0-pre.21"
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/iron-location@^3.0.0-pre.21":
+  version "3.0.0-pre.21"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-location/-/iron-location-3.0.0-pre.21.tgz#0f4cd58a79e12767f2c993bbc0cdbd0487e78040"
+  dependencies:
+    "@polymer/polymer" "^3.0.0"
+
 "@polymer/polymer@^3.0.0", "@polymer/polymer@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@polymer/polymer/-/polymer-3.0.2.tgz#626e6f9fae9716b0962ce0211e21df242153eab2"
@@ -1015,10 +1028,6 @@
     react-icons "^2.2.7"
     react-lifecycles-compat "^3.0.4"
     react-modal "^3.4.5"
-
-"@uirouter/core@^5.0.19":
-  version "5.0.19"
-  resolved "https://registry.yarnpkg.com/@uirouter/core/-/core-5.0.19.tgz#fe2888190393a8c92584c354e65ab8322c1b0db4"
 
 "@webassemblyjs/ast@1.5.12":
   version "1.5.12"
@@ -7815,13 +7824,6 @@ polymer-redux@^1.0.5:
   resolved "https://registry.yarnpkg.com/polymer-redux/-/polymer-redux-1.0.5.tgz#ee65ac272d6bd344d0034533732265d0e267a55f"
   dependencies:
     global "^4.3.1"
-
-polymer-ui-router@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/polymer-ui-router/-/polymer-ui-router-3.0.1.tgz#a618059cf6940df2a6f67015933efd28ec68f9a8"
-  dependencies:
-    "@polymer/polymer" "^3.0.0"
-    "@uirouter/core" "^5.0.19"
 
 portfinder@^1.0.9:
   version "1.0.13"

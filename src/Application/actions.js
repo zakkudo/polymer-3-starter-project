@@ -15,6 +15,19 @@ export default new Actions({
      * @reduxActionCreator
      * @reduxActionType REQUEST_PAGE_RESOLVE
      * @instance
+    */
+    setRouterMatch(match) {
+        return {
+            type: 'SET_ROUTER_MATCH',
+            match,
+        };
+    },
+    /**
+     * The payload will be on the <code>request</code> property.
+     * @redux
+     * @reduxActionCreator
+     * @reduxActionType REQUEST_PAGE_RESOLVE
+     * @instance
      * @param {Function} request - A method that should return a Promise
      * @return {Redux.Action} The generated action
     */

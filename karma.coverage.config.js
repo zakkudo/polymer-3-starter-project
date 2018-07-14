@@ -17,7 +17,7 @@ module.exports = function(config) {
             /node_modules/,
             /test\.js$/,
             'test-results', // Don't test test results
-            /\*TestHelper\.js/, // Don't test test helpers
+            /TestHelper\.js/, // Don't test test helpers
             /Application\/index.js/
         ],
     });

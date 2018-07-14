@@ -1,3 +1,14 @@
+import getTypeName from 'lib/getTypeName';
+import UrlError from 'lib/errors/UrlError';
+
+/**
+ * @private
+ * @param {String} url - The url
+ */
+function createDuplicateQueryError(url) {
+    return new UrlError('Trying to add duplicate query param when already exists', url);
+}
+
 /**
  * @private
  */
@@ -66,19 +77,15 @@ function encodeValue(value) {
  * @return {Object} The parsed data
  */
 function parseString(data) {
-    return data.replace(/^\?/, '')
+    if (data.indexOf('?') !== data.lastIndexOf('?')) {
+        throw createDuplicateQueryError(data);
+    }
+
+    return data.replace(/^.*\?/, '')
         .split(/[;&]/g)
         .map((p) => p.split('='))
         .filter(isValidPair)
         .map(decodePair);
-}
-
-function getType(data) {
-    if (Object(data) === data && data.toString) {
-        return Object.prototype.toString.call(data).slice(8, -1);
-    }
-
-    return typeof data;
 }
 
 /**
@@ -104,12 +111,12 @@ function parse(data) {
             return accumulator;
         }, {});
     } else if (Array.isArray(data)) {
-        throw new TypeError(`${getType(data)} isn't an accepted constructor type`);
+        throw new TypeError(`${getTypeName(data)} isn't an accepted constructor type`);
     } else if (data instanceof QueryString || Object(data) === data) {
         return data;
     }
 
-    throw new TypeError(`${getType(data)} isn't an accepted constructor type`);
+    throw new TypeError(`${getTypeName(data)} isn't an accepted constructor type`);
 }
 
 /**

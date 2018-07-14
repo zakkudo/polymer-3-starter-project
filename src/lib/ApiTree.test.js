@@ -27,7 +27,7 @@ describe('lib/ApiTree', () => {
         });
     });
 
-    it('passes throught he convenience function', () => {
+    it('passes through the convenience function', () => {
         const api = new ApiTree('https://backend/v1', {
             users: {
                 get: ['/users/:id'],
@@ -49,6 +49,20 @@ describe('lib/ApiTree', () => {
                 {params: {id: '1234'}},
             ]]);
             expect(response).toEqual('test response');
+        });
+    });
+
+    it('passes through other data', () => {
+        const api = new ApiTree('https://backend/v1', {
+            users: {
+                count: 10,
+            },
+        });
+
+        expect(JSON.parse(JSON.stringify(api))).toEqual({
+            baseUrl: 'https://backend/v1',
+            users: {count: 10},
+            options: {},
         });
     });
 });

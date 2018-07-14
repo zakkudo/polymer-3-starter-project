@@ -1,23 +1,62 @@
-import './MissingRoute';
-import './Route';
-import '@polymer/polymer/lib/elements/dom-if.js';
-import 'polymer-ui-router/uirouter-router';
+import '@polymer/app-route/app-location';
+import '@polymer/app-route/app-route';
+import '@polymer/polymer/lib/elements/dom-repeat.js';
+import 'lib/components/Route';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
 import RouterError from 'lib/errors/RouterError';
-import defer from 'lib/defer';
-import shallowResolve from 'lib/shallowResolve';
+import equal from 'lib/equal';
+import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
-import {pushStateLocationPlugin} from '@uirouter/core';
 
 
 /**
- * Defines sets of components to display for a specific url pattern.
- * This component is mean to be used with `z-view`.
+ * @private
+ * @param {String} message - A loading message.
+ * @throws {RouterError} The error in resolve format.
+ */
+function handleResolveError(reason) {
+    let message = null;
+    let fileName = null;
+    let lineNumber = null;
+    let code = null;
+
+    if (reason instanceof Error) {
+        message = reason.message;
+        fileName = reason.fileName;
+        lineNumber = reason.lineNumber;
+
+        code = '-1';
+    } else if (typeof reason === 'string') {
+        message = reason;
+        code = '-1';
+    } else if (Object(reason) === reason) {
+        message = reason.message;
+        code = reason.code;
+    }
+
+    throw new RouterError(
+        message,
+        fileName,
+        lineNumber,
+        code
+    );
+}
+
+
+/*
+    window.history.pushState({}, null, '/new_path');
+    window.dispatchEvent(new CustomEvent('location-changed'));
+TODO
+*/
+
+/**
+ * A router button which customizable label
  * @module lib/components/Router
  * @customElement
  * @polymer
+ *
  */
 export default class Router extends ImmutableMixin(PolymerElement) {
     /**
@@ -26,15 +65,116 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     static get template() {
         return html`
-            <template is="dom-if" if="[[_routes.size]]">
-                <uirouter-router
-                    location-plugin="[[locationPlugin]]"
-                    on-uirouter-before="_handleStart"
-                    on-uirouter-leave="_handleFinish"
-                    states="[[_toJSFromImmutable(_routes)]]"
-                    auto-start></uirouter-router>
+            <app-location route="{{_location}}"></app-location>
+            location [[location]]
+            <template is="dom-repeat" items="{{_toJSFromImmutable(routes)}}" as="r">
+                <app-route
+                    route="{{route}}"
+                    pattern="[[r.pattern]]"
+                    data="{{_data}}"
+                    tail="{{_tail}}">
+                </app-route>
             </template>
+
+            TODO
+            <z-route
+                resolve="[[resolve]]"
+                component="[[component]]"
+                error-message-component="[[errorMessageComponent]]"
+                title="[[title]]"
+                on-title-change="_handleTitleChange"
+                match="[[match]]">
+            </z-route>
         `;
+    }
+
+    /**
+     * @property {Object} properties - Public Properties.
+     * @property {Boolean} properties.active - The active state of the router
+     * button.
+     */
+    static get properties() {
+        return {
+            routes: Immutable.List,
+            match: Immutable.Map,
+        };
+    }
+
+    /**
+     * @private
+     */
+    static get observers() {
+        return [
+            '_locationChanged(_location)',
+            '_in(match, params)',
+            '_out(_tail, _data)',
+            '_routesChanged(routes)',
+        ];
+    }
+
+    _routesChanged(routes) {
+        this.routesByPattern = Immutable.Map(routes.map((r) => [r.get('pattern'), r]));
+    }
+
+    /**
+     * @private
+     * @param {Object} _location - The current location information
+     */
+    _locationChanged(_location) {
+        this.location = fromJS(_location);
+        this.route = this.location.toJS();
+    }
+
+    /**
+     * @private
+     */
+    _in(match) {
+        const {tail, prefix, params = {}, path} = match.toJS();
+        const _tail = this._tail || {};
+        const _data = this._data || {};
+        const routesByPattern = this.routesByPattern || fromJS({});
+        const activeRoute = routesByPattern.get(prefix);
+
+        if (this._activeRoute !== activeRoute) {
+            this._activeRoute = activeRoute;
+            this.requestResolve();
+        }
+
+        if (tail !== _tail.path || prefix !== _tail.prefix || !equal(params, _data)) {
+            this.setProperties({
+                _tail: {
+                    path: tail,
+                    prefix,
+                    __queryParams: _tail.__queryParams,
+                },
+                _data: params,
+            });
+        }
+
+        if (path !== this._location.path) {
+            this._location = Object.assign({}, this._location, {
+                path,
+                prefix: '',
+            });
+        }
+    }
+
+    /**
+     * @private
+     */
+    _out(_tail = {}, _data = {}) {
+        if (_tail.path !== undefined) {
+            const match = fromJS({
+                path: this._location.path,
+                tail: _tail.path,
+                prefix: _tail.prefix,
+                params: _data,
+            });
+
+            this.dispatchEvent(new CustomEvent('match-change', {
+                detail: {match},
+            }));
+        }
     }
 
     /**
@@ -45,283 +185,29 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     }
 
     /**
-     * @property {Object} properties - Public Properties.
-     * @property {Immutable.Map} properties.pageResolve - The resolve
-     * configuration to pass ot the page.
-     * @property {Immutable.List} properties.routes - The routes configuration
-     * to match up components to urls.
-     * @property {Immutable.List} properties.locationPlugin - Control if hash
-     * tags or html5 urls are used.
-     */
-    static get properties() {
-        return {
-            pageResolve: Immutable.Map,
-            errorMessageComponent: String,
-            pageComponent: String,
-            routes: {
-                type: Immutable.List,
-                value: () => fromJS([]),
-            },
-            locationPlugin: {
-                type: Object,
-                value: () => pushStateLocationPlugin,
-            },
-        };
-    }
-
-    /**
      * @private
      */
-    static get observers() {
-        return [
-            '_routesChanged(routes)',
-            '_pageResolveChanged(pageResolve, ' +
-                                'pageComponent, ' +
-                                'errorMessageComponent)',
-        ];
-    }
+    requestResolve() {
+        const activeRoute = this._activeRoute;
+        debugger;
 
-    /**
-     * @private
-     * @param {Immutable.Map} pageResolve - The resolved data to be injected
-     * into the initial page load
-     * @param {Polymer.PolymerElement} Component - A polymer component representing
-     * the page to render. It should implement `is`.
-     */
-    _pageResolveChanged(pageResolve, Component) {
-        if (this.transition) {
-            const to = this.transition.to();
-            const response = pageResolve.get('response');
-            const error = pageResolve.get('error');
-
-            delete to.resolve;
-            delete to.error;
-
-            to.contentsClass = Component;
-            to.errorMessageComponent = this.errorMessageComponent;
-            to.resolve = response;
-            to.error = error;
+        if (!activeRoute) {
+            return Promise.reject(new RouterError(`Route doesn't exist!`));
         }
-    }
 
-    /**
-     * @private
-     * @param {Array} routes - A list of routes to configure pages to urls
-     */
-    _routesChanged(routes) {
-        this._routes = routes || fromJS([]);
+        const component = activeRoute.get('component');
 
-        this._routes = this._routes.map((r) => {
-            return r.merge({
-                component: 'z-route',
-                contents: r.get('component'),
-            });
-        });
+        if (!component) {
+            return Promise.reject(new RouterError('Route has no component!'));
+        }
 
-
-        if (this.errorMessageComponent) {
-            this._routes = this._routes.push(fromJS({
-                name: '404',
-                url: '/{path:.*}',
-                error: {
-                    'code': '404',
-                    'message': 'Not Found',
+        this.dispatchEvent(new CustomEvent('request-resolve', {
+            detail: {
+                request() {
+                    return resolveComponent(component).catch(handleResolveError);
                 },
-                component: 'z-missing-route',
-                contents: this.errorMessageComponent,
-            }));
-        }
-    }
-
-    /**
-     * @private
-     * @param {UiRouterTransition} transition - A transition as
-     * described on the ui-router documentation
-     * @return {Promise} A page component may laod asynchronously,
-     * because of code splitting, making a promise necessary.  The Promise
-     * will resolve either resolve to a PolymerElement or a String.
-     */
-    _requestComponentFromTransition(transition) {
-        const to = transition.to();
-
-        switch (typeof to.contents) {
-            case 'function':
-                if (to.contents instanceof PolymerElement) {
-                    return Promise.resolve(to.contents);
-                }
-                return to.contents();
-            case 'string':
-                return Promise.resolve(customElements.get(to.contents));
-        }
-
-        return Promise.resolve(to.contents);
-    }
-
-    /**
-     * @private
-     * @param {Polymer.PolymerElement} component - A polymer component to get resolve
-     * information from
-     * @return {Object} An object containing an object with function values
-     * that return promises and a loading message.
-     */
-    _getResolveInformation(component) {
-        const resolve = component.resolve || {};
-        const data = resolve.data || {};
-        const message = resolve.message;
-
-        return {data, message};
-    }
-
-    /**
-     * @private
-     * @param {UiRouterTransition} transition - A transition as
-     * described on the ui-router documentation
-     * @return {Object} An object contining a defered promise and a resolve
-     * function that will cause it to resolve.
-     */
-    _generateRequestFromTransition(transition) {
-        const deferred = defer();
-        const options = transition.options();
-        const reload = options.reload;
-        const from = transition.from();
-        const to = transition.to();
-        const fallbackComponent = this.errorMessageComponent;
-
-        /**
-         * @private
-         * @param {String} message - A loading message.
-         * @param {Object} deferred - A deferred object.
-         * @return {Function} A function for handling the error
-         * @throws {RouterError} The error in resolve format.
-         */
-        function handleError(message, deferred) {
-            return (reason) => {
-                let message = null;
-                let fileName = null;
-                let lineNumber = null;
-                let code = null;
-
-                if (reason instanceof Error) {
-                    message = reason.message;
-                    fileName = reason.fileName;
-                    lineNumber = reason.lineNumber;
-
-                    code = '-1';
-                } else if (typeof reason === 'string') {
-                    message = reason;
-                    code = '-1';
-                } else if (Object(reason) === reason) {
-                    message = reason.message;
-                    code = reason.code;
-                }
-
-                setTimeout(() => {
-                    deferred.resolve(reason);
-                });
-
-                deferred.resolve({
-                    error: {message, code},
-                });
-
-                throw new RouterError(
-                    message,
-                    fileName,
-                    lineNumber,
-                    code,
-                    fallbackComponent
-                );
-            };
-        }
-
-        const resolve = () => {
-            if (reload === false &&
-                from === to &&
-                to.resolve &&
-                to.contentsClass) {
-                setTimeout(() => {
-                    deferred.resolve(to.resolve);
-                });
-
-                return Promise.resolve({
-                    message: to.message,
-                    Component: to.contentsClass,
-                    response: to.resolve,
-                });
-            }
-
-            const next = this._requestComponentFromTransition(transition)
-                .then((Component) => {
-                const {data, message} = this._getResolveInformation(Component);
-                const next = shallowResolve(data).then((_response) => {
-                    const response = fromJS(_response);
-
-                    setTimeout(() => {
-                        deferred.resolve(response);
-                    });
-
-                    return {
-                        message,
-                        Component,
-                        response,
-                    };
-                }).catch(handleError(message, deferred));
-
-                return {
-                    message,
-                    Component,
-                    next,
-                };
-            }).catch(handleError(null, deferred));
-
-            return {
-                message: null,
-                next,
-            };
-        };
-
-        return {
-            resolve,
-            deferred,
-        };
-    }
-
-    /**
-     * @private
-     * @param {Native.CustomEvent} e - Javascript Event
-     */
-    _handleStart(e) {
-        const transition = e.detail.transition;
-        const {
-            resolve,
-            deferred,
-        } = this._generateRequestFromTransition(transition);
-
-        e.detail.transition.addResolvable({
-            token: 'resolve',
-            deps: [],
-            resolveFn: () => deferred.promise,
-        });
-
-        /**
-         *
-         * Requests the data needed to display the next page state.
-         * @event request-page-resolve
-         * @type {Object}
-         * @property {Function} resolve - A function that triggers a
-         * side-effect to fetch the initial component state.
-         */
-        this.dispatchEvent(new CustomEvent('request-page-resolve', {
-            detail: {resolve},
+            },
         }));
-        this.transition = transition;
-    }
-
-    /**
-     * @private
-     * @param {Native.CustomEvent} e - A javascript event
-     */
-    _handleFinish(e) {
-        delete this.transition;
     }
 }
 

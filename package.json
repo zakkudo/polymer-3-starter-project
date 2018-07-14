@@ -68,13 +68,15 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.51",
+    "@polymer/app-route": "^3.0.0-pre.21",
     "@polymer/polymer": "^3.0.2",
     "@webcomponents/webcomponentsjs": "^2.0.2",
+    "deep-equal": "^1.0.1",
     "immutable": "^3.8.2",
     "polymer-redux": "^1.0.5",
-    "polymer-ui-router": "^3.0.1",
     "redux": "^4.0.0",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "y18n": "^4.0.0"
   },
   "scripts": {
     "start": "scripts/start.sh",
