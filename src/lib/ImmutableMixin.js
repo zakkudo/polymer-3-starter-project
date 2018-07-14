@@ -26,7 +26,6 @@ export default function ImmutableMixin(Parent) {
          * @return {*} The value stored at the key or undefined
          */
         _getInImmutable(instance, ...searchKeyPath) {
-            debugger;
             return instance.getIn(searchKeyPath, searchKeyPath);
         }
         /**

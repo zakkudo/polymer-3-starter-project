@@ -44,11 +44,11 @@ function getResolveInformation(component) {
  * @return {Object} A promise that resolves to the component and chains loadin of data
  * @module lib/resolveComponent
  */
-export default function resolveComponent(component) {
+export default function resolveComponent(component, match) {
     const next = requestComponent(component)
         .then((Component) => {
             const {data, message} = getResolveInformation(Component);
-            const next = shallowResolve(data).then((_response) => {
+            const next = shallowResolve(data, match).then((_response) => {
                 const response = fromJS(_response);
 
                 return {

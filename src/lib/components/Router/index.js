@@ -126,13 +126,10 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         const _data = this._data || {};
         const routesByPattern = this.routesByPattern || fromJS({});
         const pattern = Object.keys(params).reduce((accumulator, k) => {
-            debugger;
             return accumulator.replace(new RegExp(`\\b${params[k]}\\b`), `:${k}`);
         }, prefix);
-        debugger;
         const activeRoute = routesByPattern.get(pattern);
 
-        debugger;
         if (this._activeRoute !== activeRoute && (!activeRoute.exact || tail === '')) {
             this._activeRoute = activeRoute;
             this.requestResolve();
@@ -187,6 +184,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      */
     requestResolve() {
         const activeRoute = this._activeRoute;
+        const match = this.match
 
         if (!activeRoute) {
             return Promise.reject(new HttpError(404, 'Not Found', this.match.location));
@@ -201,7 +199,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         this.dispatchEvent(new CustomEvent('request-resolve', {
             detail: {
                 request() {
-                    return resolveComponent(component);
+                    return resolveComponent(component, match);
                 },
             },
         }));
