@@ -10,14 +10,6 @@ import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 
-
-
-/*
-    window.history.pushState({}, null, '/new_path');
-    window.dispatchEvent(new CustomEvent('location-changed'));
-TODO
-*/
-
 /**
  * A router button which customizable label
  * @module lib/components/Router
@@ -26,6 +18,33 @@ TODO
  *
  */
 export default class Router extends ImmutableMixin(PolymerElement) {
+    constructor() {
+        super();
+        this._handleLocationChanged = this._handleLocationChanged.bind(this);
+    }
+
+    _handleLocationChanged(e) {
+        const detail = e.detail || {};
+        const reload = detail.reload;
+
+        if (reload) {
+            e.preventDefault();
+            e.stopPropagation();
+            delete this._activeRoute;
+            this._out(this._tail, this._data);
+        }
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        window.addEventListener('location-changed', this._handleLocationChanged);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        window.removeEventListener('location-changed', this._handleLocationChanged);
+    }
+
     /**
      * @property {Native.DocumentFragment} template - Template used for
      * rendering the contents of the component.
@@ -33,7 +52,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     static get template() {
         return html`
             <app-location route="{{_location}}"></app-location>
-            location [[location]]
             <template is="dom-repeat" items="{{_toJSFromImmutable(routes)}}" as="r">
                 <app-route
                     route="{{route}}"
@@ -43,7 +61,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                 </app-route>
             </template>
 
-            TODO
             <z-route
                 component="[[component]]"
                 error-message-component="[[errorMessageComponent]]"
@@ -92,8 +109,12 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @param {Object} _location - The current location information
      */
     _locationChanged(_location) {
-        this.location = fromJS(_location);
-        this.route = this.location.toJS();
+        this.setProperties({
+            location: fromJS(_location),
+            route: fromJS(_location).toJS(),
+            _data: {},
+            _tail: {},
+        });
     }
 
     /**
@@ -162,14 +183,12 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         const activeRoute = this._activeRoute;
 
         if (!activeRoute) {
-            debugger;
             return Promise.reject(new HttpError(404, 'Not Found', this.match.location));
         }
 
         const component = activeRoute.get('component');
 
         if (!component) {
-            debugger;
             return Promise.reject(new HttpError(-1, 'Route has no component!', this.match.location));
         }
 

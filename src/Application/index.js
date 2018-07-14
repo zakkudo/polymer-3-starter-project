@@ -1,5 +1,6 @@
 import '@polymer/polymer/lib/elements/dom-if';
 import '@polymer/polymer/lib/elements/dom-repeat';
+import 'lib/components/Link';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
 import ActionsMixin from 'lib/ActionsMixin';
@@ -33,25 +34,21 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
                 value: fromJS(routes),
             },
             'pageComponent': {
-                type: Object,
                 statePath: (state) => {
                     return state.pageComponent;
                 },
             },
             'pageResolve': {
-                type: Immutable.Map,
                 statePath: (state) => {
                     return state.pageResolve;
                 },
             },
             'routerMatch': {
-                type: Immutable.Map,
                 statePath: (state) => {
                     return state.routerMatch;
                 },
             },
             'errorPageComponent': {
-                type: PolymerElement,
                 value: () => ErrorPage,
             },
             'title': {
@@ -116,19 +113,19 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
 
             <ul>
             <li>
-                <z-link state="home">UI Home</z-link>
+                <z-link to="/">UI Home</z-link>
             </li>
             <li>
-                <z-link state="home" reload>UI Home with forced reload</z-link>
+                <z-link to="/" reload>UI Home with forced reload</z-link>
             </li>
             <li>
-                <z-link state="about">UI About</z-link>
+                <z-link to="/about">UI About</z-link>
             </li>
             <li>
-                <z-link state="forbidden">Forbidden Page</z-link>
+                <z-link to="/forbidden">Forbidden Page</z-link>
             </li>
             <li>
-                <z-link state="fail">Internal Error Page</z-link>
+                <z-link to="/fail">Internal Error Page</z-link>
             </li>
             </ul>
             <z-router

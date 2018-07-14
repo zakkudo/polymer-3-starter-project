@@ -44,7 +44,6 @@ export function* resolve(action) {
             })));
         }
     } catch (reason) {
-        debugger;
         yield put(pageResolveRequestFailed(reason));
         yield put(setPageComponent(customElements.get(reason.fallbackComponent)));
         yield put(setPageResolve(fromJS({

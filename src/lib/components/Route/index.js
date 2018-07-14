@@ -9,7 +9,6 @@ import {fromJS} from 'immutable';
  * @throws {HttpError} The error in resolve format.
  */
 function normalizeError(reason) {
-    debugger;
     let message = null;
     let status = null;
 
@@ -85,13 +84,9 @@ export default class Route extends PolymerElement {
      */
     static get properties() {
         return {
-            /** Component to stamp */
             component: String,
-            /** Resolve information */
             resolve: Immutable.Map,
-            /** Current title which can be updated dynamically */
             title: String,
-            /** Route information */
             match: Immutable.Map,
         };
     }
@@ -111,7 +106,7 @@ export default class Route extends PolymerElement {
         const component = this.getComponent();
 
         if (component) {
-            component.set({title});
+            component.set('title', title);
         }
     }
 
@@ -119,7 +114,7 @@ export default class Route extends PolymerElement {
         const component = this.getComponent();
 
         if (component) {
-            component.set({match});
+            component.set('match', match);
         }
     }
 
@@ -134,26 +129,26 @@ export default class Route extends PolymerElement {
     setComponent(component, data = fromJS({})) {
         const element = document.createElement(component.is);
 
-        this.innerHTML = '';
-        this.shadowRoot.appendChild(element);
-
         element.addEventListener('title-change', this._handleTitleChange.bind(this));
 
         data.keySeq().forEach((k) => {
             element.set(k, data.get(k));
         });
+
+        Array.from(this.shadowRoot.childNodes).forEach((n) => {
+            this.shadowRoot.removeChild(n);
+        });
+
+        this.shadowRoot.appendChild(element);
     }
 
     _componentChanged(component, resolve = fromJS({})) {
-        debugger;
         const errorMessageComponent = this.errorMessageComponent;
         const title = this.title;
         const error = resolve.get('error');
         const response = resolve.get('response');
 
-        debugger;
         if (error && errorMessageComponent) {
-            debugger;
             this._component = errorMessageComponent;
             this.setComponent(errorMessageComponent, fromJS({
                 title: title,
