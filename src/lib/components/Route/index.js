@@ -119,7 +119,6 @@ export default class Route extends PolymerElement {
     }
 
     _handleTitleChange(e) {
-        debugger;
     }
 
     getComponent() {
@@ -131,7 +130,6 @@ export default class Route extends PolymerElement {
 
         element.addEventListener('title-change', this._handleTitleChange.bind(this));
 
-        debugger;
         data.keySeq().forEach((k) => {
             element.set(k, data.get(k));
         });

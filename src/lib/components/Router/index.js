@@ -1,14 +1,25 @@
 import '@polymer/app-route/app-location';
-import '@polymer/app-route/app-route';
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import 'lib/components/Route';
 import HttpError from 'lib/errors/HttpError';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
-import equal from 'lib/equal';
 import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
+
+/**
+ * @private
+ */
+function cleanUrl(url) {
+    return url.split('?')[0].split('#')[0];
+}
+
+const notFoundRoute = fromJS({
+    pattern: '/:missing', component: () => {
+        return Promise.reject(new HttpError(404, 'Not Found'));
+    },
+});
 
 /**
  * A router button which customizable label
@@ -31,7 +42,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             e.preventDefault();
             e.stopPropagation();
             delete this._activeRoute;
-            this._out(this._tail, this._data);
+            this._out(this._location, this.routes);
         }
     }
 
@@ -52,13 +63,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     static get template() {
         return html`
             <app-location route="{{_location}}"></app-location>
-            <template is="dom-repeat" items="{{_toJSFromImmutable(routes)}}" as="r">
-                <app-route
-                    route="{{route}}"
-                    pattern="[[r.pattern]]"
-                    data="{{_data}}"
-                    tail="{{_tail}}">
-                </app-route>
+            <template is="dom-repeat" items="{{_toJSFromImmutable(_routes)}}" as="r">
             </template>
 
             <z-route
@@ -94,82 +99,80 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     static get observers() {
         return [
             '_locationChanged(_location)',
-            '_in(match, params)',
-            '_out(_tail, _data)',
-            '_routesChanged(routes)',
+            '_in(match)',
+            '_out(_location, routes)',
         ];
-    }
-
-    _routesChanged(routes) {
-        this.routesByPattern = Immutable.Map(routes.map((r) => [r.get('pattern'), r]));
     }
 
     /**
      * @private
      * @param {Object} _location - The current location information
      */
-    _locationChanged(_location) {
+    _locationChanged(_location, routes) {
         this.setProperties({
             location: fromJS(_location),
-            route: fromJS(_location).toJS(),
-            _data: {},
-            _tail: {},
         });
+    }
+
+    _calculateActiveRoute(_location, routes) {
+        if (_location && routes) {
+            let params;
+            const route = (routes || fromJS([])).find((r) => {
+                const keys = [];
+                const pattern = r.get('pattern').replace(/:[^/]+/g, (match) => {
+                    keys.push(match.substring(1));
+
+                    return '([^/]+)';
+                }) + (r.get('exact') ? '$' : '');
+
+                const results = new RegExp(pattern).exec(cleanUrl(_location.path));
+
+                if (results) {
+                    const values = results.slice(1);
+                    const pairs = keys.map((k, index) => [k, values[index]]);
+
+                    params = pairs.reduce((a, p) => Object.assign(a, {[p[0]]: p[1]}), {});
+
+                    return true;
+                }
+
+                return false;
+            });
+
+            return fromJS({
+                path: _location.path,
+                params: params || {},
+                route: route || notFoundRoute,
+            });
+        }
     }
 
     /**
      * @private
      */
     _in(match) {
-        const {tail, prefix, params = {}, path} = match.toJS();
-        const _tail = this._tail || {};
-        const _data = this._data || {};
-        const routesByPattern = this.routesByPattern || fromJS({});
-        const pattern = Object.keys(params).reduce((accumulator, k) => {
-            return accumulator.replace(new RegExp(`\\b${params[k]}\\b`), `:${k}`);
-        }, prefix);
-        const activeRoute = routesByPattern.get(pattern);
+        if (match) {
+            const route = match.get('route');
 
-        if (this._activeRoute !== activeRoute && (!activeRoute.exact || tail === '')) {
-            this._activeRoute = activeRoute;
-            this.requestResolve();
-        }
+            if (route !== this._activeRoute) {
+                this._activeRoute = route;
 
-        if (tail !== _tail.path || prefix !== _tail.prefix || !equal(params, _data)) {
-            this.setProperties({
-                _tail: {
-                    path: tail,
-                    prefix,
-                    __queryParams: _tail.__queryParams,
-                },
-                _data: params,
-            });
-        }
-
-        if (path !== this._location.path) {
-            this._location = Object.assign({}, this._location, {
-                path,
-                prefix: '',
-            });
+                setTimeout(() => {
+                    this.requestResolve();
+                });
+            }
         }
     }
 
     /**
      * @private
      */
-    _out(_tail = {}, _data = {}) {
-        if (_tail.path !== undefined) {
-            const match = fromJS({
-                path: this._location.path,
-                tail: _tail.path,
-                prefix: _tail.prefix,
-                params: _data,
-            });
+    _out(_location, routes) {
+        const match = this._calculateActiveRoute(_location, routes);
 
-            this.dispatchEvent(new CustomEvent('match-change', {
-                detail: {match},
-            }));
-        }
+        this.dispatchEvent(new CustomEvent('match-change', {
+            detail: {match},
+        }));
     }
 
     /**
@@ -183,26 +186,23 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @private
      */
     requestResolve() {
-        const activeRoute = this._activeRoute;
-        const match = this.match
+        const match = this.match;
 
-        if (!activeRoute) {
-            return Promise.reject(new HttpError(404, 'Not Found', this.match.location));
-        }
+        if (match) {
+            this.dispatchEvent(new CustomEvent('request-resolve', {
+                detail: {
+                    request() {
+                        const component = match.getIn(['route', 'component']);
 
-        const component = activeRoute.get('component');
+                        if (!component) {
+                            return Promise.reject(new HttpError(-1, 'Route has no component!', match.location));
+                        }
 
-        if (!component) {
-            return Promise.reject(new HttpError(-1, 'Route has no component!', this.match.location));
-        }
-
-        this.dispatchEvent(new CustomEvent('request-resolve', {
-            detail: {
-                request() {
-                    return resolveComponent(component, match);
+                        return resolveComponent(component, match);
+                    },
                 },
-            },
-        }));
+            }));
+        }
     }
 }
 
