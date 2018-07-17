@@ -67,6 +67,7 @@ function search(path, routes) {
  * @param {Immutable.List} routes - A list of routes to match against
  * @param {Immutable.Map} [fallback] - A fallback route to be used if no others match. Aka, your 404 route.
  * @return {Immutable.Map} The route whose pattern matches the path
+ * @module lib/matchRoute
  */
 export default function matchRoute(path, routes = fromJS([]), fallback = null) {
     const match = search(path, routes) || {};
