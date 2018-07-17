@@ -14,6 +14,13 @@ export default class UserPage extends ImmutableMixin(PolymerElement) {
         return 'User';
     }
 
+    //TO BE IMPLEMENTED
+    static get routes() {
+        return [
+            {pattern: '/detail', exact: true, component: importPage('UserDetailPage')}
+        ]
+    }
+
     /**
      * @property {String} is - The HTML tag representing the component.
      */

@@ -1,17 +1,23 @@
 import '.';
 import Helper from 'application/PageTestHelper';
 import {html} from '@polymer/polymer/polymer-element.js';
+import HttpError from 'lib/errors/HttpError';
 
 describe('Application/pages/ErrorPage', () => {
     it('renders', () => {
-        const template = html`<z-error-page code="[[code]]" message="[[message]]"/>`;
+        const template = html`<z-error-page error="[[error]]"/>`;
         const root = Helper.createElement(template, {
-            'message': 'Test Message',
-            'code': 'test error code',
+            'error': new HttpError(
+                'test error code',
+                'test error message',
+                'test url',
+                {},
+                'test response'
+            ),
         });
 
         expect(root.shadowRoot.innerHTML.includes('test error code')).toBe(true);
-        expect(root.shadowRoot.innerHTML.includes('Test Message')).toBe(true);
+        expect(root.shadowRoot.innerHTML.includes('test error message')).toBe(true);
 
         Helper.assert(root, {
             hasContent: true,

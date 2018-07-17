@@ -32,11 +32,11 @@ describe('lib/ImmutableMixin', () => {
                 },
             });
 
-            expect(mixin._getInImmutable(data, [
+            expect(mixin._getInImmutable(data,
                 'users',
                 'test user',
-                'name',
-            ])).toBe('Test Name');
+                'name'
+            )).toBe('Test Name');
         });
     });
 
@@ -67,11 +67,11 @@ describe('lib/ImmutableMixin', () => {
                 },
             });
 
-            expect(mixin._hasInImmutable(data, [
+            expect(mixin._hasInImmutable(data,
                 'users',
                 'test user',
-                'name',
-            ])).toBe(true);
+                'name'
+            )).toBe(true);
         });
 
         it('returns false when the tree doesn\'t exist', () => {

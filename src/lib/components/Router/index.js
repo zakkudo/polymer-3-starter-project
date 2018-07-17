@@ -4,16 +4,11 @@ import 'lib/components/Route';
 import HttpError from 'lib/errors/HttpError';
 import Immutable from 'immutable';
 import ImmutableMixin from 'lib/ImmutableMixin';
+import matchRoute from 'lib/matchRoute';
 import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 
-/**
- * @private
- */
-function cleanUrl(url) {
-    return url.split('?')[0].split('#')[0];
-}
 
 const notFoundRoute = fromJS({
     pattern: '/:missing', component: () => {
@@ -114,39 +109,6 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         });
     }
 
-    _calculateActiveRoute(_location, routes) {
-        if (_location && routes) {
-            let params;
-            const route = (routes || fromJS([])).find((r) => {
-                const keys = [];
-                const pattern = r.get('pattern').replace(/:[^/]+/g, (match) => {
-                    keys.push(match.substring(1));
-
-                    return '([^/]+)';
-                }) + (r.get('exact') ? '$' : '');
-
-                const results = new RegExp(pattern).exec(cleanUrl(_location.path));
-
-                if (results) {
-                    const values = results.slice(1);
-                    const pairs = keys.map((k, index) => [k, values[index]]);
-
-                    params = pairs.reduce((a, p) => Object.assign(a, {[p[0]]: p[1]}), {});
-
-                    return true;
-                }
-
-                return false;
-            });
-
-            return fromJS({
-                path: _location.path,
-                params: params || {},
-                route: route || notFoundRoute,
-            });
-        }
-    }
-
     /**
      * @private
      */
@@ -168,7 +130,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
      * @private
      */
     _out(_location, routes) {
-        const match = this._calculateActiveRoute(_location, routes);
+        const match = matchRoute(_location.path, routes, notFoundRoute);
 
         this.dispatchEvent(new CustomEvent('match-change', {
             detail: {match},
@@ -195,7 +157,11 @@ export default class Router extends ImmutableMixin(PolymerElement) {
                         const component = match.getIn(['route', 'component']);
 
                         if (!component) {
-                            return Promise.reject(new HttpError(-1, 'Route has no component!', match.location));
+                            return Promise.reject(new HttpError(
+                                -1,
+                                'Route has no component!',
+                                match.location
+                            ));
                         }
 
                         return resolveComponent(component, match);

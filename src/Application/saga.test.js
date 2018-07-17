@@ -1,5 +1,5 @@
 import Helper from 'lib/SagaTestHelper';
-import RouterError from 'lib/errors/RouterError';
+import HttpError from 'lib/errors/HttpError';
 import actions from './actions';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 import {resolve} from './saga';
@@ -127,12 +127,9 @@ describe('Application/saga', () => {
             const request = jasmine.createSpy().and.returnValue(Promise.resolve('test resolve'));
             const results = Helper.run(resolve(actions.requestPageResolve(request)), [
                 undefined,
-                new RouterError(
-                    'test error',
-                    'test filename',
-                    -1,
-                    'test code',
-                    'z-test-application-saga-fallback-component'
+                new HttpError(
+                    'test status',
+                    'test status text'
                 ),
             ]);
 
@@ -144,12 +141,9 @@ describe('Application/saga', () => {
                 PUT: {
                     action: {
                         type: '@APPLICATION/PAGE_RESOLVE_REQUEST_FAILED',
-                        reason: new RouterError(
-                            'test error',
-                            'test filename',
-                            -1,
-                            'test code',
-                            'z-test-application-saga-fallback-component'
+                        reason: new HttpError(
+                            'test status',
+                            'test status text'
                         ),
                     },
                 },
@@ -157,7 +151,7 @@ describe('Application/saga', () => {
                 PUT: {
                     action: {
                         type: '@APPLICATION/SET_PAGE_COMPONENT',
-                        component: TestApplicationSagaFallbackComponent,
+                        component: null,
                     },
                 },
             }, {
@@ -166,12 +160,9 @@ describe('Application/saga', () => {
                         type: '@APPLICATION/SET_PAGE_RESOLVE',
                         resolve: {
                             loading: false,
-                            error: new RouterError(
-                                'test error',
-                                'test filename',
-                                -1,
-                                'test code',
-                                'z-test-application-saga-fallback-component'
+                            error: new HttpError(
+                                'test status',
+                                'test status text'
                             ),
                         },
                     },

@@ -31,6 +31,6 @@ export default class HttpError extends Error {
      * @return {String} The error represented as a string
      */
     toString() {
-        return `HttpError: ${this.status} ${this.statusText} ${this.message}`;
+        return `HttpError: ${this.status} ${this.message}`;
     }
 }
