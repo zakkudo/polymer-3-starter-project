@@ -9,6 +9,14 @@ import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 
+function matchChanged(match1, match2) {
+    if (match1 && !match2) return true;
+    if (match2 && !match1) return true;
+    if (!match1 && !match2) return false;
+
+    return match1.get('route') !== match2.get('route');
+}
+
 
 const notFoundRoute = fromJS({
     pattern: '/:missing', component: () => {
@@ -132,9 +140,11 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     _out(_location, routes) {
         const match = matchRoute(_location.path, routes, notFoundRoute);
 
-        this.dispatchEvent(new CustomEvent('match-change', {
-            detail: {match},
-        }));
+        if (matchChanged(match, this.match)) {
+            this.dispatchEvent(new CustomEvent('match-change', {
+                detail: {match},
+            }));
+        }
     }
 
     /**

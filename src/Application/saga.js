@@ -1,4 +1,3 @@
-import Application from '.';
 import actions from './actions';
 import {fromJS} from 'immutable';
 import {takeEvery, call, put} from 'redux-saga/effects';
@@ -13,11 +12,11 @@ export function* resolve(action) {
     } = action;
     const {
         setPageResolve,
+        setPageRoutes,
         setPageComponent,
         pageResolveRequestSucceeded,
         pageResolveRequestFailed,
-        setPageRoutes,
-    } = Application.actions;
+    } = actions;
 
     try {
         let chain = yield call(request);
@@ -37,6 +36,7 @@ export function* resolve(action) {
 
         yield put(pageResolveRequestSucceeded({Component, response}));
         yield put(setPageComponent(Component));
+
         if (response) {
             yield put(setPageResolve(fromJS({
                 loading: false,
@@ -45,8 +45,6 @@ export function* resolve(action) {
             })));
         }
 
-        // Lazilly sets subroutes to the app so that a group stays loaded
-        // as long as you are in the hierarchy
         if (Component.routes) {
             yield put(setPageRoutes(fromJS(Component.routes)));
         }

@@ -9,24 +9,13 @@ import Actions from 'lib/Actions';
  * @module Application/actions
  */
 export default new Actions({
-    setPageRoutes(routes) {
-        debugger;
-        return {
-            type: 'SET_PAGE_ROUTES',
-            routes,
-        };
-    },
-    setPageTranslation(translation) {
-        return {
-            type: 'SET_PAGE_TRANSLATION',
-            translation,
-        };
-    },
     /**
      * The payload will be on the <code>request</code> property.
      * @redux
      * @reduxActionCreator
      * @reduxActionType REQUEST_PAGE_RESOLVE
+     * @param {Immutable.Map} match - The current route match information
+     * @return {Redux.Action} The generated action
      * @instance
     */
     setRouterMatch(match) {
@@ -80,6 +69,12 @@ export default new Actions({
         return {
             type: 'PAGE_RESOLVE_REQUEST_FAILED',
             reason,
+        };
+    },
+    setPageRoutes(routes) {
+        return {
+            type: 'SET_PAGE_ROUTES',
+            routes,
         };
     },
     /**

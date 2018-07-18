@@ -6,13 +6,9 @@ import 'lib/components/Toggle';
 import ActionsMixin from 'lib/ActionsMixin';
 import ErrorPage from 'application/pages/ErrorPage';
 import actions from './actions';
-import routes from './routes';
 import saga from './saga';
 import store from './store';
-import {fromJS} from 'immutable';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-
-const rootRoutes = fromJS(routes || []);
 
 /**
  * Demo Application
@@ -32,12 +28,7 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
         return {
             'routes': {
                 statePath: (state) => {
-                    const pageRoutes = state.pageRoutes || fromJS([]);
-
-                    if (state.pageRoutes) {
-                        debugger;
-                    }
-                    return pageRoutes.concat(rootRoutes);
+                    return state.routes;
                 },
             },
             'pageComponent': {
@@ -82,6 +73,9 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
         this.dispatch(requestPageResolve(request));
     }
 
+    /**
+     * @private
+     */
     _handleRouterMatchChange(e) {
         const {setRouterMatch} = Application.actions;
 
