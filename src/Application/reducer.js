@@ -1,6 +1,6 @@
 import actions from './actions';
 import prefixRoutes from 'lib/prefixRoutes';
-import routes from './routes';
+import _routes from './routes';
 import {fromJS} from 'immutable';
 
 /**
@@ -8,8 +8,9 @@ import {fromJS} from 'immutable';
  */
 const defaultState = {
     name: 'Polymer 3/Redux Demo Application',
-    routes,
+    routes: fromJS(_routes),
 };
+
 
 /**
  * @private
@@ -26,7 +27,7 @@ function flattenPageRoutes(parents, childrenByParent) {
         }
 
         return accumulator.push(r);
-    }, fromJS({}));
+    }, fromJS([]));
 }
 
 /**
@@ -71,7 +72,7 @@ function setPageRoutes(state, pageRoutes) {
             matchedRoute,
             prefixedRoutes
         );
-        const nextRoutes = flattenPageRoutes(routes, pageRoutesByParentRoute);
+        const nextRoutes = flattenPageRoutes(state.routes, nextPageRoutesByParentRoute);
 
         return Object.assign(state, {
             pageRoutesByParentRoute: nextPageRoutesByParentRoute,

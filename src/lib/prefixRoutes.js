@@ -9,6 +9,7 @@ export default function prefixRoutes(prefix, routes) {
     if (prefix.endsWith('/')) {
         throw new Error('Prefix pattern must not end with a slash', prefix);
     }
+
     return routes.map((r) => {
         const pattern = r.get('pattern');
 

@@ -5,6 +5,7 @@ import 'lib/components/Router';
 import 'lib/components/Toggle';
 import ActionsMixin from 'lib/ActionsMixin';
 import ErrorPage from 'application/pages/ErrorPage';
+import Immutable from 'immutable';
 import actions from './actions';
 import saga from './saga';
 import store from './store';
@@ -27,24 +28,20 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
     static get properties() {
         return {
             'routes': {
-                statePath: (state) => {
-                    return state.routes;
-                },
+                type: Immutable.List,
+                statePath: (state) => state.routes,
             },
             'pageComponent': {
-                statePath: (state) => {
-                    return state.pageComponent;
-                },
+                type: PolymerElement,
+                statePath: (state) => state.pageComponent,
             },
             'pageResolve': {
-                statePath: (state) => {
-                    return state.pageResolve;
-                },
+                type: Immutable.Map,
+                statePath: (state) => state.pageResolve,
             },
             'routerMatch': {
-                statePath: (state) => {
-                    return state.routerMatch;
-                },
+                type: Immutable.Map,
+                statePath: (state) => state.routerMatch,
             },
             'errorPageComponent': {
                 value: () => ErrorPage,
@@ -75,6 +72,7 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
 
     /**
      * @private
+     * @param {CustomEvent} e - An html event
      */
     _handleRouterMatchChange(e) {
         const {setRouterMatch} = Application.actions;

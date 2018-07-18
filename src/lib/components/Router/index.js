@@ -9,6 +9,12 @@ import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
 
+/**
+ * @private
+ * @param {Immutable.Map} match1 - The first match
+ * @param {Immutable.Map} match2 - The second match
+ * @return {Boolean} True if they have the same route reference
+ */
 function matchChanged(match1, match2) {
     if (match1 && !match2) return true;
     if (match2 && !match1) return true;
@@ -16,7 +22,6 @@ function matchChanged(match1, match2) {
 
     return match1.get('route') !== match2.get('route');
 }
-
 
 const notFoundRoute = fromJS({
     pattern: '/:missing', component: () => {
@@ -37,6 +42,9 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         this._handleLocationChanged = this._handleLocationChanged.bind(this);
     }
 
+    /**
+     * @private
+     */
     _handleLocationChanged(e) {
         const detail = e.detail || {};
         const reload = detail.reload;
@@ -45,13 +53,17 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             e.preventDefault();
             e.stopPropagation();
             delete this._activeRoute;
-            this._out(this._location, this.routes);
+            this._out(this._location, this.routes, true);
         }
     }
 
     connectedCallback() {
         super.connectedCallback();
         window.addEventListener('location-changed', this._handleLocationChanged);
+
+        setTimeout(() => {
+            this.requestResolve();
+        });
     }
 
     disconnectedCallback() {
@@ -127,9 +139,7 @@ export default class Router extends ImmutableMixin(PolymerElement) {
             if (route !== this._activeRoute) {
                 this._activeRoute = route;
 
-                setTimeout(() => {
-                    this.requestResolve();
-                });
+                this.requestResolve();
             }
         }
     }
@@ -137,10 +147,10 @@ export default class Router extends ImmutableMixin(PolymerElement) {
     /**
      * @private
      */
-    _out(_location, routes) {
+    _out(_location, routes, reload = false) {
         const match = matchRoute(_location.path, routes, notFoundRoute);
 
-        if (matchChanged(match, this.match)) {
+        if (matchChanged(match, this.match) || reload) {
             this.dispatchEvent(new CustomEvent('match-change', {
                 detail: {match},
             }));

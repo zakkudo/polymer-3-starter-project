@@ -1,13 +1,5 @@
 import {fromJS} from 'immutable';
 
-/*
-        return fromJS({
-            path: _location.path,
-            params: params || {},
-            route: route || notFoundRoute,
-        });
-        */
-
 /**
  * @private
  * Removes any suffix to the url in the form of a query string or hash string

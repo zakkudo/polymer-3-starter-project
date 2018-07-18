@@ -71,7 +71,8 @@ module.exports = {
     plugins: [
         new CaseSensitivePathsWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: 'Polymer with webpack'
+            title: 'Polymer with webpack',
+            chunksSortMode: 'none',
         }),
         new HtmlWebpackIncludeAssetsPlugin({
             //Needed for Firefox and Edge
