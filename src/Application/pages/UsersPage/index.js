@@ -1,24 +1,34 @@
 import ImmutableMixin from 'lib/ImmutableMixin';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import importPage from 'application/importPage';
 
 /**
- * @module Application/pages/UserPage
+ * @module Application/pages/UsersPage
  * @customElement
  * @polymer
  */
-export default class UserPage extends ImmutableMixin(PolymerElement) {
+export default class UsersPage extends ImmutableMixin(PolymerElement) {
     /**
      * The default page title
      */
     static get title() {
-        return 'User Detail';
+        return 'User List';
+    }
+
+    /**
+     * subroutes
+     */
+    static get routes() {
+        return [
+            {pattern: '/:id', exact: true, component: importPage('UserPage')},
+        ];
     }
 
     /**
      * @property {String} is - The HTML tag representing the component.
      */
     static get is() {
-        return 'z-user-page';
+        return 'z-users-page';
     }
 
     /**
@@ -27,10 +37,10 @@ export default class UserPage extends ImmutableMixin(PolymerElement) {
      */
     static get template() {
         return html`
-            <h2>This is the user page for [[_getInImmutable(match, "params", "id")]]</h2>
+            <h2>This page displays a list of users.</h2>
       `;
     }
 }
 
-customElements.define(UserPage.is, UserPage);
+customElements.define(UsersPage.is, UsersPage);
 

@@ -34,6 +34,25 @@ export default function reducer(state = defaultState, action) {
             return Object.assign(copy, {
                 routerMatch: action.match,
             });
+        case actions.SET_PAGE_ROUTES:
+            const path = copy.routerMatch.getIn(['route', 'pattern']);
+            debugger;
+
+            return Object.assign(copy, {
+                pageRoutes: action.routes.map((r) => {
+                    debugger;
+                    const pattern = r.get('pattern');
+
+                    if (!pattern.startsWith('/')) {
+                        throw new Error('Pattern must start with a slash', pattern);
+                    }
+
+                    debugger;
+                    return r.set('pattern', `${path}${pattern}`);
+                })
+            });
+
+            return copy;
         case actions.SET_PAGE_RESOLVE:
             return Object.assign(copy, {pageResolve: action.resolve});
         case actions.SET_PAGE_TITLE:

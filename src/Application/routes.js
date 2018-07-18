@@ -1,10 +1,5 @@
 import HttpError from 'lib/errors/HttpError';
-
-function importPage(name) {
-    return () => {
-        return import(/* webpackChunkName: "[request]" */ `./pages/${name}`).then((C) => C.default);
-    }
-}
+import importPage from 'application/importPage';
 
 /**
  * Routes for the application
@@ -12,7 +7,7 @@ function importPage(name) {
  */
 export default [
     {pattern: '/', exact: true, component: importPage('SearchPage')},
-    {pattern: '/users/:id', exact: true, component: importPage('UserPage')},
+    {pattern: '/users', component: importPage('UsersPage')}, //This is exact false so it can add its own subroutes
     {pattern: '/about', exact: true, component: importPage('AboutPage')},
     {pattern: '/fail', exact: true, component: () => Promise.reject(new Error('This page failed to load because of some internal exception in the javascript but was handled gracefully'))},
     {pattern: '/forbidden', exact: true, component: () => Promise.reject(new HttpError(

@@ -1,7 +1,7 @@
-import {takeEvery, call, put} from 'redux-saga/effects';
+import Application from '.';
 import actions from './actions';
 import {fromJS} from 'immutable';
-import Application from '.';
+import {takeEvery, call, put} from 'redux-saga/effects';
 
 /**
  * @private
@@ -16,6 +16,7 @@ export function* resolve(action) {
         setPageComponent,
         pageResolveRequestSucceeded,
         pageResolveRequestFailed,
+        setPageRoutes,
     } = Application.actions;
 
     try {
@@ -42,6 +43,12 @@ export function* resolve(action) {
                 message,
                 response,
             })));
+        }
+
+        // Lazilly sets subroutes to the app so that a group stays loaded
+        // as long as you are in the hierarchy
+        if (Component.routes) {
+            yield put(setPageRoutes(fromJS(Component.routes)));
         }
     } catch (reason) {
         yield put(pageResolveRequestFailed(reason));

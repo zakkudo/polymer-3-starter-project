@@ -9,6 +9,19 @@ import Actions from 'lib/Actions';
  * @module Application/actions
  */
 export default new Actions({
+    setPageRoutes(routes) {
+        debugger;
+        return {
+            type: 'SET_PAGE_ROUTES',
+            routes,
+        };
+    },
+    setPageTranslation(translation) {
+        return {
+            type: 'SET_PAGE_TRANSLATION',
+            translation,
+        };
+    },
     /**
      * The payload will be on the <code>request</code> property.
      * @redux

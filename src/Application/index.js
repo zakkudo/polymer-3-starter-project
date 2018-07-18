@@ -5,13 +5,14 @@ import 'lib/components/Router';
 import 'lib/components/Toggle';
 import ActionsMixin from 'lib/ActionsMixin';
 import ErrorPage from 'application/pages/ErrorPage';
-import Immutable from 'immutable';
 import actions from './actions';
 import routes from './routes';
 import saga from './saga';
 import store from './store';
 import {fromJS} from 'immutable';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
+
+const rootRoutes = fromJS(routes || []);
 
 /**
  * Demo Application
@@ -30,8 +31,14 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
     static get properties() {
         return {
             'routes': {
-                type: Immutable.List,
-                value: fromJS(routes),
+                statePath: (state) => {
+                    const pageRoutes = state.pageRoutes || fromJS([]);
+
+                    if (state.pageRoutes) {
+                        debugger;
+                    }
+                    return pageRoutes.concat(rootRoutes);
+                },
             },
             'pageComponent': {
                 statePath: (state) => {
@@ -119,7 +126,10 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
                 <z-link to="/" reload>UI Home with forced reload</z-link>
             </li>
             <li>
-                <z-link to="/users/zach">Read data from url</z-link>
+                <z-link to="/users">Users list</z-link>
+            </li>
+            <li>
+                <z-link to="/users/zach">Load specific user</z-link>
             </li>
             <li>
                 <z-link to="/about">UI About</z-link>
