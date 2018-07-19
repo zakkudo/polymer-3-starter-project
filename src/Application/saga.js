@@ -5,8 +5,9 @@ import {takeEvery, call, put} from 'redux-saga/effects';
 /**
  * @private
  * @param {Object} action - A redux action
+ * @param {Immutable.Map} match - The router match info
  */
-export function* resolve(action) {
+export function* resolve(action, match) {
     const {
         request,
     } = action;
@@ -33,7 +34,6 @@ export function* resolve(action) {
         }
 
         const {Component = null, message = null, response = null} = chain;
-
         yield put(pageResolveRequestSucceeded({Component, response}));
 
         // Leaves the page store until the component is removed

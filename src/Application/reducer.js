@@ -116,6 +116,18 @@ function setComponent(state, component) {
 }
 
 /**
+ * @private
+ * @param {Object} state - The redux state
+ * @param {Immutable.Map} resolve - The resolve state to merge
+ * @return {Object} The updated redux state
+ */
+function setPageResolve(state, resolve) {
+    const pageResolve = state.pageResolve || fromJS({});
+
+    return Object.assign(state, {pageResolve: pageResolve.merge(resolve)});
+}
+
+/**
  * Application reducer.
  * @redux
  * @reduxReducer
@@ -137,7 +149,7 @@ export default function reducer(state = defaultState, action) {
         case actions.SET_PAGE_ROUTES:
             return setPageRoutes(state, action.routes);
         case actions.SET_PAGE_RESOLVE:
-            return Object.assign(copy, {pageResolve: action.resolve});
+            return setPageResolve(state, action.resolve);
         case actions.SET_PAGE_TITLE:
             return setPageTitle(copy, action.title);
         case actions.SET_PAGE_COMPONENT:

@@ -49,7 +49,7 @@ export default function resolveComponent(component, match) {
         .then((Component) => {
             const {data, message} = getResolveInformation(Component);
             const next = shallowResolve(data, match).then((_response) => {
-                const response = fromJS(_response);
+                const response = fromJS(_response).set('match', match);
 
                 return {
                     message,

@@ -96,6 +96,7 @@ export default class Route extends PolymerElement {
         return [
             '_componentChanged(component, resolve)',
             '_titleChanged(title)',
+            '_resolveChanged(resolve)',
             '_matchChanged(match)',
         ];
     }
@@ -105,6 +106,14 @@ export default class Route extends PolymerElement {
 
         if (component) {
             component.set('title', title);
+        }
+    }
+
+    _resolveChanged(resolve) {
+        const component = this.getComponent();
+
+        if (component) {
+            component.set('resolve', resolve);
         }
     }
 

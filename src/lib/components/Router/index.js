@@ -24,7 +24,7 @@ function matchChanged(match1, match2) {
 }
 
 const notFoundRoute = fromJS({
-    pattern: '/:missing', component: () => {
+    pattern: '/', component: () => {
         return Promise.reject(new HttpError(404, 'Not Found'));
     },
 });

@@ -27,7 +27,7 @@ export default class UserPage extends ImmutableMixin(PolymerElement) {
      */
     static get template() {
         return html`
-            <h2>This is the user page for [[_getInImmutable(match, "params", "id")]]</h2>
+            <h2>This is the user page for [[_getInImmutable(resolve, "response", "match", "params", "id")]]</h2>
       `;
     }
 }
