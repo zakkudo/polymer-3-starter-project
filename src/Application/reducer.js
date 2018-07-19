@@ -86,6 +86,19 @@ function setPageRoutes(state, pageRoutes) {
 /**
  * @private
  * @param {Object} state - The redux state
+ * @param {String} title - The new page title
+ * @return {Object} The new redux state
+ */
+function setPageTitle(state, title) {
+    return Object.assign(state, {
+        pageTitle: title,
+        title: [state.name, title].filter((t) => t).join(' | '),
+    });
+}
+
+/**
+ * @private
+ * @param {Object} state - The redux state
  * @param {PolymerElement} component - A polymer component to set
  * @return {Object} The updated redux state
  */
@@ -94,8 +107,6 @@ function setComponent(state, component) {
 
     if (component && component.reducer) {
         state.page = {};
-    } else {
-        delete state.page;
     }
 
     state.title = buildStaticTitle(state.name, state.pageComponent);
@@ -128,12 +139,7 @@ export default function reducer(state = defaultState, action) {
         case actions.SET_PAGE_RESOLVE:
             return Object.assign(copy, {pageResolve: action.resolve});
         case actions.SET_PAGE_TITLE:
-            Object.assign(copy, {
-                pageTitle: action.title,
-                title: [state.name, action.title].filter((t) => t).join(' | '),
-            });
-
-            return copy;
+            return setPageTitle(copy, action.title);
         case actions.SET_PAGE_COMPONENT:
             return setComponent(copy, action.component);
     }

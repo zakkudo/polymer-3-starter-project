@@ -25,11 +25,11 @@ export default class LoadingCurtain extends PolymerElement {
                     justify-content: center;
                     align-items: center;
                     transition: opacity .5s linear .1s, .1s visibility .5s;
-                    position: absolute;
+                    position: fixed;
                     top: 0;
+                    bottom: 0;
                     left: 0;
-                    height: 100vh;
-                    width: 100vw;
+                    right: 0;
                     background-color: rgba(255, 255, 255, .7);
                     opacity: 0;
                     visibility: hidden;

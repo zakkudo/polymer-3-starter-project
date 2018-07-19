@@ -24,8 +24,6 @@ function normalizeError(reason) {
             null,
             reason.message
         );
-
-        status = '-1';
     } else if (typeof reason === 'string') {
         return new HttpError(
             -1,
@@ -119,6 +117,9 @@ export default class Route extends PolymerElement {
     }
 
     _handleTitleChange(e) {
+        const detail = e.detail || {};
+
+        this.dispatchEvent(new CustomEvent('title-change', {detail}));
     }
 
     getComponent() {

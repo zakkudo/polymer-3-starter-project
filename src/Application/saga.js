@@ -35,6 +35,10 @@ export function* resolve(action) {
         const {Component = null, message = null, response = null} = chain;
 
         yield put(pageResolveRequestSucceeded({Component, response}));
+
+        // Leaves the page store until the component is removed
+        yield put(setPageComponent(null));
+        // Sets the new page store and then loads the component
         yield put(setPageComponent(Component));
 
         if (response) {

@@ -50,7 +50,7 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
             'title': {
                 type: String,
                 statePath: (state) => {
-                    if (document.title !== state.title) {
+                    if (document.title !== state.title && state.title !== undefined) {
                         document.title = state.title;
                     }
 
@@ -79,6 +79,12 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
         const {setRouterMatch} = Application.actions;
 
         this.dispatch(setRouterMatch(e.detail.match));
+    }
+
+    _handlePageTitleChange(e) {
+        const {setPageTitle} = Application.actions;
+
+        this.dispatch(setPageTitle(e.detail.title));
     }
 
     /**

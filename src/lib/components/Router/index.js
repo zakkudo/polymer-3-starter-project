@@ -71,6 +71,12 @@ export default class Router extends ImmutableMixin(PolymerElement) {
         window.removeEventListener('location-changed', this._handleLocationChanged);
     }
 
+    _handleTitleChange(e) {
+        const detail = e.detail || {};
+
+        this.dispatchEvent(new CustomEvent('title-change', {detail}));
+    }
+
     /**
      * @property {Native.DocumentFragment} template - Template used for
      * rendering the contents of the component.

@@ -21,11 +21,7 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
     static get properties() {
         return {
             'results': {
-                statePath(state) {
-                    const page = state.page || {};
-
-                    return page.results || fromJS([]);
-                },
+                statePath: (state) => state.page.results || fromJS([]),
             },
         };
     }
@@ -70,7 +66,7 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
             message: 'Resolving Users...',
             data: {
                 users: () => new Promise((resolve, reject) => {
-                    setTimeout(() => { //Make the loading time more exciting!
+                    setTimeout(() => { // Make the loading time more exciting!
                         api.backend.users.query().then((response) => {
                             resolve(response.join(', '));
                         }).catch(reject);
@@ -87,6 +83,12 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
         const setResults = SearchPage.actions.setResults;
         const active = e.detail.active;
         const results = this.results.setIn([e.model.index, 'active'], active);
+
+        this.dispatchEvent(new CustomEvent('title-change', {
+            detail: {
+                title: 'search with active options',
+            },
+        }));
 
         e.preventDefault();
         e.stopPropagation();
@@ -121,7 +123,8 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
                       <li>
                           <z-toggle
                             active="[[_getFromImmutable(item, 'active')]]"
-                            on-active-change="_handleActiveChange">[[_getFromImmutable(item, 'key')]]
+                            on-active-change="_handleActiveChange">
+                            [[_getFromImmutable(item, 'key')]]
                           </z-toggle>
                       </li>
                       </template>
