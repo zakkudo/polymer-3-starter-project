@@ -124,6 +124,12 @@ function setComponent(state, component) {
 function setPageResolve(state, resolve) {
     const pageResolve = state.pageResolve || fromJS({});
 
+    if (resolve.has('error') || resolve.has('response')) {
+        const nextPageResolve = pageResolve.delete('error').delete('response').merge(resolve);
+
+        return Object.assign(state, {pageResolve: nextPageResolve});
+    }
+
     return Object.assign(state, {pageResolve: pageResolve.merge(resolve)});
 }
 

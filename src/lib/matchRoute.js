@@ -62,7 +62,7 @@ function search(path, routes) {
  * @module lib/matchRoute
  */
 export default function matchRoute(path, routes = fromJS([]), fallback = null) {
-    const match = search(path, routes) || {};
+    const match = search(path, routes);
 
     if (path && match) {
         const {route, params} = match;
