@@ -3,6 +3,7 @@ import '@polymer/polymer/lib/elements/dom-repeat';
 import 'lib/components/Link';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
+import 'lib/components/LoadingCurtain';
 import ActionsMixin from 'lib/ActionsMixin';
 import ErrorPage from 'application/pages/ErrorPage';
 import Immutable from 'immutable';
@@ -93,21 +94,11 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
      */
     static get template() {
         return html`
-            <style>
-            @keyframes spin {
-                from {transform:rotate(0deg);}
-                to {transform:rotate(360deg);}
-            }
+            <z-loading-curtain
+                message="[[_getFromImmutable(pageResolve, 'message')]]"
+                is-loading="[[_getFromImmutable(pageResolve, 'loading')]]">
+            </z-loading-curtain>
 
-            .loading-curtain {
-                animation: spin 2s infinite linear;
-                position: absolute;
-                font-size: 100px;
-                display: inline-block;
-                transform: rotate(10deg);
-                background-color: rgba(255, 255, 255, .7);
-            }
-            </style>
             <h1>Polymer with Webpack example</h1>
 
             <ul>
@@ -143,14 +134,6 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
                 title="[[pageTitle]]"
                 on-title-change="_handlePageTitleChange"
                 routes="[[routes]]"></z-router>
-
-            <template
-                is="dom-if"
-                if="[[_getFromImmutable(pageResolve, 'loading')]]">
-                <div class="loading-curtain">
-                    [[_getFromImmutable(pageResolve, 'message')]].... [spinner]
-                </div>
-            </template>
         `;
     }
 }
