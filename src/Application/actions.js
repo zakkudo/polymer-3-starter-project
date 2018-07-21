@@ -39,38 +39,6 @@ export default new Actions({
             request,
         };
     },
-    /**
-     * Debugging action to show a request succeeded and with what payload.
-     * The payload will be on the <code>response</code> property.
-     * @redux
-     * @reduxActionCreator
-     * @reduxActionType PAGE_RESOLVE_REQUEST_SUCCEEDED
-     * @instance
-     * @param {Immutable.Map} response - The raw response of the executed action
-     * @return {Redux.Action} The generated action
-    */
-    pageResolveRequestSucceeded(response) {
-        return {
-            type: 'PAGE_RESOLVE_REQUEST_SUCCEEDED',
-            response,
-        };
-    },
-    /**
-     * Debugging action to show a request failed and with what payload.
-     * The payload will be on the <code>response</code> property.
-     * @redux
-     * @reduxActionCreator
-     * @reduxActionType PAGE_RESOLVE_REQUEST_FAILED
-     * @instance
-     * @param {Error} reason - The reason the request failed
-     * @return {Redux.Action} The generated action
-    */
-    pageResolveRequestFailed(reason) {
-        return {
-            type: 'PAGE_RESOLVE_REQUEST_FAILED',
-            reason,
-        };
-    },
     setPageRoutes(routes) {
         return {
             type: 'SET_PAGE_ROUTES',
