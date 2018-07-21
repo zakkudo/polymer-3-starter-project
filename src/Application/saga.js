@@ -19,29 +19,36 @@ export function* resolve(action, match) {
         pageResolveRequestFailed,
     } = actions;
 
+    debugger;
     try {
         let chain = yield call(request);
 
         while (chain.next) {
             const {next, message} = chain;
+    debugger;
 
             yield put(setPageResolve(fromJS({
                 loading: true,
                 message,
             })));
 
+    debugger;
             chain = yield next;
         }
 
         const {Component = null, message = null, response = null} = chain;
+    debugger;
         yield put(pageResolveRequestSucceeded({Component, response}));
 
         // Leaves the page store until the component is removed
+    debugger;
         yield put(setPageComponent(null));
         // Sets the new page store and then loads the component
+    debugger;
         yield put(setPageComponent(Component));
 
         if (response) {
+    debugger;
             yield put(setPageResolve(fromJS({
                 loading: false,
                 message,

@@ -50,6 +50,13 @@ describe('Application/saga', () => {
                 PUT: {
                     action: {
                         type: '@APPLICATION/SET_PAGE_COMPONENT',
+                        component: null,
+                    },
+                },
+            }, {
+                PUT: {
+                    action: {
+                        type: '@APPLICATION/SET_PAGE_COMPONENT',
                         component: {'resolve': {'message': 'test message'}},
                     },
                 },
@@ -98,6 +105,13 @@ describe('Application/saga', () => {
                             Component: 'test component',
                             response: 'test response',
                         },
+                    },
+                },
+            }, {
+                PUT: {
+                    action: {
+                        type: '@APPLICATION/SET_PAGE_COMPONENT',
+                        component: null,
                     },
                 },
             }, {

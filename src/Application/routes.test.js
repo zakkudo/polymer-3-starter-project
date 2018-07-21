@@ -13,7 +13,7 @@ describe('Application/routes', () => {
         })).toEqual([{
             pattern: '/',
         }, {
-            pattern: '/users/:id',
+            pattern: '/users',
         }, {
             pattern: '/about',
         }, {

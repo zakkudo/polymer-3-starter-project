@@ -1,4 +1,5 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {__, __n} from 'lib/localization';
 
 /**
  * @module Application/pages/AboutPage
@@ -10,7 +11,7 @@ export default class AboutPage extends PolymerElement {
      * The default page title
      */
     static get title() {
-        return 'About';
+        return __('About');
     }
 
     /**
@@ -27,6 +28,8 @@ export default class AboutPage extends PolymerElement {
     static get template() {
         return html`
           <h2> Welcome to the about page!</h2>
+
+          <p>[[__n('one fish', '%d fishes', 2)]]</p>
 
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada, erat sit amet fermentum sollicitudin, tellus tellus vulputate quam, non faucibus arcu sapien id nunc. Donec in magna ultricies, molestie lorem sit amet, volutpat augue. Nunc libero risus, sodales at justo et, hendrerit pellentesque purus. In nec vehicula neque. Praesent aliquam lacus vitae risus hendrerit, ut volutpat ex volutpat. Sed dui dui, pulvinar ac vestibulum quis, ultrices placerat nisi. Nam consectetur eros non felis congue, vel tincidunt turpis aliquet. Curabitur gravida convallis sollicitudin. Curabitur ut mauris et massa pellentesque scelerisque sed sed odio.</p>
 

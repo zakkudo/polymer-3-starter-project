@@ -1,7 +1,7 @@
 import matchRoute from 'lib/matchRoute';
 
-describe(('lib/matchRoute', () => {
-    it(('test') => {
-        TODO
+describe('lib/matchRoute', () => {
+    it('test', () => {
+        //TODO
     });
 });

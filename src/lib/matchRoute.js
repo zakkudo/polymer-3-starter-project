@@ -1,20 +1,20 @@
 import {fromJS} from 'immutable';
 
 /**
- * @private
  * Removes any suffix to the url in the form of a query string or hash string
  * @param {String} path - The url path to clean
  * @return {String} The cleaned url
+ * @private
  */
 function cleanPath(path) {
     return path.split('?')[0].split('#')[0];
 }
 
 /**
- * @private
  * @param {String} path - A url path
  * @param {Immutable.List} routes - A list of routes
  * @return {Immutable.Map|null} The route if there is a match, or null
+ * @private
  */
 function search(path, routes) {
     let params = {};

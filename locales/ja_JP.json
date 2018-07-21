@@ -1,0 +1,7 @@
+{
+    "About": "このページについて",
+    // UNUSED
+    "fish": "魚",
+    // NEW
+    "one fish": {"one":"","other":""}
+}

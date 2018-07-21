@@ -1,4 +1,5 @@
 import reducer from './reducer';
+import {fromJS} from 'immutable';
 import actions from './actions';
 import {PolymerElement} from '@polymer/polymer/polymer-element';
 
@@ -77,13 +78,14 @@ describe('application/reducer', () => {
         });
     });
 
-    it('removes the page object and pageTitle if there is no page component', () => {
+    it('does nothing to the the page object and pageTitle if the page component is removed', () => {
         const state = reducer({
-            page: {},
+            page: {test: 'value'},
             pageTitle: 'test page title', // This should be cleared on new page load
         }, actions.setPageComponent(null));
 
         expect(state).toEqual({
+            page: {test: 'value'},
             pageComponent: null,
             title: '',
         });
@@ -91,7 +93,7 @@ describe('application/reducer', () => {
 
     it('has no title when there is no app name or page title', () => {
         const state = reducer({
-            page: {},
+            page: {test: 'value'},
             pageTitle: 'test page title',
         }, actions.setPageComponent(TestComponent));
 
@@ -195,12 +197,12 @@ describe('application/reducer', () => {
         const state = reducer({
             page: {data: 'test data'},
             pageComponent: TestComponentWithTitle,
-        }, actions.setPageResolve('test resolve'));
+        }, actions.setPageResolve(fromJS({'response': 'test resolve'})));
 
-        expect(state).toEqual({
+        expect(fromJS(state).toJS()).toEqual({
             page: {data: 'test data'},
             pageComponent: TestComponentWithTitle,
-            pageResolve: 'test resolve',
+            pageResolve: {response: 'test resolve'},
         });
     });
 });

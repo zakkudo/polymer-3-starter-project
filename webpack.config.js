@@ -1,15 +1,16 @@
-const path = require('path'),
-    HtmlWebpackPlugin = require('html-webpack-plugin'),
-    HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin'),
-    GenerateJsonWebpackPlugin = require('generate-json-webpack-plugin'),
-    WriteFileWebpackPlugin = require('write-file-webpack-plugin'),
-    MiniCssExtractPlugin = require('mini-css-extract-plugin'),
-    UglifyJSWebpackPlugin = require('uglifyjs-webpack-plugin'),
-    {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin'),
-    program = path.basename(process.argv[1]),
-    mode = program == 'webpack' ? 'production' : 'development',
-    JsDocWebpackPlugin = require('jsdoc-webpack4-plugin'),
-    CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const GenerateJsonWebpackPlugin = require('generate-json-webpack-plugin');
+const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJSWebpackPlugin = require('uglifyjs-webpack-plugin');
+const {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin');
+const program = path.basename(process.argv[1]);
+const mode = program == 'webpack' ? 'production' : 'development';
+const JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
+const TranslateWebpackPlugin = require('./plugins/TranslateWebpackPlugin');
+const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
 
 
 module.exports = {
@@ -69,6 +70,10 @@ module.exports = {
         }
     },
     plugins: [
+        new TranslateWebpackPlugin({
+            languages: ['ja_JP'],
+            files: 'src/**/!(*test|*story|*TestHelper).js',
+        }),
         new CaseSensitivePathsWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Polymer with webpack',
@@ -79,11 +84,9 @@ module.exports = {
             assets: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'],
             append: false
         }),
-        /*
         new JsDocWebpackPlugin({
             conf: './jsdoc.config.json'
         }),
-        */
         new BaseHrefWebpackPlugin({baseHref: '/'}),
         new WriteFileWebpackPlugin({
         }),
@@ -114,6 +117,9 @@ module.exports = {
         open: true
     },
     stats: "errors-only",
+    node: {
+        fs: 'empty'
+    }
 };
 
 

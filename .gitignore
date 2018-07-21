@@ -9,3 +9,4 @@ demo
 .karma-test-results.json
 .jest-test-results.json
 *.tmp
+.locale-gen/*

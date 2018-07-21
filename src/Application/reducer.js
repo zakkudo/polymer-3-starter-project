@@ -102,11 +102,13 @@ function setPageTitle(state, title) {
  * @param {PolymerElement} component - A polymer component to set
  * @return {Object} The updated redux state
  */
-function setComponent(state, component) {
+function setPageComponent(state, component) {
     state.pageComponent = component || null;
 
     if (component && component.reducer) {
         state.page = {};
+    } else if (component) {
+        delete state.page;
     }
 
     state.title = buildStaticTitle(state.name, state.pageComponent);
@@ -159,7 +161,7 @@ export default function reducer(state = defaultState, action) {
         case actions.SET_PAGE_TITLE:
             return setPageTitle(copy, action.title);
         case actions.SET_PAGE_COMPONENT:
-            return setComponent(copy, action.component);
+            return setPageComponent(copy, action.component);
     }
 
     if (pageReducer) {
