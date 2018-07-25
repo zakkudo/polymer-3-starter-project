@@ -103,14 +103,8 @@ function setPageTitle(state, title) {
  * @return {Object} The updated redux state
  */
 function setPageComponent(state, component) {
+    state.page = {};
     state.pageComponent = component || null;
-
-    if (component && component.reducer) {
-        state.page = {};
-    } else if (component) {
-        delete state.page;
-    }
-
     state.title = buildStaticTitle(state.name, state.pageComponent);
     delete state.pageTitle;
 
@@ -136,6 +130,21 @@ function setPageResolve(state, resolve) {
 }
 
 /**
+ * @private
+ */
+function setPageLocalization(state, locale, localization) {
+    const localizations = state.localizations || fromJS({});
+
+    if (!localizations.has(locale)) {
+        return Object.assign(state, {
+            localizations: localizations.set(locale, localization),
+        });
+    }
+
+    return state;
+}
+
+/**
  * Application reducer.
  * @redux
  * @reduxReducer
@@ -150,6 +159,8 @@ export default function reducer(state = defaultState, action) {
     const pageReducer = pageComponent.reducer;
 
     switch (action.type) {
+        case actions.SET_PAGE_LOCALIZATION:
+            return setPageLocalization(state, action.locale, state.localization);
         case actions.SET_ROUTER_MATCH:
             return Object.assign(copy, {
                 routerMatch: action.match,

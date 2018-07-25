@@ -1,7 +1,7 @@
 const JSON5 = require('json5');
 const path = require('path');
 const fs = require('fs');
-const getLocalizationStrings = require('./getLocalizationStrings');
+const toLocalization = require('./toLocalization');
 const hasTranslation = require('./hasTranslation');
 const scrubLocalization = require('./scrubLocalization');
 const glob = require('glob');
@@ -93,7 +93,7 @@ module.exports = class TranslateWebpackPlugin {
             const contents = String(fs.readFileSync(m));
 
             sourceFiles[m] = contents;
-            translatables[m] = getLocalizationStrings(contents);
+            translatables[m] = toLocalization(contents);
 
             translatables[m].forEach((t) => {
                 try {
@@ -103,6 +103,24 @@ module.exports = class TranslateWebpackPlugin {
                 }
             });
         });
+
+        this.applyUpdates();
+    }
+
+    writeToTargets() {
+        /*TODO
+        const target = this.options.target;
+
+        if (target) {
+            const files = glob(target);
+
+            file.forEach((f) => {
+                const localization = calculateTranslationsApplicableToPath(f);
+
+                fs.writeFileSync(path.resolve(target, 'locales', `${locale}.json`), localization);
+            });
+        }
+        */
     }
 
     apply(compiler) {
@@ -123,7 +141,7 @@ module.exports = class TranslateWebpackPlugin {
                 this.localeGen(modifiedFiles);
             }
 
-            this.applyUpdates();
+            this.writeToTargets();
         });
     }
 }

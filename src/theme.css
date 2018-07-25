@@ -11,3 +11,8 @@ body {
     --default-fg: black;
     --default-bg: light-gray;
 }
+
+/* Force 3d accelleration */
+body > * {
+   transform: translateZ(0);
+}

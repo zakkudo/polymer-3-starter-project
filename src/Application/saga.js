@@ -7,7 +7,7 @@ import {takeEvery, call, put} from 'redux-saga/effects';
  * @param {Object} action - A redux action
  * @param {Immutable.Map} match - The router match info
  */
-export function* resolve(action, match) {
+export function* requestResolve(action, match) {
     const {
         request,
     } = action;
@@ -19,36 +19,25 @@ export function* resolve(action, match) {
         pageResolveRequestFailed,
     } = actions;
 
-    debugger;
     try {
         let chain = yield call(request);
 
         while (chain.next) {
             const {next, message} = chain;
-    debugger;
 
             yield put(setPageResolve(fromJS({
                 loading: true,
                 message,
             })));
 
-    debugger;
             chain = yield next;
         }
 
         const {Component = null, message = null, response = null} = chain;
-    debugger;
         yield put(pageResolveRequestSucceeded({Component, response}));
-
-        // Leaves the page store until the component is removed
-    debugger;
-        yield put(setPageComponent(null));
-        // Sets the new page store and then loads the component
-    debugger;
         yield put(setPageComponent(Component));
 
         if (response) {
-    debugger;
             yield put(setPageResolve(fromJS({
                 loading: false,
                 message,
@@ -56,9 +45,9 @@ export function* resolve(action, match) {
             })));
         }
 
-        if (Component.routes) {
-            yield put(setPageRoutes(fromJS(Component.routes)));
-        }
+            if (Component.routes) {
+                yield put(setPageRoutes(fromJS(Component.routes)));
+            }
     } catch (reason) {
         yield put(pageResolveRequestFailed(reason));
         yield put(setPageComponent(null));
@@ -73,5 +62,5 @@ export function* resolve(action, match) {
  * @private
  */
 export default function* rootSaga() {
-    yield takeEvery(actions.REQUEST_PAGE_RESOLVE, resolve);
+    yield takeEvery(actions.REQUEST_PAGE_RESOLVE, requestResolve);
 }

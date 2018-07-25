@@ -24,6 +24,19 @@ export default new Actions({
             match,
         };
     },
+    requestPageLocalization(locale) {
+        return {
+            type: 'REQUEST_PAGE_LOCALIZATION',
+            locale,
+        };
+    },
+    setPageLocalization(locale, localization) {
+        return {
+            type: 'SET_PAGE_LOCALIZATION',
+            locale,
+            localization,
+        };
+    },
     /**
      * The payload will be on the <code>request</code> property.
      * @redux

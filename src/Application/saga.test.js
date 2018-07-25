@@ -2,7 +2,7 @@ import Helper from 'lib/SagaTestHelper';
 import HttpError from 'lib/errors/HttpError';
 import actions from './actions';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {resolve} from './saga';
+import {requestResolve} from './saga';
 
 class TestApplicationSagaFallbackComponent extends PolymerElement {
     static get template() {

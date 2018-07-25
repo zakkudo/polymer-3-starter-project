@@ -1,4 +1,3 @@
-import {__ as singular, __n as plural} from 'y18n';
 import y18n from 'y18n';
 
 const instance = y18n({
@@ -6,7 +5,15 @@ const instance = y18n({
     locale: 'en',
 });
 
-instance.cache['en'] = {};
+instance.cache['default'] = {};
+
+export function setLocalization(language, localization) {
+    instance.cache[language] = localization.toJS();
+}
+
+export function setLocale(language) {
+    instance.setLocale(language);
+}
 
 export function __(...args) {
     return instance.__(...args);

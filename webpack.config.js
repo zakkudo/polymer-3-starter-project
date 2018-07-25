@@ -9,7 +9,7 @@ const {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin');
 const program = path.basename(process.argv[1]);
 const mode = program == 'webpack' ? 'production' : 'development';
 const JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
-const TranslateWebpackPlugin = require('./plugins/TranslateWebpackPlugin');
+//const TranslateWebpackPlugin = require('./plugins/TranslateWebpackPlugin');
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
 
 
@@ -46,6 +46,11 @@ module.exports = {
                 use: 'null-loader'
             },
             {
+                test: /\.json$/,
+                type: 'javascript/auto',
+                loader: 'json5-loader'
+            },
+            {
                 test:/\.css$/,
                 use:[MiniCssExtractPlugin.loader,'css-loader']
             },
@@ -65,15 +70,17 @@ module.exports = {
             application: path.resolve(__dirname, 'src', 'Application'),
             lib: path.resolve(__dirname, 'src', 'lib'),
             root: path.resolve(__dirname, 'src'),
+            locales: path.resolve(__dirname, 'locales'),
             mocks: path.resolve(__dirname, 'src', 'mocks'),
             'test-results': path.resolve(__dirname, '.jest-test-results.json')
         }
     },
     plugins: [
-        new TranslateWebpackPlugin({
-            languages: ['ja_JP'],
-            files: 'src/**/!(*test|*story|*TestHelper).js',
-        }),
+        //new TranslateWebpackPlugin({
+        //    languages: ['ja'],
+        //    files: 'src/Application/**/!(*test|*story|*TestHelper).js',
+        //    target: 'src/Application/pages/*'
+        //}),
         new CaseSensitivePathsWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Polymer with webpack',

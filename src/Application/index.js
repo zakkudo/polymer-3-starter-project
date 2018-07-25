@@ -1,15 +1,17 @@
 import '@polymer/polymer/lib/elements/dom-if';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import 'lib/components/Link';
+import 'lib/components/LoadingCurtain';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
-import 'lib/components/LoadingCurtain';
 import ActionsMixin from 'lib/ActionsMixin';
 import ErrorPage from 'application/pages/ErrorPage';
 import Immutable from 'immutable';
 import actions from './actions';
+import localization from 'lib/localization';
 import saga from './saga';
 import store from './store';
+import {fromJS} from 'immutable';
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
 /**
@@ -38,7 +40,7 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
             },
             'pageResolve': {
                 type: Immutable.Map,
-                statePath: (state) => state.pageResolve,
+                statePath: (state) => state.pageResolve || fromJS({loading: true}),
             },
             'routerMatch': {
                 type: Immutable.Map,
@@ -46,6 +48,12 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
             },
             'errorPageComponent': {
                 value: () => ErrorPage,
+            },
+            'locale': {
+                type: String,
+                value: () => {
+                    return navigator.language;
+                },
             },
             'title': {
                 type: String,
@@ -81,6 +89,10 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
         this.dispatch(setRouterMatch(e.detail.match));
     }
 
+    /**
+     * @private
+     * @param {CustomEvent} e - An html event
+     */
     _handlePageTitleChange(e) {
         const {setPageTitle} = Application.actions;
 
@@ -140,6 +152,9 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
                 title="[[pageTitle]]"
                 on-title-change="_handlePageTitleChange"
                 routes="[[routes]]"></z-router>
+
+
+            Your browser language is [[locale]]
         `;
     }
 }
