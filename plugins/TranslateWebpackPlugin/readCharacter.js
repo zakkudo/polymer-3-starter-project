@@ -19,7 +19,7 @@ const escapeCharacters = new Set([
     "//"
 ]);
 
-function isEscapeCharacter(charater) {
+function isEscapeCharacter(character) {
     return escapeCharacters.has(character);
 }
 
@@ -106,7 +106,7 @@ function readCharacter(text, {index, stack, lineNumber}) {
     const character = text.charAt(index);
     const previousCharacter = text.charAt(index - 1);
     let head = stack[0];
-    const escaped = escapeCharacters.has(head);
+    const escaped = isEscapeCharacter(head);
     let localization;
 
 
