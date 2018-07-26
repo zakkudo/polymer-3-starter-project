@@ -78,26 +78,34 @@ function addMissingAsyncActionCreators(actionCreators) {
 /**
  * @param {Object} actionCreators = The action creators to scope and add action types to
  * @param {String} [namespace=''] - The namespace to add
+ * @param {Object} self - The object to look for the type name
  * @return {Object} The scoped aciton creators with action types on the same object
  * @private
 */
-function addActionTypeNamesWithScopes(actionCreators, namespace) {
+function addActionTypeNamesWithScopes(actionCreators, namespace, self) {
     return Object.keys(actionCreators).reduce((accumulator, k) => {
         const actionCreator = actionCreators[k];
         const type = actionCreator().type;
         const nameSpacedType = namespace ? `@${namespace}/${type}` : type;
+        const actionTypeName = toActionTypeName(k);
+
+        /**
+         * @private
+         * @return {Object} The scoped action
+         */
+        function scopedActionCreator(...args) {
+            const action = actionCreator(...args);
+
+            if (namespace) {
+                action.type = self[actionTypeName];
+            }
+
+            return action;
+        }
 
         return Object.assign({}, accumulator, {
-            [k]: function(...args) {
-                const action = actionCreator(...args);
-
-                if (namespace) {
-                    action.type = nameSpacedType;
-                }
-
-                return action;
-            },
-            [toActionTypeName(k)]: nameSpacedType,
+            [k]: scopedActionCreator,
+            [actionTypeName]: nameSpacedType,
         });
     }, {});
 }
@@ -119,7 +127,7 @@ function addActionTypeNamesWithScopes(actionCreators, namespace) {
  *                request,
  *            };
  *        }
- *    });
+ *    }, 'APPLICATION');
  *
  *    // Automatically generates the action type strings with a namespace
  *
@@ -144,7 +152,8 @@ export default class Actions {
         Object.assign(this,
             addActionTypeNamesWithScopes(
                 addMissingAsyncActionCreators(actionCreators),
-                namespace
+                namespace,
+                this
             )
         );
     }

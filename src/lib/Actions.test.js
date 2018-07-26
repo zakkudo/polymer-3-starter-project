@@ -35,6 +35,25 @@ describe('lib/Actions', () => {
         });
     });
 
+    it('the changed action type applied to the action creator', () => {
+        const actions = new Actions({
+            setValue(value) {
+                return {
+                    type: 'SET_VALUE',
+                    value,
+                };
+            },
+        }, 'application');
+
+        actions.SET_VALUE = 'OVERRIDDEN_VALUE';
+
+        expect(actions.SET_VALUE).toEqual('OVERRIDDEN_VALUE');
+        expect(actions.setValue(3)).toEqual({
+            type: 'OVERRIDDEN_VALUE',
+            value: 3,
+        });
+    });
+
     it('adds missing async action creators', () => {
         const actions = new Actions({
             setValue(value) {
