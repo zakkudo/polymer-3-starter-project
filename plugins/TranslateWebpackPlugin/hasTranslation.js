@@ -1,9 +1,11 @@
 module.exports = function hasTranslation(data) {
-    if (!data) {
+    const keys = Object.keys(data);
+
+    if (!keys.length) {
         return false;
     }
 
-    return Object.keys(data).some((k) => {
+    return keys.some((k) => {
         if (typeof data[k] === 'string') {
             return Boolean(data[k].length);
         } else {
