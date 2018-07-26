@@ -9,7 +9,7 @@ const readCharacter = require('./readCharacter');
 module.exports = function toLocalization(text) {
     const localization = {};
     let results = null;
-    const state = {
+    let state = {
         index: 0,
         stack: [],
         lineNumber: 0,

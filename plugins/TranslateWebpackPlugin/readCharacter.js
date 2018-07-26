@@ -19,6 +19,19 @@ const escapeCharacters = new Set([
     "//"
 ]);
 
+function isEscapeCharacter(charater) {
+    return escapeCharacters.has(character);
+}
+
+const whiteSpaceCharacters = new Set([
+    ' ',
+    '   ',
+]);
+
+function isWhiteSpace(character) {
+    return whiteSpaceCharacters.has(character);
+}
+
 
 function push(stack, value) {
     const copy = [value].concat(stack);
@@ -40,8 +53,14 @@ function continueToQuoteStart(text, state) {
     }
 
     while ((state = readCharacter(text, state)) !== null) {
+        const character = text.charAt(state.index);
+
         if (isQuote(state.stack[0])) {
             break;
+        }
+
+        if (!isQuote(character) && !isWhiteSpace(character)) {
+            throw new SyntaxError('localization key must be a literal');
         }
     }
 
@@ -60,14 +79,19 @@ function continueUntilStackLengthIs(text, state, length) {
 
 function parseLocalizationFunction(text, {index, stack, lineNumber}) {
     const functionStart = {index, stack, lineNumber};
-    index += 1;
-    const keyStart = continueToQuoteStart(text, {index, stack, lineNumber});
 
-    if (!keyStart || keyStart.stack.length < stack.length) {
-        throw new SyntaxError('translation function contains no string!');
+    index += 1;
+
+    if (text.charAt(index + 1) === '(') {
+        index += 1;
     }
 
+    const keyStart = continueToQuoteStart(text, {index, stack, lineNumber});
     const keyEnd = continueUntilStackLengthIs(text, {...keyStart}, keyStart.stack.length - 1);
+
+    if (keyStart.index === keyEnd.index - 1) {
+        throw new SyntaxError('empty localization key');
+    }
 
     const functionEnd = (keyEnd.stack[0] === '(') ? continueUntilStackLengthIs(text, {...keyEnd}, keyEnd.stack.length - 1) : keyEnd;
 
@@ -88,7 +112,7 @@ function readCharacter(text, {index, stack, lineNumber}) {
 
     if (character === '') {
         if (stack.length) {
-            throw new Error('text ended with unclosed stack items', stack);
+            throw new SyntaxError('text ended with unclosed stack items', stack);
         }
 
         return null;

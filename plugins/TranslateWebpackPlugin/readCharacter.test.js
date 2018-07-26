@@ -252,4 +252,152 @@ describe('plugins/readCharacter', () => {
             lineNumber: 0,
         }]);
     });
+
+    it('throws an exception when there is no closing quote', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = '"';
+        const actual = [];
+
+        expect(() => {
+            while ((state = readCharacter(text, state)) !== null) {
+                actual.push(state);
+            }
+        }).toThrow(new SyntaxError('text ended with unclosed stack items'));
+
+        expect(actual).toEqual([{
+            index: 1,
+            stack: ['"'],
+            lineNumber: 0,
+        }]);
+
+    });
+
+    it('throws an exception when parenthesis is not closed', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = '(';
+        const actual = [];
+
+        expect(() => {
+            while ((state = readCharacter(text, state)) !== null) {
+                actual.push(state);
+            }
+        }).toThrow(new SyntaxError('text ended with unclosed stack items'));
+
+        expect(actual).toEqual([{
+            index: 1,
+            stack: ['('],
+            lineNumber: 0,
+        }]);
+
+    });
+
+    it('throws an exception when a close parenthesis is used when there is no open', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = ')';
+        const actual = [];
+
+        expect(() => {
+            while ((state = readCharacter(text, state)) !== null) {
+                actual.push(state);
+            }
+        }).toThrow(new SyntaxError('missing matching opening brace'));
+
+        expect(actual).toEqual([]);
+
+    });
+
+    it('throws an error when there is no string literal for the translation', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = '__(fish)';
+        const actual = [];
+
+        expect(() => {
+            while ((state = readCharacter(text, state)) !== null) {
+                actual.push(state);
+            }
+        }).toThrow(new SyntaxError('localization key must be a literal'));
+
+        expect(actual).toEqual([]);
+
+    });
+
+    it('throws an error if quote is not the first character', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = '__(,"fish")';
+        const actual = [];
+
+        expect(() => {
+            while ((state = readCharacter(text, state)) !== null) {
+                actual.push(state);
+            }
+        }).toThrow(new SyntaxError('localization key must be a literal'));
+
+        expect(actual).toEqual([]);
+
+    });
+
+    it('throws an error if string is empty', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = '__("")';
+        const actual = [];
+
+        expect(() => {
+            while ((state = readCharacter(text, state)) !== null) {
+                actual.push(state);
+            }
+        }).toThrow(new SyntaxError('empty localization key'));
+
+        expect(actual).toEqual([]);
+
+    });
+
+    it('iterates * as a normal character', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = 'a*b';
+        const actual = [];
+
+        while ((state = readCharacter(text, state)) !== null) {
+            actual.push(state);
+        }
+
+        expect(actual).toEqual([{
+            index: 1,
+            stack: [],
+            lineNumber: 0,
+        }, {
+            index: 2,
+            stack: [],
+            lineNumber: 0,
+        }, {
+            index: 3,
+            stack: [],
+            lineNumber: 0,
+        }]);
+
+    });
+
+    it('iterates / as a normal character', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = 'a/b';
+        const actual = [];
+
+        while ((state = readCharacter(text, state)) !== null) {
+            actual.push(state);
+        }
+
+        expect(actual).toEqual([{
+            index: 1,
+            stack: [],
+            lineNumber: 0,
+        }, {
+            index: 2,
+            stack: [],
+            lineNumber: 0,
+        }, {
+            index: 3,
+            stack: [],
+            lineNumber: 0,
+        }]);
+
+    });
 });

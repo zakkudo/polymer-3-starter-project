@@ -12,4 +12,12 @@ describe('hasTranslation', () => {
     it('returns true for value', () => {
         expect(hasTranslation({a: 'b'})).toBe(true);
     });
+
+    it('returns true for deep value', () => {
+        expect(hasTranslation({a: {b: 'c'}})).toBe(true);
+    });
+
+    it('returns false for emtpy deep value', () => {
+        expect(hasTranslation({a: {b: ''}})).toBe(false);
+    });
 });
