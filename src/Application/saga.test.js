@@ -23,7 +23,7 @@ describe('Application/saga', () => {
     describe('resolve', () => {
         it('succeeds even with no next', () => {
             const request = jasmine.createSpy().and.returnValue(Promise.resolve('test resolve'));
-            const results = Helper.run(resolve(actions.requestPageResolve(request)), [
+            const results = Helper.run(requestResolve(actions.requestPageResolve(request)), [
                 undefined,
                 {'Component': {'resolve': {'message': 'test message'}}},
             ]);
@@ -50,13 +50,6 @@ describe('Application/saga', () => {
                 PUT: {
                     action: {
                         type: '@APPLICATION/SET_PAGE_COMPONENT',
-                        component: null,
-                    },
-                },
-            }, {
-                PUT: {
-                    action: {
-                        type: '@APPLICATION/SET_PAGE_COMPONENT',
                         component: {'resolve': {'message': 'test message'}},
                     },
                 },
@@ -67,7 +60,7 @@ describe('Application/saga', () => {
 
         it('succeeds even with next', () => {
             const request = jasmine.createSpy().and.returnValue(Promise.resolve('test resolve'));
-            const results = Helper.run(resolve(actions.requestPageResolve(request)), [
+            const results = Helper.run(requestResolve(actions.requestPageResolve(request)), [
                 undefined,
                 {
                     next: 'next',
@@ -111,13 +104,6 @@ describe('Application/saga', () => {
                 PUT: {
                     action: {
                         type: '@APPLICATION/SET_PAGE_COMPONENT',
-                        component: null,
-                    },
-                },
-            }, {
-                PUT: {
-                    action: {
-                        type: '@APPLICATION/SET_PAGE_COMPONENT',
                         component: 'test component',
                     },
                 },
@@ -139,7 +125,7 @@ describe('Application/saga', () => {
 
         it('errors gracefully', () => {
             const request = jasmine.createSpy().and.returnValue(Promise.resolve('test resolve'));
-            const results = Helper.run(resolve(actions.requestPageResolve(request)), [
+            const results = Helper.run(requestResolve(actions.requestPageResolve(request)), [
                 undefined,
                 new HttpError(
                     'test status',

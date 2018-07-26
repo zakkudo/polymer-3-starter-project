@@ -1,16 +1,15 @@
-const translationStartPatterns = new Set([
-    `__('`,
-    '__("',
-    '__(`',
+const translationStartPatterns = [
+    '__(',
     '__`',
-    `__n('`,
-    '__n("',
-    '__n(`',
+    `__n(`,
     '__n`',
-]);
+];
 
-module.exports = function isLocalizaationStart(text, state) {
-    const head = state.stack[0];
+const length = translationStartPatterns
+    .reduce((accumulator, p) => Math.max(p.length, accumulator), 0);
 
-    return translationStartPatterns.has(head);
+module.exports = function isLocalizationStart(text, {index}) {
+    const testString = text.substring(index, index + length);
+
+    return translationStartPatterns.some((p) => testString.startsWith(p));
 }

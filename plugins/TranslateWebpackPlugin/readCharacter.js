@@ -1,3 +1,6 @@
+const isLocalizationFunctionStart = require('./isLocalizationFunctionStart');
+const startsWith = require('./startsWith');
+
 const quoteCharacters = new Set([
     "'",
     '"',
@@ -8,20 +11,14 @@ function isQuote(character) {
     return quoteCharacters.has(character);
 }
 
-const BACKSLASH = '\\';
-
 const escapeCharacters = new Set([
-    BACKSLASH,
     `'`,
     '"',
     "`",
-    undefined,
-    null
+    "/*",
+    "//"
 ]);
 
-function startsWith(haystack, index, needle) {
-    return haystack.substring(index, index + needle.length) === needle;
-}
 
 function push(stack, value) {
     const copy = [value].concat(stack);
@@ -32,11 +29,7 @@ function push(stack, value) {
 function pop(stack, value) {
     const copy = stack.slice(1);
 
-    return {stack: copy, head: stack[0]};
-}
-
-function isTranslationFunctionStart(text, {index}) {
-    ['__(', '__n(', '__`', '__n`']
+    return {stack: copy, head: copy[0]};
 }
 
 function continueToQuoteStart(text, state) {
@@ -56,12 +49,8 @@ function continueToQuoteStart(text, state) {
 }
 
 function continueUntilStackLengthIs(text, state, length) {
-    if (!isQuote(state.stack[0])) {
-        throw new SyntaxError('you can\t close a quote that doesn\'t exist');
-    }
-
     while ((state = readCharacter(text, state)) !== null) {
-        if (state.stack.length < length) {
+        if (state.stack.length <= length) {
             break;
         }
     }
@@ -69,7 +58,7 @@ function continueUntilStackLengthIs(text, state, length) {
     return state;
 }
 
-function parseTranslationFunction(text, {index, stack, lineNumber}) {
+function parseLocalizationFunction(text, {index, stack, lineNumber}) {
     const functionStart = {index, stack, lineNumber};
     index += 1;
     const keyStart = continueToQuoteStart(text, {index, stack, lineNumber});
@@ -78,44 +67,45 @@ function parseTranslationFunction(text, {index, stack, lineNumber}) {
         throw new SyntaxError('translation function contains no string!');
     }
 
-    const keyEnd = continueUntilStackLengthIs(text, {index, stack, lineNumber}, keyStart.stack.length - 1);
-    const functionEnd = continueUntilStackLengthIs(text, {index, stack, lineNumber}, keyStart.stack.length - 2);
+    const keyEnd = continueUntilStackLengthIs(text, {...keyStart}, keyStart.stack.length - 1);
+
+    const functionEnd = (keyEnd.stack[0] === '(') ? continueUntilStackLengthIs(text, {...keyEnd}, keyEnd.stack.length - 1) : keyEnd;
 
     return {
-        key: text.substring(keyStart.index, keyEnd.index),
+        ...functionEnd,
+        key: text.substring(keyStart.index, keyEnd.index - 1),
         fn: text.substring(functionStart.index, functionEnd.index),
-        index,
-        lineNumber,
-        stack
     };
 }
 
-module.exports = function readCharacter(text, {index, stack, lineNumber}) {
-    const character = text.charAt(i);
-    const previousCharacter = text.charAt(i - 1);
+function readCharacter(text, {index, stack, lineNumber}) {
+    const character = text.charAt(index);
+    const previousCharacter = text.charAt(index - 1);
     let head = stack[0];
     const escaped = escapeCharacters.has(head);
+    let localization;
+
 
     if (character === '') {
         if (stack.length) {
-            throw new Error('text end with unclosed stack items', stack);
+            throw new Error('text ended with unclosed stack items', stack);
         }
 
         return null;
     }
 
-    if (head === BACKSLASH) {
-        stack = pop(stack);
-        index += 1;
-
-        return {index, stack, lineNumber};
-    }
-
     switch (character) {
         case '_':
             if (!escaped) {
-                if (isTranslationFunctionStart(text, index)) {
-                    const {key, fn} = parseTranslationFunction(text, {index, stack, lineNumber});
+                if (isLocalizationFunctionStart(text, {index})) {
+                    ({
+                        index,
+                        stack,
+                        lineNumber,
+                        ...localization
+                    } = parseLocalizationFunction(text, {index, stack, lineNumber}));
+                } else {
+                    index += 1;
                 }
             }
             break;
@@ -126,7 +116,7 @@ module.exports = function readCharacter(text, {index, stack, lineNumber}) {
             } else {
                 index += 1;
             }
-
+            break;
         case '/':
             const testString = text.substring(index, index + 2);
 
@@ -140,15 +130,6 @@ module.exports = function readCharacter(text, {index, stack, lineNumber}) {
                 index += 1;
             }
 
-            break;
-        case '\n':
-            if (head === '/*') {
-                ({head, stack} = pop(stack));
-                index += 2;
-            } else {
-                index += 1;
-            }
-            lineNumber += 1;
             break;
         case '`':
         case '"':
@@ -179,16 +160,22 @@ module.exports = function readCharacter(text, {index, stack, lineNumber}) {
             }
             index += 1;
             break;
-        case BACKSLASH:
-            if (head !== BACKSLASH) {
-                ({head, stack} = push(stack, BACKSLASH));
+        case '\n':
+            if (head === '//') {
+                ({head, stack} = pop(stack));
             }
             index += 1;
+            lineNumber += 1;
             break;
         default:
             index += 1;
             break;
     }
 
+    if (localization) {
+        return {index, stack, lineNumber, localization};
+    }
+
     return {index, stack, lineNumber};
 }
+module.exports = readCharacter;

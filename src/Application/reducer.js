@@ -103,10 +103,16 @@ function setPageTitle(state, title) {
  * @return {Object} The updated redux state
  */
 function setPageComponent(state, component) {
-    state.page = {};
+    state.page = {}; //ReduxMixin isn't smart enough to automatically handle this...
     state.pageComponent = component || null;
+
+    if (!component || !component.hasOwnProperty('title')) {
+        delete state.pageTitle;
+    } else if (component.title) {
+        state.pageTitle = component.title;
+    }
+
     state.title = buildStaticTitle(state.name, state.pageComponent);
-    delete state.pageTitle;
 
     return state;
 }

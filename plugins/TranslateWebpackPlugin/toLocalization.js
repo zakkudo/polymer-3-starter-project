@@ -1,6 +1,4 @@
 const readCharacter = require('./readCharacter');
-const isLocalizationFunctionStart = require('./isLocalizationFunctionStart');
-const getLocalizationFunctionInformation = require('./getLocalizationFunctionInformation');
 
 /**
  * Grabs the localization strings from a file.
@@ -17,16 +15,11 @@ module.exports = function toLocalization(text) {
         lineNumber: 0,
     };
 
-    while (readCharacter(text, state)) {
-        const head = stack[0];
+    while ((state = readCharacter(text, state)) !== null) {
+        if (state.localization) {
+            const {key, fn} = state.localization;
 
-        if (isLocalizationFunctionStart(text, state)) {
-            const information = getLocalizationFunctionInformation(text, state);
-
-            if (information) {
-                state.index += state.fn.length;
-                localization[information.key] = information;
-            }
+            localization[key] = fn;
         }
     }
 

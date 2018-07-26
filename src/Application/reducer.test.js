@@ -45,6 +45,7 @@ describe('application/reducer', () => {
         }, actions.setPageComponent(TestComponent));
 
         expect(state).toEqual({
+            page: {},
             name: 'test application',
             pageComponent: TestComponent,
             title: 'test application',
@@ -85,7 +86,7 @@ describe('application/reducer', () => {
         }, actions.setPageComponent(null));
 
         expect(state).toEqual({
-            page: {test: 'value'},
+            page: {},
             pageComponent: null,
             title: '',
         });
@@ -98,6 +99,7 @@ describe('application/reducer', () => {
         }, actions.setPageComponent(TestComponent));
 
         expect(state).toEqual({
+            page: {},
             pageComponent: TestComponent,
             title: '',
         });
@@ -111,21 +113,11 @@ describe('application/reducer', () => {
         }, actions.setPageComponent(TestComponentWithTitle));
 
         expect(state).toEqual({
+            page: {},
             name: 'test application title',
             pageComponent: TestComponentWithTitle,
+            pageTitle: 'test title',
             title: 'test application title | test title',
-        });
-    });
-
-    it('sets only page title', () => {
-        const state = reducer({
-            page: {},
-            pageTitle: 'test page title',
-        }, actions.setPageComponent(TestComponentWithTitle));
-
-        expect(state).toEqual({
-            pageComponent: TestComponentWithTitle,
-            title: 'test title',
         });
     });
 
