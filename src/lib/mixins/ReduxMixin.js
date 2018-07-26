@@ -1,4 +1,4 @@
-import ImmutableMixin from 'lib/ImmutableMixin';
+import ImmutableMixin from './ImmutableMixin';
 import PolymerRedux from 'polymer-redux';
 
 /**

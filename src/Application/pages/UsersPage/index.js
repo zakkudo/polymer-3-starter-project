@@ -1,4 +1,4 @@
-import ImmutableMixin from 'lib/ImmutableMixin';
+import ImmutableMixin from 'lib/mixins/ImmutableMixin';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import importPage from 'application/importPage';
 

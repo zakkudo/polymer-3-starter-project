@@ -1,4 +1,4 @@
-import ActionsMixin from 'lib/ActionsMixin';
+import ActionsMixin from 'lib/mixins/ActionsMixin';
 import api from 'lib/api';
 import actions from './actions';
 import reducer from './reducer';

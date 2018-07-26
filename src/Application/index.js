@@ -4,7 +4,7 @@ import 'lib/components/Link';
 import 'lib/components/LoadingCurtain';
 import 'lib/components/Router';
 import 'lib/components/Toggle';
-import ActionsMixin from 'lib/ActionsMixin';
+import ActionsMixin from 'lib/mixins/ActionsMixin';
 import ErrorPage from 'application/pages/ErrorPage';
 import Immutable from 'immutable';
 import actions from './actions';

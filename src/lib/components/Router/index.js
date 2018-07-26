@@ -3,7 +3,7 @@ import '@polymer/polymer/lib/elements/dom-repeat.js';
 import 'lib/components/Route';
 import HttpError from 'lib/errors/HttpError';
 import Immutable from 'immutable';
-import ImmutableMixin from 'lib/ImmutableMixin';
+import ImmutableMixin from 'lib/mixins/ImmutableMixin';
 import matchRoute from 'lib/matchRoute';
 import resolveComponent from 'lib/resolveComponent';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';

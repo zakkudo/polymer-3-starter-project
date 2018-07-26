@@ -1,4 +1,4 @@
-import ReduxMixin from 'lib/ReduxMixin';
+import ReduxMixin from './ReduxMixin';
 
 const instances = new Map();
 
