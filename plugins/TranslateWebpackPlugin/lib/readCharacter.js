@@ -47,6 +47,8 @@ function readCharacter(text, {index, stack, lineNumber}) {
                 } else {
                     index += 1;
                 }
+            } else {
+                index += 1;
             }
             break;
         case '*':

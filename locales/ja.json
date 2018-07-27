@@ -1,4 +1,6 @@
 {
+    // src/Application/pages/AboutPage/index.js:13
+    "About": "TRANSLATED",
     // UNUSED
-    "About": "これについて"
+    "OTHER": "TEST"
 }

@@ -1,3 +1,4 @@
+import {__} from 'lib/localization';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 
 /**
@@ -10,7 +11,7 @@ export default class AboutPage extends PolymerElement {
      * The default page title
      */
     static get title() {
-        return 'About';
+        return __('About');
     }
 
     /**

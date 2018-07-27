@@ -9,7 +9,7 @@ const {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin');
 const program = path.basename(process.argv[1]);
 const mode = program == 'webpack' ? 'production' : 'development';
 const JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
-//const TranslateWebpackPlugin = require('./plugins/TranslateWebpackPlugin');
+const TranslateWebpackPlugin = require('./plugins/TranslateWebpackPlugin');
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
 
 
@@ -76,11 +76,11 @@ module.exports = {
         }
     },
     plugins: [
-        //new TranslateWebpackPlugin({
-        //    languages: ['ja'],
-        //    files: 'src/Application/**/!(*test|*story|*TestHelper).js',
-        //    target: 'src/Application/pages/*'
-        //}),
+        new TranslateWebpackPlugin({
+            languages: ['ja'],
+            files: 'src/Application/**/!(*test|*story|*TestHelper).js',
+            target: 'src/Application/pages/*'
+        }),
         new CaseSensitivePathsWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Polymer with webpack',
