@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'testing';
+
 const path = require('path');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');

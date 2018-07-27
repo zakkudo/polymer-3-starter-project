@@ -12,7 +12,6 @@ const JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
 const TranslateWebpackPlugin = require('./plugins/TranslateWebpackPlugin');
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
 
-
 module.exports = {
     devtool: 'source-map',
     mode: mode,
@@ -76,48 +75,6 @@ module.exports = {
         }
     },
     plugins: [
-        new TranslateWebpackPlugin({
-            languages: ['ja'],
-            files: 'src/Application/**/!(*test|*story|*TestHelper).js',
-            target: 'src/Application/pages/*'
-        }),
-        new CaseSensitivePathsWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            title: 'Polymer with webpack',
-            chunksSortMode: 'none',
-        }),
-        new HtmlWebpackIncludeAssetsPlugin({
-            //Needed for Firefox and Edge
-            assets: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'],
-            append: false
-        }),
-        new JsDocWebpackPlugin({
-            conf: './jsdoc.config.json'
-        }),
-        new BaseHrefWebpackPlugin({baseHref: '/'}),
-        new WriteFileWebpackPlugin({
-        }),
-        new MiniCssExtractPlugin({
-            filename: "[name].css"
-        }),
-        new GenerateJsonWebpackPlugin('search.json', {
-            hits: [{
-                'key': 'Carrot',
-                'count': 3
-            }, {
-                'key': 'Beef',
-                'count': 2
-            }, {
-                'key': 'Celary',
-                'count': 0
-            }, {
-                'key': 'Chicken',
-                'count': 10
-            }, {
-                'key': 'Lettuce',
-                'count': 2
-            }]
-        })
     ],
     devServer: {
         historyApiFallback: true,
@@ -128,6 +85,75 @@ module.exports = {
         fs: 'empty'
     }
 };
+
+switch (process.env.NODE_ENV) {
+    case 'testing':
+        [
+            new CaseSensitivePathsWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                title: 'Polymer with webpack',
+                chunksSortMode: 'none',
+            }),
+            new HtmlWebpackIncludeAssetsPlugin({
+                //Needed for Firefox and Edge
+                assets: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'],
+                append: false
+            }),
+            new WriteFileWebpackPlugin({
+            }),
+            new MiniCssExtractPlugin({
+                filename: "[name].css"
+            }),
+        ].forEach((p) => module.exports.plugins.push(p));
+        break;
+    default:
+        [
+            new TranslateWebpackPlugin({
+                languages: ['ja'],
+                files: 'src/Application/**/!(*test|*story|*TestHelper).js',
+                target: 'src/Application/pages/*'
+            }),
+            new CaseSensitivePathsWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                title: 'Polymer with webpack',
+                chunksSortMode: 'none',
+            }),
+            new HtmlWebpackIncludeAssetsPlugin({
+                //Needed for Firefox and Edge
+                assets: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'],
+                append: false
+            }),
+            new JsDocWebpackPlugin({
+                conf: './jsdoc.config.json'
+            }),
+            new BaseHrefWebpackPlugin({baseHref: '/'}),
+            new WriteFileWebpackPlugin({
+            }),
+            new MiniCssExtractPlugin({
+                filename: "[name].css"
+            }),
+            new GenerateJsonWebpackPlugin('search.json', {
+                hits: [{
+                    'key': 'Carrot',
+                    'count': 3
+                }, {
+                    'key': 'Beef',
+                    'count': 2
+                }, {
+                    'key': 'Celary',
+                    'count': 0
+                }, {
+                    'key': 'Chicken',
+                    'count': 10
+                }, {
+                    'key': 'Lettuce',
+                    'count': 2
+                }]
+            })
+        ].forEach((p) => module.exports.plugins.push(p));
+
+        break;
+}
 
 
 if (program === 'webpack') {
