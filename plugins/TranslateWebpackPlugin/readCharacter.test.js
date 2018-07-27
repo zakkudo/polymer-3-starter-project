@@ -400,4 +400,29 @@ describe('plugins/readCharacter', () => {
         }]);
 
     });
+
+    it('iterates _ as a normal character', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = 'a_b';
+        const actual = [];
+
+        while ((state = readCharacter(text, state)) !== null) {
+            actual.push(state);
+        }
+
+        expect(actual).toEqual([{
+            index: 1,
+            stack: [],
+            lineNumber: 0,
+        }, {
+            index: 2,
+            stack: [],
+            lineNumber: 0,
+        }, {
+            index: 3,
+            stack: [],
+            lineNumber: 0,
+        }]);
+
+    });
 });

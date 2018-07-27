@@ -1,36 +1,9 @@
+const isEscapeCharacter = require('./isEscapeCharacter');
 const isLocalizationFunctionStart = require('./isLocalizationFunctionStart');
+const isQuoteCharacter = require('./isQuoteCharacter');
+const isWhiteSpaceCharacter = require('./isWhiteSpaceCharacter');
 const startsWith = require('./startsWith');
-
-const quoteCharacters = new Set([
-    "'",
-    '"',
-    "`"
-]);
-
-function isQuote(character) {
-    return quoteCharacters.has(character);
-}
-
-const escapeCharacters = new Set([
-    `'`,
-    '"',
-    "`",
-    "/*",
-    "//"
-]);
-
-function isEscapeCharacter(character) {
-    return escapeCharacters.has(character);
-}
-
-const whiteSpaceCharacters = new Set([
-    ' ',
-    '   ',
-]);
-
-function isWhiteSpace(character) {
-    return whiteSpaceCharacters.has(character);
-}
+const parseLocalizationFunction = require('./parseLocalizationFunction');
 
 
 function push(stack, value) {
@@ -43,63 +16,6 @@ function pop(stack, value) {
     const copy = stack.slice(1);
 
     return {stack: copy, head: copy[0]};
-}
-
-function continueToQuoteStart(text, state) {
-    let stack = null;
-
-    if (isQuote(state.stack[0])) {
-        throw new SyntaxError('syntax error, already a quote');
-    }
-
-    while ((state = readCharacter(text, state)) !== null) {
-        const character = text.charAt(state.index);
-
-        if (isQuote(state.stack[0])) {
-            break;
-        }
-
-        if (!isQuote(character) && !isWhiteSpace(character)) {
-            throw new SyntaxError('localization key must be a literal');
-        }
-    }
-
-    return state;
-}
-
-function continueUntilStackLengthIs(text, state, length) {
-    while ((state = readCharacter(text, state)) !== null) {
-        if (state.stack.length <= length) {
-            break;
-        }
-    }
-
-    return state;
-}
-
-function parseLocalizationFunction(text, {index, stack, lineNumber}) {
-    const functionStart = {index, stack, lineNumber};
-
-    index += 1;
-
-    if (text.charAt(index + 1) === '(') {
-        index += 1;
-    }
-
-    const keyStart = continueToQuoteStart(text, {index, stack, lineNumber});
-    const keyEnd = continueUntilStackLengthIs(text, {...keyStart}, keyStart.stack.length - 1);
-
-    if (keyStart.index === keyEnd.index - 1) {
-        throw new SyntaxError('empty localization key');
-    }
-
-    const functionEnd = (keyEnd.stack[0] === '(') ? continueUntilStackLengthIs(text, {...keyEnd}, keyEnd.stack.length - 1) : keyEnd;
-
-    return {
-        ...functionEnd,
-        key: text.substring(keyStart.index, keyEnd.index - 1),
-        fn: text.substring(functionStart.index, functionEnd.index),
-    };
 }
 
 function readCharacter(text, {index, stack, lineNumber}) {
