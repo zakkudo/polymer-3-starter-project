@@ -2,7 +2,7 @@ import y18n from 'y18n';
 
 const instance = y18n({
     updateFiles: false,
-    locale: 'en',
+    locale: 'default',
 });
 
 instance.cache['default'] = {};
