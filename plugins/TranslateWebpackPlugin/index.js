@@ -282,7 +282,6 @@ module.exports = class TranslateWebpackPlugin {
                 const previousSubLocalization = this.readJSON5FileWithFallback(filename);
 
                 if (!equal(subLocalization, previousSubLocalization)) {
-                    console.log(subLocalization, previousSubLocalization);
                     fs.writeFileSync(filename, JSON.stringify(subLocalization, null, 4));
                 }
 

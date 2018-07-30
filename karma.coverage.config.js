@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'testing';
+
 const webpack = require('./webpack.config.js'),
     setDefaults = require('./karma.test.config.js'),
     path = require('path');

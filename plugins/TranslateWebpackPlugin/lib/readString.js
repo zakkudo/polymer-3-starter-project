@@ -8,7 +8,11 @@ function readCharacterWithErrorHandling(text, state) {
         try {
             nextState = readCharacter(text, currentState);
         } catch (e) {
-            currentState.stack = currentState.stack.slice(1);
+            if (currentState.stack.length) {
+                currentState.stack = currentState.stack.slice(1);
+            } else {
+                currentState.index += 1;
+            }
         }
     }
 
