@@ -10,4 +10,4 @@ demo
 .jest-test-results.json
 *.tmp
 .locale-gen/*
-src/**/locales/*
+src/**/.locales/*

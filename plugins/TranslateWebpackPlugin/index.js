@@ -1,4 +1,5 @@
 const JSON5 = require('json5');
+const equal = require('deep-equal');
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
@@ -58,9 +59,9 @@ function calculateTargetFiles(targetDirectories, all) {
 
 function calculateFiles(compiler, options = {}) {
     const {files, target} = options;
-    const {watcher} = compiler.watchFileSystem;
+    const {watcher= {}} = compiler.watchFileSystem;
     const all = glob.sync(files);
-    const mtimes = watcher.mtimes;
+    const mtimes = watcher.mtimes || {};
     const hasModifiedFiles = Boolean(Object.keys(mtimes).length);
     const modified = hasModifiedFiles ? all.filter((f) => mtimes.hasOwnProperty(f)) : all;
     const targetDirectories = glob.sync(target).filter((t) => fs.statSync(t).isDirectory());
@@ -107,18 +108,25 @@ module.exports = class TranslateWebpackPlugin {
         return options.directory || './locales';
     }
 
-    readLocalization(language) {
-        const directory = this.getDirectory();
-        const filename = `${directory}/${language}.json`;
-        let data;
+    readJSON5FileWithFallback(filename, fallback = null) {
+        let data = fallback;
 
-        if (fs.existsSync(filename)) {
+        try {
             data = JSON5.parse(fs.readFileSync(filename));
-        } else {
-            data = {}
+        } catch (e) {
+            if (e.code !== 'ENOENT') {
+                throw e;
+            }
         }
 
         return data;
+    }
+
+    readLocalization(language) {
+        const directory = this.getDirectory();
+        const filename = `${directory}/${language}.json`;
+
+        return this.readJSON5FileWithFallback(filename);
     }
 
     writeLocalizationWithMetadata(language, localization) {
@@ -177,7 +185,7 @@ module.exports = class TranslateWebpackPlugin {
         const localizationByLanguage = this.localizationByLanguage = new Map();
 
         languages.forEach((l) => {
-            const localization = this.readLocalization(l);
+            const localization = this.readLocalization(l) || {};
             const localizationWithMetadata = this.updateLocalization(localization);
 
             localizationByLanguage.set(l, localization);
@@ -244,28 +252,40 @@ module.exports = class TranslateWebpackPlugin {
         const keysByFilename = this.keysByFilename;
 
         targetDirectories.forEach((t) => {
-            //const directory = path.resolve(t, 'locales'); TODO
-            //fs.mkdirSync(directory); TODO
+            const directory = path.resolve(t, '.locales'); //Initintionally a hidden directory
+
+            try {
+                fs.mkdirSync(directory);
+            } catch(e) {
+                if (e.code !== 'EEXIST') {
+                    console.error(e);
+                }
+            }
 
             languages.forEach((l) => {
                 const filenames = filesByTargetDirectory[t] || [];
                 const localization = localizationByLanguage.get(l);
-                const subset = {};
+                const subLocalization = {};
+                const filename = path.resolve(directory, `${l}.json`);
+                const previous = this.readJSON5FileWithFallback(filename);
 
                 filenames.forEach((f) => {
                     const keys = keysByFilename.get(f) || new Set();
 
                     keys.forEach((k) => {
-                        if (localization.hasOwnProperty(k) && hasTranslation(localization)) {
-                            subset[k] = localization[k]
+                        if (localization.hasOwnProperty(k) && hasTranslation(localization[k])) {
+                            subLocalization[k] = localization[k]
                         }
                     });
                 });
 
-                //TODO needs to check if file actually changed before writing
+                const previousSubLocalization = this.readJSON5FileWithFallback(filename);
 
-                //const filename = path.resolve(directory, `${l}.json`); TODO
-                //fs.writeFileSync(filename, JSON.stringify(subset, null, 4)); TODO
+                if (!equal(subLocalization, previousSubLocalization)) {
+                    console.log(subLocalization, previousSubLocalization);
+                    fs.writeFileSync(filename, JSON.stringify(subLocalization, null, 4));
+                }
+
             });
         });
     }
