@@ -63,7 +63,7 @@ function calculateFiles(compiler, options = {}) {
     const all = glob.sync(files);
     const mtimes = watcher.mtimes || {};
     const hasModifiedFiles = Boolean(Object.keys(mtimes).length);
-    const modified = hasModifiedFiles ? all.filter((f) => mtimes.hasOwnProperty(f)) : all;
+    const modified = hasModifiedFiles ? all.filter((f) => mtimes[f]) : all;
     const targetDirectories = glob.sync(target).filter((t) => fs.statSync(t).isDirectory());
     const filesByTargetDirectory = calculateTargetFiles(targetDirectories, all);
 

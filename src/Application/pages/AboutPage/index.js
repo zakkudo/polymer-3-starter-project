@@ -14,6 +14,12 @@ export default class AboutPage extends PolymerElement {
         return __('About');
     }
 
+    static get resolve() {
+        return {
+            localization: './.locales',
+        };
+    }
+
     /**
      * @property {String} is - The HTML tag representing the component.
      */
