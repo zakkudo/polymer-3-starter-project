@@ -24,7 +24,6 @@ export function getLocale() {
 }
 
 export function __(...args) {
-    debugger;
     return instance.__(...args);
 }
 
