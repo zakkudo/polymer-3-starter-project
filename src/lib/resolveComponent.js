@@ -1,4 +1,5 @@
 import getTypeName from 'lib/getTypeName';
+import {getLocale} from 'lib/localization';
 import shallowResolve from 'lib/shallowResolve';
 import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
@@ -30,9 +31,25 @@ function requestComponent(component) {
 function getResolveInformation(component) {
     const resolve = component.resolve || {};
     const data = resolve.data || {};
+    const localization = resolve.localization;
     const message = resolve.message;
 
-    return {data, message};
+    return {data, localization, message};
+}
+
+function resolveLocalization(getLocalization) {
+    const locale = getLocale();
+
+    if (getLocalization && locale) {
+        return getLocalization(locale).then((response) => {
+            return {
+                localization: response.default, //JSON adds default?
+                locale,
+            };
+        });
+    }
+
+    return Promise.resolve({});
 }
 
 /**
@@ -47,22 +64,30 @@ function getResolveInformation(component) {
 export default function resolveComponent(component, match) {
     const next = requestComponent(component)
         .then((Component) => {
-            const {data, message} = getResolveInformation(Component);
-            const next = shallowResolve(data, match).then((_response) => {
-                const response = fromJS(_response).set('match', match);
+            const {data, localization, message} = getResolveInformation(Component);
+
+            return resolveLocalization(localization).then(({locale, localization: _localization}) => {
+                const localization = fromJS(_localization);
+                const next = shallowResolve(data, match).then((_response) => {
+                    const response = fromJS(_response).set('match', match);
+
+                    return {
+                        message,
+                        Component,
+                        locale,
+                        localization,
+                        response,
+                    };
+                });
 
                 return {
                     message,
                     Component,
-                    response,
+                    locale,
+                    localization,
+                    next,
                 };
             });
-
-            return {
-                message,
-                Component,
-                next,
-            };
         });
 
     return Promise.resolve({

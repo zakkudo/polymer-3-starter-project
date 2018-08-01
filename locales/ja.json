@@ -1,6 +1,9 @@
 {
-    // src/Application/pages/AboutPage/index.js:13
-    "About": "TEST",
+    // NEW
+    // src/Application/pages/AboutPage/index.js:14
+    "About": "",
     // UNUSED
-    "OTHER": "TEST"
+    "OTHER": "TEST",
+    // src/Application/pages/AboutPage/index.js:38
+    "Welcome to the about page!": "ようこそ"
 }

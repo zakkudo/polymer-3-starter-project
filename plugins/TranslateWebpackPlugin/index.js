@@ -157,7 +157,7 @@ module.exports = class TranslateWebpackPlugin {
                         data: localization[k]
                     }
                 });
-            } else if (template.hasOwnProperty(k) && !localization.hasOwnProperty(k)) {
+            } else if (template.hasOwnProperty(k) && (!localization.hasOwnProperty(k) || !hasTranslation(localization[k]))) {
                 return Object.assign({}, accumulator, {
                     [k]: {
                         note: 'new',

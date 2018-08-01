@@ -28,7 +28,7 @@ function readCharacter(text, {index, stack, lineNumber}) {
 
     if (character === '') {
         if (stack.length) {
-            throw new SyntaxError('text ended with unclosed stack items', stack);
+            throw new SyntaxError('text ended with unclosed stack items', JSON.stringify(stack, null, 4));
         }
 
         return null;
@@ -47,6 +47,38 @@ function readCharacter(text, {index, stack, lineNumber}) {
                 } else {
                     index += 1;
                 }
+            } else {
+                index += 1;
+            }
+            break;
+        case '[':
+            if (isQuoteCharacter(head) && startsWith(text, index, '[[')) {
+                ({head, stack} = push(stack, '[['));
+                index += 2;
+            } else {
+                index += 1;
+            }
+            break;
+        case ']':
+            if (head === '[[' && startsWith(text, index, ']]')) {
+                ({head, stack} = pop(stack));
+                index += 2;
+            } else {
+                index += 1;
+            }
+            break;
+        case '{':
+            if (isQuoteCharacter(head) && startsWith(text, index, '{{')) {
+                ({head, stack} = push(stack, '{{'));
+                index += 2;
+            } else {
+                index += 1;
+            }
+            break;
+        case '}':
+            if (head === '{{' && startsWith(text, index, '}}')) {
+                ({head, stack} = pop(stack));
+                index += 2;
             } else {
                 index += 1;
             }

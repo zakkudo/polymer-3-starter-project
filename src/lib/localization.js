@@ -7,15 +7,24 @@ const instance = y18n({
 
 instance.cache['default'] = {};
 
-export function setLocalization(language, localization) {
-    instance.cache[language] = localization.toJS();
+export function setLocalization(locale, localization) {
+    instance.cache[locale] = Object.assign({}, localization);
 }
 
-export function setLocale(language) {
-    instance.setLocale(language);
+export function mergeLocalization(locale, localization) {
+    instance.cache[locale] = Object.assign({}, instance.cache[locale], localization);
+}
+
+export function setLocale(locale) {
+    instance.setLocale(locale);
+}
+
+export function getLocale() {
+    return instance.getLocale();
 }
 
 export function __(...args) {
+    debugger;
     return instance.__(...args);
 }
 

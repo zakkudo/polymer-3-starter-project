@@ -64,7 +64,9 @@ export default class SearchPage extends ActionsMixin(PolymerElement, {actions, s
     static get resolve() {
         return {
             message: 'Resolving Users...',
-            localization: './.locales',
+            localization: (locale) => {
+                return import(`./.locales/${locale}`);
+            },
             data: {
                 users: () => new Promise((resolve, reject) => {
                     setTimeout(() => { // Make the loading time more exciting!

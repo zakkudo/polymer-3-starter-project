@@ -15,6 +15,7 @@ export function* requestResolve(action, match) {
         setPageResolve,
         setPageRoutes,
         setPageComponent,
+        setPageLocalization,
         pageResolveRequestSucceeded,
         pageResolveRequestFailed,
     } = actions;
@@ -33,8 +34,20 @@ export function* requestResolve(action, match) {
             chain = yield next;
         }
 
-        const {Component = null, message = null, response = null} = chain;
+        const {
+            Component = null,
+            message = null,
+            response = null,
+            locale = null,
+            localization = null,
+        } = chain;
+
         yield put(pageResolveRequestSucceeded({Component, response}));
+
+        if (localization) {
+            yield put(setPageLocalization(locale, fromJS(localization)));
+        }
+
         yield put(setPageComponent(Component));
 
         if (response) {
@@ -45,9 +58,9 @@ export function* requestResolve(action, match) {
             })));
         }
 
-            if (Component.routes) {
-                yield put(setPageRoutes(fromJS(Component.routes)));
-            }
+        if (Component.routes) {
+            yield put(setPageRoutes(fromJS(Component.routes)));
+        }
     } catch (reason) {
         yield put(pageResolveRequestFailed(reason));
         yield put(setPageComponent(null));

@@ -1,6 +1,7 @@
 import actions from './actions';
 import prefixRoutes from 'lib/prefixRoutes';
 import _routes from './routes';
+import {mergeLocalization} from 'lib/localization';
 import {fromJS} from 'immutable';
 
 /**
@@ -103,7 +104,7 @@ function setPageTitle(state, title) {
  * @return {Object} The updated redux state
  */
 function setPageComponent(state, component) {
-    state.page = {}; //ReduxMixin isn't smart enough to automatically handle this...
+    state.page = {}; // ReduxMixin isn't smart enough to automatically handle this...
     state.pageComponent = component || null;
 
     if (!component || !component.hasOwnProperty('title')) {
@@ -139,13 +140,9 @@ function setPageResolve(state, resolve) {
  * @private
  */
 function setPageLocalization(state, locale, localization) {
-    const localizations = state.localizations || fromJS({});
+    mergeLocalization(locale, localization.toJS());
 
-    if (!localizations.has(locale)) {
-        return Object.assign(state, {
-            localizations: localizations.set(locale, localization),
-        });
-    }
+    //Currently a noop to the actual state, should probably cache or something like that...
 
     return state;
 }
@@ -166,7 +163,7 @@ export default function reducer(state = defaultState, action) {
 
     switch (action.type) {
         case actions.SET_PAGE_LOCALIZATION:
-            return setPageLocalization(state, action.locale, state.localization);
+            return setPageLocalization(state, action.locale, action.localization);
         case actions.SET_ROUTER_MATCH:
             return Object.assign(copy, {
                 routerMatch: action.match,
