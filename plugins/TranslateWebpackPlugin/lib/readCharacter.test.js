@@ -323,6 +323,107 @@ describe('plugins/readCharacter', () => {
 		}]);
     });
 
+    it('parses basic translation function in `${}` interpolation string', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = '`${__("a")}`';
+        const actual = [];
+
+        while ((state = readCharacter(text, state)) !== null) {
+            actual.push(state);
+        }
+
+        expect(actual).toEqual([{
+			index: 1,
+			stack: [
+				"`"
+			],
+			lineNumber: 0
+		}, {
+			index: 3,
+			stack: [
+				"${",
+				"`"
+			],
+			lineNumber: 0
+		}, {
+			index: 10,
+			stack: [
+				"${",
+				"`"
+			],
+			lineNumber: 0,
+			localization: {
+				"key": "a",
+				"fn": "__(\"a\")"
+			}
+		}, {
+			index: 11,
+			stack: [
+				"`"
+			],
+			lineNumber: 0
+		}, {
+			index: 12,
+			stack: [
+			],
+			lineNumber: 0
+		}]);
+    });
+
+    it('parses basic translation function in <% %> interpolation string', () => {
+        let state = {index: 0, stack: [], lineNumber: 0}
+        const text = '`<%:__("a")%>`';
+        const actual = [];
+
+        while ((state = readCharacter(text, state)) !== null) {
+            actual.push(state);
+        }
+
+        expect(actual).toEqual([{
+			index: 1,
+			stack: [
+				"`"
+			],
+			lineNumber: 0
+		}, {
+			index: 3,
+			stack: [
+                "<%",
+				"`"
+			],
+			lineNumber: 0
+		}, {
+			index: 4,
+			stack: [
+                "<%",
+				"`"
+			],
+			lineNumber: 0
+		}, {
+			index: 11,
+			stack: [
+                "<%",
+				"`"
+			],
+			lineNumber: 0,
+			localization: {
+				"key": "a",
+				"fn": "__(\"a\")"
+			}
+		}, {
+			index: 13,
+			stack: [
+				"`"
+			],
+			lineNumber: 0
+		}, {
+			index: 14,
+			stack: [
+			],
+			lineNumber: 0
+		}]);
+    });
+
     it('parses template translation function', () => {
         let state = {index: 0, stack: [], lineNumber: 0}
         const text = '__`a`b';

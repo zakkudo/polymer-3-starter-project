@@ -51,7 +51,23 @@ function readCharacter(text, {index, stack, lineNumber}) {
                 index += 1;
             }
             break;
-        case '[':
+        case '<': //EJS style template strings
+            if (isQuoteCharacter(head) && startsWith(text, index, '<%')) {
+                ({head, stack} = push(stack, '<%'));
+                index += 2;
+            } else {
+                index += 1;
+            }
+            break;
+        case '%':
+            if (head === '<%' && startsWith(text, index, '%>')) {
+                ({head, stack} = pop(stack));
+                index += 2;
+            } else {
+                index += 1;
+            }
+            break;
+        case '[': //Polymer style template strings
             if (isQuoteCharacter(head) && startsWith(text, index, '[[')) {
                 ({head, stack} = push(stack, '[['));
                 index += 2;
@@ -67,7 +83,15 @@ function readCharacter(text, {index, stack, lineNumber}) {
                 index += 1;
             }
             break;
-        case '{':
+        case '$': //Native javscript template strings
+            if (head === '`' && startsWith(text, index, '${')) {
+                ({head, stack} = push(stack, '${'));
+                index += 2;
+            } else {
+                index += 1;
+            }
+            break;
+        case '{': //Angular style template strings
             if (isQuoteCharacter(head) && startsWith(text, index, '{{')) {
                 ({head, stack} = push(stack, '{{'));
                 index += 2;
@@ -79,6 +103,9 @@ function readCharacter(text, {index, stack, lineNumber}) {
             if (head === '{{' && startsWith(text, index, '}}')) {
                 ({head, stack} = pop(stack));
                 index += 2;
+            } else if (head === '${' && startsWith(text, index, '}')) {
+                ({head, stack} = pop(stack));
+                index += 1;
             } else {
                 index += 1;
             }
