@@ -11,7 +11,8 @@
         "dictionaries": ["jsdoc", "closure"]
     },
     "plugins": [
-        "./jsdoc/tags/index.js"
+        "@zakkudo/jsdoc-redux-plugin",
+        "@zakkudo/jsdoc-polymer-plugin"
     ],
     "opts": {
         "destination": "./documentation",

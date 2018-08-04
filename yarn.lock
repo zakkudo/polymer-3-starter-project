@@ -1182,6 +1182,14 @@
     text-table "^0.2.0"
     webpack-log "^1.1.2"
 
+"@zakkudo/jsdoc-polymer-plugin@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@zakkudo/jsdoc-polymer-plugin/-/jsdoc-polymer-plugin-0.0.1.tgz#f4c76a151da1f620afff2ffebe74001705360259"
+
+"@zakkudo/jsdoc-redux-plugin@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@zakkudo/jsdoc-redux-plugin/-/jsdoc-redux-plugin-0.0.1.tgz#7eefa155555d31019a2dea92abd69974abc74378"
+
 "@zakkudo/translate-webpack-plugin@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@zakkudo/translate-webpack-plugin/-/translate-webpack-plugin-0.0.3.tgz#c8dbf1b7022a75e30826ef021fa9b945cfe6da07"
