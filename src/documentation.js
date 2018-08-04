@@ -1,17 +1,4 @@
 /**
- * The UIRouter Library
- * @typedef UIRouter
- * @namespace UIRouter
- * @see {@link https://ui-router.github.io}
- */
-
-/**
- * A UI Router Transition
- * @typedef UIRouter.Transition
- * @see {@link https://ui-router.github.io/react/docs/0.4.0/classes/transition.transition-1.html}
- */
-
-/**
  * Immutable JS Library
  * @typedef Immutable
  * @namespace Immutable
@@ -37,19 +24,6 @@
  */
 
 /**
- * Polymer Functionality
- * @typedef Polymer
- * @namespace Polymer
- * @see {@link https://www.polymer-project.org}
- */
-
-/**
- * A PolymerElement meant to be used as a custom html element
- * @typedef PolymerElement
- * @memberof Polymer
- */
-
-/**
  * The DocumentFragment interface represents a minimal document object that
  * has no parent.
  * @typedef Native.DocumentFragment
@@ -72,18 +46,4 @@
  * @property {Function} reject - Function that rejects the promise.
  */
 
-
-/**
- * Redux related functionality.
- * @typedef Redux
- * @namespace Redux
- * @see {@link https://redux.js.org/}
- */
-
-/**
- * The payload key is arbitrary and changes depending on the action.
- * @memberof Redux
- * @typedef Redux.Action
- * @property {String} type - Indicator for the handling of the action
- */
 
