@@ -12,7 +12,8 @@
     },
     "plugins": [
         "@zakkudo/jsdoc-redux-plugin",
-        "@zakkudo/jsdoc-polymer-plugin"
+        "@zakkudo/jsdoc-polymer-plugin",
+        "@zakkudo/jsdoc-immutable-plugin"
     ],
     "opts": {
         "destination": "./documentation",
