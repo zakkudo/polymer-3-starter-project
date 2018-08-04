@@ -9,7 +9,7 @@ const {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin');
 const program = path.basename(process.argv[1]);
 const mode = program == 'webpack' ? 'production' : 'development';
 const JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
-const TranslateWebpackPlugin = require('translate-webpack-plugin');
+const TranslateWebpackPlugin = require('@zakkudo/translate-webpack-plugin');
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = {

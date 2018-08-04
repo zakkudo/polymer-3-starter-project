@@ -1,13 +1,13 @@
-import {__} from 'lib/localization';
+import {__} from 'lib/Translator';
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import LocalizeMixin from 'lib/mixins/LocalizeMixin';
+import TranslatorMixin from 'lib/mixins/TranslatorMixin';
 
 /**
  * @module Application/pages/AboutPage
  * @customElement
  * @polymer
  */
-export default class AboutPage extends LocalizeMixin(PolymerElement) {
+export default class AboutPage extends TranslatorMixin(PolymerElement) {
     /**
      * The default page title
      */

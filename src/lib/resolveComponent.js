@@ -1,5 +1,5 @@
 import getTypeName from 'lib/getTypeName';
-import {getLocale} from 'lib/localization';
+import Translator from 'lib/Translator';
 import shallowResolve from 'lib/shallowResolve';
 import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {fromJS} from 'immutable';
@@ -38,7 +38,7 @@ function getResolveInformation(component) {
 }
 
 function resolveLocalization(getLocalization) {
-    const locale = getLocale();
+    const locale = Translator.getLocale();
 
     if (getLocalization && locale) {
         return getLocalization(locale).then((response) => {

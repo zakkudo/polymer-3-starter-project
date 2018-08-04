@@ -8,7 +8,7 @@ import ActionsMixin from 'lib/mixins/ActionsMixin';
 import ErrorPage from 'application/pages/ErrorPage';
 import Immutable from 'immutable';
 import actions from './actions';
-import {setLocale} from 'lib/localization';
+import Translator from 'lib/Translator';
 import saga from './saga';
 import store from './store';
 import {fromJS} from 'immutable';
@@ -25,7 +25,7 @@ export default class Application extends ActionsMixin(PolymerElement, {actions, 
     constructor() {
         super();
 
-        setLocale(navigator.language.substring(0, 2));
+        Translator.setLocale(navigator.language.substring(0, 2));
     }
     /**
      * @property {Object} properties - Public Properties.

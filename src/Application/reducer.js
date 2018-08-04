@@ -1,7 +1,7 @@
 import actions from './actions';
 import prefixRoutes from 'lib/prefixRoutes';
 import _routes from './routes';
-import {mergeLocalization} from 'lib/localization';
+import Translator from 'lib/Translator';
 import {fromJS} from 'immutable';
 
 /**
@@ -140,7 +140,7 @@ function setPageResolve(state, resolve) {
  * @private
  */
 function setPageLocalization(state, locale, localization) {
-    mergeLocalization(locale, localization.toJS());
+    Translator.mergeLocalization(locale, localization.toJS());
 
     //Currently a noop to the actual state, should probably cache or something like that...
 
