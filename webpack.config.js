@@ -9,7 +9,7 @@ const {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin');
 const program = path.basename(process.argv[1]);
 const mode = program == 'webpack' ? 'production' : 'development';
 const JsDocWebpackPlugin = require('jsdoc-webpack4-plugin');
-const TranslateWebpackPlugin = require('./plugins/TranslateWebpackPlugin');
+const TranslateWebpackPlugin = require('translate-webpack-plugin');
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = {
@@ -109,7 +109,7 @@ switch (process.env.NODE_ENV) {
     default:
         [
             new TranslateWebpackPlugin({
-                languages: ['ja'],
+                locales: ['ja'],
                 files: 'src/Application/**/!(*test|*story|*TestHelper).js',
                 target: 'src/Application/pages/*'
             }),
