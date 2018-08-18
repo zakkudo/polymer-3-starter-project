@@ -12,10 +12,8 @@ export default new Actions({
     /**
      * The payload will be on the <code>request</code> property.
      * @redux
-     * @reduxActionCreator
-     * @reduxActionType REQUEST_PAGE_RESOLVE
+     * @reduxActionCreator REQUEST_PAGE_RESOLVE
      * @param {Immutable.Map} match - The current route match information
-     * @return {Redux.Action} The generated action
      * @instance
     */
     setRouterMatch(match) {
@@ -40,11 +38,9 @@ export default new Actions({
     /**
      * The payload will be on the <code>request</code> property.
      * @redux
-     * @reduxActionCreator
-     * @reduxActionType REQUEST_PAGE_RESOLVE
-     * @instance
+     * @reduxActionCreator REQUEST_PAGE_RESOLVE
      * @param {Function} request - A method that should return a Promise
-     * @return {Redux.Action} The generated action
+     * @instance
     */
     requestPageResolve(request) {
         return {
@@ -62,11 +58,9 @@ export default new Actions({
      * Sets The updated resolve used for the inital page data.
      * The payload will be on the <code>response</code> property.
      * @redux
-     * @reduxActionCreator
-     * @reduxActionType SET_PAGE_RESOLVE
-     * @instance
+     * @reduxActionCreator SET_PAGE_RESOLVE
      * @param {Immutable.Map} resolve - The resolved data for the page to use on initial load
-     * @return {Redux.Action} The generated action
+     * @instance
     */
     setPageResolve(resolve) {
         return {
@@ -77,11 +71,9 @@ export default new Actions({
     /**
      * Sets the page component used for display of the resolve data.
      * @redux
-     * @reduxActionCreator
-     * @reduxActionType SET_PAGE_COMPONENT
-     * @instance
+     * @reduxActionCreator SET_PAGE_COMPONENT
      * @param {PolymerElement} component - The component to use for page display
-     * @return {Redux.Action} The generated action
+     * @instance
     */
     setPageComponent(component) {
         return {
@@ -92,11 +84,9 @@ export default new Actions({
     /**
      * Dynamically set the page title
      * @redux
-     * @reduxActionCreator
-     * @reduxActionType SET_PAGE_TITLE
-     * @instance
+     * @reduxActionCreator SET_PAGE_TITLE
      * @param {String} title - The new title for the page.  It will be joined with the application title.
-     * @return {Redux.Action} The generated action
+     * @instance
     */
     setPageTitle(title) {
         return {

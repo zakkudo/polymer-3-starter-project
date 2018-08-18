@@ -10,8 +10,7 @@ export default new Actions({
     /**
      * Requests a search for groceries
      * @redux
-     * @reduxActionCreator
-     * @reduxActionType SEARCH_REQUEST
+     * @reduxActionCreator SEARCH_REQUEST
      * @instance
      * @param {Function} query - Search configuration controlly the results
      * @return {Redux.Action} The generated action
@@ -25,8 +24,7 @@ export default new Actions({
     /**
      * Sets the search results to the store for display
      * @redux
-     * @reduxActionCreator
-     * @reduxActionType SET_RESULTS
+     * @reduxActionCreator SET_RESULTS
      * @instance
      * @param {Immutable.List} results - The search results
      * @return {Redux.Action} The generated action

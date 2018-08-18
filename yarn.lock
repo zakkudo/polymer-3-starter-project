@@ -1147,9 +1147,8 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@zakkudo/actions/-/actions-0.0.4.tgz#5c7e18e14f9b48997fd12006331410ee849a4321"
 
-"@zakkudo/jsdoc-immutable-plugin@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@zakkudo/jsdoc-immutable-plugin/-/jsdoc-immutable-plugin-0.0.1.tgz#0e96f39cab734e45c3d30c0c872dd19f2b007566"
+"@zakkudo/jsdoc-immutable-plugin@../jsdoc-immutable-plugin/":
+  version "0.0.6"
 
 "@zakkudo/jsdoc-native-plugin@^0.0.1":
   version "0.0.1"
@@ -1159,28 +1158,27 @@
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@zakkudo/jsdoc-polymer-plugin/-/jsdoc-polymer-plugin-0.0.2.tgz#c4d49accab5c908dccf8e50ec04ae780544861c1"
 
-"@zakkudo/jsdoc-redux-plugin@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@zakkudo/jsdoc-redux-plugin/-/jsdoc-redux-plugin-0.0.2.tgz#8854b95c2be3439cacc4b76f01943b414c17bcae"
-
-"@zakkudo/translate-webpack-plugin@^0.0.8":
+"@zakkudo/jsdoc-redux-plugin@../jsdoc-redux-plugin/":
   version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@zakkudo/translate-webpack-plugin/-/translate-webpack-plugin-0.0.8.tgz#91b2e1f4643bd07277c53570a77a3047253cfe08"
-  dependencies:
-    "@zakkudo/translation-static-analyzer" "^0.0.7"
 
-"@zakkudo/translation-static-analyzer@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@zakkudo/translation-static-analyzer/-/translation-static-analyzer-0.0.7.tgz#a1e2136390f01c3d419617f7967b9b2e9af7ef33"
+"@zakkudo/translate-webpack-plugin@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@zakkudo/translate-webpack-plugin/-/translate-webpack-plugin-0.0.11.tgz#462f73c83cf0604f4914764221c7f56eed5ddd9a"
+  dependencies:
+    "@zakkudo/translation-static-analyzer" "^0.0.11"
+
+"@zakkudo/translation-static-analyzer@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@zakkudo/translation-static-analyzer/-/translation-static-analyzer-0.0.11.tgz#95304b964c7692da0298e8d5aa100547becc8053"
   dependencies:
     deep-equal "^1.0.1"
     glob "^7.1.2"
     json5 "^1.0.1"
     y18n "^4.0.0"
 
-"@zakkudo/translator@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@zakkudo/translator/-/translator-0.0.3.tgz#f3ca7a64b5511216b4fb0feb84272d40ac181bd0"
+"@zakkudo/translator@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@zakkudo/translator/-/translator-0.0.6.tgz#e4627678c7bcaea2d459ac8cbfe037a966fd743c"
   dependencies:
     y18n "^4.0.0"
 

@@ -151,10 +151,7 @@ function setPageLocalization(state, locale, localization) {
  * Application reducer.
  * @redux
  * @reduxReducer
- * @private
- * @param {Object} state - The current redux state
- * @param {Redux.Action} action - A redux action
- * @return {Object} The updated redux state
+ * @module Application/reducer
  */
 export default function reducer(state = defaultState, action) {
     const copy = Object.assign({}, state);
