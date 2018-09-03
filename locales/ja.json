@@ -4,6 +4,8 @@
     "About": "",
     // UNUSED
     "Search Page": "サーチページ",
+    // src/Application/pages/AboutPage/index.js:40
+    "There is one user": {"other":"魚が%dぼん"},
     // src/Application/pages/AboutPage/index.js:38
     "Welcome to the about page!": "このページについて"
 }

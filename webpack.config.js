@@ -111,7 +111,8 @@ switch (process.env.NODE_ENV) {
             new TranslateWebpackPlugin({
                 locales: ['ja'],
                 files: 'src/Application/**/!(*test|*story|*TestHelper).js',
-                target: 'src/Application/pages/*'
+                target: 'src/Application/pages/*',
+                debug: true,
             }),
             new CaseSensitivePathsWebpackPlugin(),
             new HtmlWebpackPlugin({
