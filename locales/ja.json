@@ -1,11 +1,15 @@
 {
-    // NEW
-    // src/Application/pages/AboutPage/index.js:14
-    "About": "",
-    // UNUSED
-    "Search Page": "サーチページ",
-    // src/Application/pages/AboutPage/index.js:40
-    "There is one user": {"other":"魚が%dぼん"},
-    // src/Application/pages/AboutPage/index.js:38
-    "Welcome to the about page!": "このページについて"
+    "About": {
+        // NEW
+        // src/Application/pages/AboutPage/index.js:14
+        "default": ""
+    },
+    "There is one user": {
+        // src/Application/pages/AboutPage/index.js:40
+        "default": {"1":"魚が%dぼんss"}
+    },
+    "Welcome to the about page!": {
+        // src/Application/pages/AboutPage/index.js:38
+        "default": "このページについて"
+    }
 }
