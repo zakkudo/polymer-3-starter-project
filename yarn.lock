@@ -584,7 +584,7 @@
     pirates "^4.0.0"
     source-map-support "^0.5.9"
 
-"@babel/runtime-corejs2@^7.0.0":
+"@babel/runtime-corejs2@^7.0.0", "@babel/runtime-corejs2@^7.3.1":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime-corejs2/-/runtime-corejs2-7.3.1.tgz#0c113242e2328f9674d42703a89bee6ebebe9a82"
   dependencies:
@@ -1251,6 +1251,12 @@
   dependencies:
     "@babel/runtime-corejs2" "^7.0.0"
 
+"@zakkudo/argument-parser@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@zakkudo/argument-parser/-/argument-parser-0.0.1.tgz#10e6bcfff95a7de63f1cece8139951d75b900033"
+  dependencies:
+    "@babel/runtime-corejs2" "^7.3.1"
+
 "@zakkudo/jsdoc-immutable-plugin@^0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@zakkudo/jsdoc-immutable-plugin/-/jsdoc-immutable-plugin-0.0.6.tgz#a96985675ee379fd1f8d80c35e5a46fd511d5b4e"
@@ -1267,23 +1273,25 @@
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@zakkudo/jsdoc-redux-plugin/-/jsdoc-redux-plugin-0.0.8.tgz#bc9fdff0ee577dce9d462d547d66f99b6004961c"
 
-"@zakkudo/translate-webpack-plugin@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@zakkudo/translate-webpack-plugin/-/translate-webpack-plugin-0.2.3.tgz#3e528d03c3b1e49a1898e587599f353b659515d4"
+"@zakkudo/translate-webpack-plugin@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@zakkudo/translate-webpack-plugin/-/translate-webpack-plugin-0.3.0.tgz#567f74042c65e49607da4f49ca4001c632dc2a0b"
   dependencies:
-    "@babel/runtime-corejs2" "^7.0.0"
-    "@zakkudo/translation-static-analyzer" "^0.2.2"
+    "@babel/runtime-corejs2" "^7.3.1"
+    "@zakkudo/translation-static-analyzer" "^0.3.0"
     chokidar "^2.0.4"
 
-"@zakkudo/translation-static-analyzer@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@zakkudo/translation-static-analyzer/-/translation-static-analyzer-0.2.2.tgz#16e58f2bb6518ca4c1ac1edb766fc2e6ace3bb8d"
+"@zakkudo/translation-static-analyzer@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@zakkudo/translation-static-analyzer/-/translation-static-analyzer-0.3.0.tgz#0e21be3e712fb48a0ad33dc9de84d6c927fa7036"
   dependencies:
-    "@babel/runtime-corejs2" "^7.0.0"
+    "@babel/runtime-corejs2" "^7.3.1"
+    "@zakkudo/argument-parser" "0.0.1"
+    chokidar "^2.0.4"
     deep-equal "^1.0.1"
-    fs-extra "^7.0.0"
+    fs-extra "^7.0.1"
     glob "^7.1.2"
-    json5 "^1.0.1"
+    json5 "^2.1.0"
     safe-eval "^0.4.1"
 
 "@zakkudo/translator@^0.2.1":
@@ -4716,7 +4724,7 @@ fs-extra@^0.30.0:
     path-is-absolute "^1.0.0"
     rimraf "^2.2.8"
 
-fs-extra@^7.0.0, fs-extra@^7.0.1:
+fs-extra@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
   dependencies:

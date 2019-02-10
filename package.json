@@ -29,7 +29,7 @@
     "@zakkudo/jsdoc-native-plugin": "^0.0.3",
     "@zakkudo/jsdoc-polymer-plugin": "^0.0.3",
     "@zakkudo/jsdoc-redux-plugin": "0.0.8",
-    "@zakkudo/translate-webpack-plugin": "^0.2.3",
+    "@zakkudo/translate-webpack-plugin": "^0.3.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-undefined-to-void": "^6.9.4",
