@@ -1,0 +1,17 @@
+msgid ""
+msgstr "Plural-Forms: nplurals=1; plural=0;\n"
+""
+
+#. NEW
+#: /Users/zachary/Development/polymer-3-starter-project/src/Application/pages/AboutPage/index.js:38
+msgid "Welcome to the about page!"
+msgstr ""
+
+#: /Users/zachary/Development/polymer-3-starter-project/src/Application/pages/AboutPage/index.js:14
+msgid "About"
+msgstr "アバウト"
+
+#: /Users/zachary/Development/polymer-3-starter-project/src/Application/pages/AboutPage/index.js:40
+msgid "There is one user"
+msgid_plural "There are %d users"
+msgstr[0] "ユーザーが%1$dいます"
